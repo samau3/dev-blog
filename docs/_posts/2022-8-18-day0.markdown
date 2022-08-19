@@ -1,0 +1,13 @@
+---
+layout: post
+title:  "0/100 Days of Code"
+date:   2022-08-18 21:27:23 -0700
+categories: 100Days
+---
+My start to 100 Days of Code. 
+
+Initial goals for this journey:
+1. A leetcode problem a day until I'm done with Grind 75 Mediums
+2. Add at least one test a day for my existing projects
+3. Get back to working on Paper Trader
+
