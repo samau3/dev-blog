@@ -1,0 +1,66 @@
+---
+layout: post
+title:  "1/100 Days of Code"
+date:   2022-08-19 21:30:23 -0700
+categories: 100Days
+---
+
+## Paper Trader
+
+1. Tried to set a custom height and width for a React Chart.Js component but that led to the component to change size infinitely. Although the final version of this component will need to be a smaller size, I decided having it be displayed at all is enough for now. I assume the issue may be caused by React losing control of the component, but will need digging deeper in the future.
+
+    {% highlight typescript %}
+    <Line
+    data={data}
+    width={500}
+    height={800}
+    options={maintainAspectRatio: false}
+    />
+    {% endhighlight %}
+
+![Infinitely growing line component](../../../../images/20220819chartjs.gif)
+
+{:start="2"}
+2. Started working on implementing the Discord OAuth API for users to log in. Originally I spent some time trying to wrap my head around properly separating out the frontend function to call the server to reach the Discord API. However, decided to push forward with trying to get the OAuth to work before refactoring the code structure to have better separation of concerns. Using this [guide](https://discordjs.guide/oauth2/#a-quick-example), I started to add the starting structure for the Discord OAuth API:
+
+ {% highlight typescript %}
+app.get('/login', async (req, res) => {
+  const { code } = await req.query;
+  // const query = JSON.parse(req.query);
+  console.log(`The access code is: ${code}`);
+  // const { code } = req.query;
+
+  if (code) {
+    try {
+      const tokenResponseData = await axios({
+        method: "post",
+        url: "https://discord.com/api/oauth2/token",
+        params: {
+          client_id: clientId,
+          client_secret: clientSecret,
+          code,
+          grant_type: 'authorization_code',
+          redirect_uri: `http://localhost:${port}`,
+          scope: 'identify',
+        },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      const oauthData = await getJSONResponse(tokenResponseData.data);
+      console.log(oauthData);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return res.json({ root: '.', req: "test" });
+})
+ {% endhighlight %}
+
+Unfortunately, this doesn't work entirely due to the req.query being empty at the moment since I was trying to hit this endpoint directly without the frontend by using Insomnia and the local server. Based on the guide, there were some necessary steps in the **Implicit Grant** flow that are not mentioned in the **Authorization Code Grant** flow that I wanted to use as it's set up as working with the **Implicit Grant** flow before switching to **Authorization Code Grant** flow.
+
+## Next Steps
+
+1. Make a test app that follows the [Discord OAuth guide](https://discordjs.guide/oauth2/#a-quick-example) and try to piece together the missing parts I need so the Discord OAuth properly works on my Paper Trader app.
