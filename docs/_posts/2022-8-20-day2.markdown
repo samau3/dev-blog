@@ -1,0 +1,76 @@
+---
+layout: post
+title:  "2/100 Days of Code"
+date:   2022-08-20 15:30:23 -0700
+categories: 100Days
+---
+
+### Paper Trader
+**Discord OAuth**
+1. Worked through the example code from the [Discord OAuth guide](https://discordjs.guide/oauth2/#a-quick-example), and may have found what I needed to implement in my Paper Trader app. 
+    - In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to `display` to Discord OAuth for users to authorize the application access. After a user authorizes application access, they're redirected to the original page and triggers the `fetch()` API call (this was previously not reached due to the return statement that changes the link display style). In this `fetch()` call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to `fetch()` API not doing that automatically)
+
+{% highlight html %}
+<div id="info">Hi!</div>
+<!-- the display style will get changed if no access token exists in the URL -->
+<!-- (i.e. not accessing this page via discord oauth redirect) -->
+<a id="login" style="display: none;" 
+    href="discord-oauth-url">
+    Identify Yourself
+</a>
+{% endhighlight %}
+
+{% highlight javascript %}
+function generateRandomString() {
+    //...
+    return randomString;
+}
+
+
+window.onload = () => {
+    // window.location represents the URL location the object is linked to, 
+    // in this case it will pull the URL of the website we're on
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const [accessToken, tokenType, state] = [fragment.get('access_token'), 
+                                             fragment.get('token_type'),
+                                             fragment.get('state')];
+
+    if (!accessToken) {
+        const randomString = generateRandomString();
+        localStorage.setItem('oauth-state', randomString);
+
+        // a quick and simple way to prevent CSRF attacks by appending a 
+        // random string that represents the state of the application
+        document.getElementById('login').href += `&state=${btoa(randomString)}`;
+        
+        return (document.getElementById('login').style.display = 'block');
+    }
+
+    if (localStorage.getItem('oauth-state') !== atob(decodeURIComponent(state))) {
+        return console.log('You may have been clickjacked!');
+    }
+
+    // note the below fetch call isn't reached on initial loading of the page as 
+    // !accessToken returns, so it's only called after the redirect and if
+    // there's a valid application state
+
+    // accesses the user's information from the discord API to pull necessary
+    // identification info
+    fetch('https://discord.com/api/users/@me', {
+        headers: {
+            authorization: `${tokenType} ${accessToken}`,
+        },
+    })
+        .then(result => result.json())
+        .then(response => {
+            const { username, discriminator } = response;
+            document.getElementById('info')
+                .innerText += ` ${username}#${discriminator}`;
+        })
+        .catch(console.error);
+};
+{% endhighlight %}
+
+
+### Next Steps
+1. Try the authorization grant flow portion of the Discord Oauth API docs and start to implement the learnings in Paper Trader. The biggest changes look like changing what the link the Discord Log In button should be and bringing over the authorization grant flow example fetch structure.

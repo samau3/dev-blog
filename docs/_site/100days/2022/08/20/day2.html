@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>2/100 Days of Code | 100 Days of Code</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="2/100 Days of Code" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Paper Trader Discord OAuth Worked through the example code from the Discord OAuth guide, and may have found what I needed to implement in my Paper Trader app. In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to display to Discord OAuth for users to authorize the application access. After a user authorizes application access, they’re redirected to the original page and triggers the fetch() API call (this was previously not reached due to the return statement that changes the link display style). In this fetch() call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to fetch() API not doing that automatically)" />
+<meta property="og:description" content="Paper Trader Discord OAuth Worked through the example code from the Discord OAuth guide, and may have found what I needed to implement in my Paper Trader app. In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to display to Discord OAuth for users to authorize the application access. After a user authorizes application access, they’re redirected to the original page and triggers the fetch() API call (this was previously not reached due to the return statement that changes the link display style). In this fetch() call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to fetch() API not doing that automatically)" />
+<link rel="canonical" href="http://localhost:4000/dev-blog/100days/2022/08/20/day2.html" />
+<meta property="og:url" content="http://localhost:4000/dev-blog/100days/2022/08/20/day2.html" />
+<meta property="og:site_name" content="100 Days of Code" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-08-20T15:30:23-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="2/100 Days of Code" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-08-20T15:30:23-07:00","datePublished":"2022-08-20T15:30:23-07:00","description":"Paper Trader Discord OAuth Worked through the example code from the Discord OAuth guide, and may have found what I needed to implement in my Paper Trader app. In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to display to Discord OAuth for users to authorize the application access. After a user authorizes application access, they’re redirected to the original page and triggers the fetch() API call (this was previously not reached due to the return statement that changes the link display style). In this fetch() call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to fetch() API not doing that automatically)","headline":"2/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/dev-blog/100days/2022/08/20/day2.html"},"url":"http://localhost:4000/dev-blog/100days/2022/08/20/day2.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/dev-blog/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/dev-blog/feed.xml" title="100 Days of Code" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/dev-blog/">100 Days of Code</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/dev-blog/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">2/100 Days of Code</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-08-20T15:30:23-07:00" itemprop="datePublished">Aug 20, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h3 id="paper-trader">Paper Trader</h3>
+<p><strong>Discord OAuth</strong></p>
+<ol>
+  <li>Worked through the example code from the <a href="https://discordjs.guide/oauth2/#a-quick-example">Discord OAuth guide</a>, and may have found what I needed to implement in my Paper Trader app.
+    <ul>
+      <li>In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to <code class="language-plaintext highlighter-rouge">display</code> to Discord OAuth for users to authorize the application access. After a user authorizes application access, they’re redirected to the original page and triggers the <code class="language-plaintext highlighter-rouge">fetch()</code> API call (this was previously not reached due to the return statement that changes the link display style). In this <code class="language-plaintext highlighter-rouge">fetch()</code> call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to <code class="language-plaintext highlighter-rouge">fetch()</code> API not doing that automatically)</li>
+    </ul>
+  </li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"info"</span><span class="nt">&gt;</span>Hi!<span class="nt">&lt;/div&gt;</span>
+<span class="c">&lt;!-- the display style will get changed if no access token exists in the URL --&gt;</span>
+<span class="c">&lt;!-- (i.e. not accessing this page via discord oauth redirect) --&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">id=</span><span class="s">"login"</span> <span class="na">style=</span><span class="s">"display: none;"</span> 
+    <span class="na">href=</span><span class="s">"discord-oauth-url"</span><span class="nt">&gt;</span>
+    Identify Yourself
+<span class="nt">&lt;/a&gt;</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">generateRandomString</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//...</span>
+    <span class="k">return</span> <span class="nx">randomString</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// window.location represents the URL location the object is linked to, </span>
+    <span class="c1">// in this case it will pull the URL of the website we're on</span>
+    <span class="kd">const</span> <span class="nx">fragment</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URLSearchParams</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">accessToken</span><span class="p">,</span> <span class="nx">tokenType</span><span class="p">,</span> <span class="nx">state</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">fragment</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">access_token</span><span class="dl">'</span><span class="p">),</span> 
+                                             <span class="nx">fragment</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">token_type</span><span class="dl">'</span><span class="p">),</span>
+                                             <span class="nx">fragment</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">state</span><span class="dl">'</span><span class="p">)];</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">accessToken</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">randomString</span> <span class="o">=</span> <span class="nx">generateRandomString</span><span class="p">();</span>
+        <span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">oauth-state</span><span class="dl">'</span><span class="p">,</span> <span class="nx">randomString</span><span class="p">);</span>
+
+        <span class="c1">// a quick and simple way to prevent CSRF attacks by appending a </span>
+        <span class="c1">// random string that represents the state of the application</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">login</span><span class="dl">'</span><span class="p">).</span><span class="nx">href</span> <span class="o">+=</span> <span class="s2">`&amp;state=</span><span class="p">${</span><span class="nx">btoa</span><span class="p">(</span><span class="nx">randomString</span><span class="p">)}</span><span class="s2">`</span><span class="p">;</span>
+        
+        <span class="k">return</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">login</span><span class="dl">'</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">block</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">oauth-state</span><span class="dl">'</span><span class="p">)</span> <span class="o">!==</span> <span class="nx">atob</span><span class="p">(</span><span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">state</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">You may have been clickjacked!</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// note the below fetch call isn't reached on initial loading of the page as </span>
+    <span class="c1">// !accessToken returns, so it's only called after the redirect and if</span>
+    <span class="c1">// there's a valid application state</span>
+
+    <span class="c1">// accesses the user's information from the discord API to pull necessary</span>
+    <span class="c1">// identification info</span>
+    <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://discord.com/api/users/@me</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">authorization</span><span class="p">:</span> <span class="s2">`</span><span class="p">${</span><span class="nx">tokenType</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">accessToken</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">})</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">result</span> <span class="o">=&gt;</span> <span class="nx">result</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="p">{</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">discriminator</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">response</span><span class="p">;</span>
+            <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">info</span><span class="dl">'</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">innerText</span> <span class="o">+=</span> <span class="s2">` </span><span class="p">${</span><span class="nx">username</span><span class="p">}</span><span class="s2">#</span><span class="p">${</span><span class="nx">discriminator</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+<span class="p">};</span></code></pre></figure>
+
+<h3 id="next-steps">Next Steps</h3>
+<ol>
+  <li>Try the authorization grant flow portion of the Discord Oauth API docs and start to implement the learnings in Paper Trader. The biggest changes look like changing what the link the Discord Log In button should be and bringing over the authorization grant flow example fetch structure.</li>
+</ol>
+
+  </div><a class="u-url" href="/dev-blog/100days/2022/08/20/day2.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/dev-blog/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">100 Days of Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">100 Days of Code</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/samau3"><svg class="svg-icon"><use xlink:href="/dev-blog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">samau3</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Sammy Au&#39;s 100 Days of Code</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
