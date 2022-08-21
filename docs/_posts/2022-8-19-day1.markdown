@@ -61,6 +61,6 @@ app.get('/login', async (req, res) => {
 
 Unfortunately, this doesn't work entirely due to the req.query being empty at the moment since I was trying to hit this endpoint directly without the frontend by using Insomnia and the local server. Based on the guide, there were some necessary steps in the **Implicit Grant** flow that are not mentioned in the **Authorization Code Grant** flow that I wanted to use as it's set up as working with the **Implicit Grant** flow before switching to **Authorization Code Grant** flow.
 
-## Next Steps
+### Next Steps
 
 1. Make a test app that follows the [Discord OAuth guide](https://discordjs.guide/oauth2/#a-quick-example) and try to piece together the missing parts I need so the Discord OAuth properly works on my Paper Trader app.
