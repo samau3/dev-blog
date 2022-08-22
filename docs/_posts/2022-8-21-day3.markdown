@@ -1,0 +1,44 @@
+---
+layout: post
+title:  "3/100 Days of Code"
+date:   2022-08-21 15:30:23 -0700
+categories: 100Days
+---
+
+### Paper Trader
+**Discord OAuth**
+1. I was able to properly send the authorized request to access a Discord user's information, however it was done with hardcoded Axios post request ([based on this Stackoverflow discussion](https://stackoverflow.com/questions/55391068/discord-oauth2-receiving-invalid-client-error)).
+
+    {%highlight javascript%}
+    const tokenResponseData = await axios.post(
+                    'https://discord.com/api/oauth2/token',
+                    //`client_id=...code=${code}`,
+                    headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                )
+    {%endhighlight%}
+
+- I wanted to write it as a more flexible Axios object, similar to the one presented in the [Discord OAuth guide](https://discordjs.guide/oauth2/#a-quick-example), but kept encountering a `401` error since the Axios post was not sending the URL parameters properly. If after spending more time trying to get the below code to work proves unsuccessful, I am likely to move on with the above code snippet and mark this down as a code chunk for refactoring.
+
+{%highlight javascript%}
+ const tokenResponseData2 = await axios({
+        method: 'POST',
+        url: 'https://discord.com/api/oauth2/token',
+        data: new URLSearchParams({
+            client_id: clientId,
+            client_secret: clientSecret,
+            code,
+            grant_type: 'authorization_code',
+            redirect_uri: `http://localhost:${port}`,
+            scope: 'identify',
+        }),
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    })
+{%endhighlight%}
+
+
+### Next Steps
+1. I now have a working understanding of what needs to be done to implement the Discord OAuth API in the Paper Trader app! With a few more tweaks once I bring it over (namely storing the authorization tokens and implementing the `useContext` React hook), I will have a functioning user authentication and authorization system.
