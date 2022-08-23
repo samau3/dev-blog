@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "1/100 Days of Code"
-date:   2022-08-19 21:30:23 -0700
+date:   2022-08-19 15:30:23 -0700
 categories: 100Days
 ---
 
