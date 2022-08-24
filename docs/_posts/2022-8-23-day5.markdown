@@ -1,0 +1,48 @@
+---
+layout: post
+title:  "5/100 Days of Code"
+date:   2022-08-23 15:30:23 -0700
+categories: 100Days
+---
+
+### Paper Trader
+**Discord OAuth**
+1. Finally implemented Discord OAuth into the Paper Trader app!! There is still plenty of work to do in regards to storing and using the Discord user's information, but that should be a more straightforward process. 
+
+![Discord OAuth Redirect](../../../../images/20220823discord-redirect.gif)
+
+{:start="2"}
+2. The `useSearchParams` React Router hook turned out to be exactly what I needed to extract the authorization code from the Discord OAuth redirect URL. Made bringing over the code I wrote in my Discord OAuth test app very seamless.
+
+3. Originally I had trouble dealing with `CORS` in my app, and after spending some time digging around online, I ultimately decided to check my old projects for how I handled it before. Turns out it was the solution from an earlier [Stack Overflow discussion](https://stackoverflow.com/a/43810132) I encountered where I simply had to `npm install cors` and add a few lines of code.
+
+{%highlight javascript%}
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+app.use(cors());
+{%endhighlight%}
+
+### Learnings
+**Discord OAuth Redirect**
+1. When I initially brought over my Discord OAuth test code, I didn't update the API token URL for the `redirect_uri` parameter. This led to some confusion as all the configs and URLs I'm interacting was expected to work as there weren't any changes. However, this [Stack Overflow](https://stackoverflow.com/a/70280164) turned up. As such, once I updated the `redirect_uri` parameter to be the same for both `authorize` and `token` Discord API routes, my `axios` requests started to succeed again.
+
+**Typescript and CORS**
+1. While adding the npm package `cors` to my app, turns out that isn't enough for Typescript. With [cors and Typescript](https://www.twilio.com/blog/add-cors-support-express-typescript-api), one also needs to install `@types/cors`.
+
+**dotenv in ES6**
+1. I tried to utilize `dotenv` like I had in my past `express` applications, but in ES6 it's a little different. Not that big of a difference, but much more consistent with the rest of my module imports.
+{%highlight javascript%}
+// The way I'm used to
+require("dotenv").config();
+
+// ES6
+import 'dotenv/config'
+{%endhighlight%}
+
+
+
+### Next Steps
+1. I will need to add the second portion of the Discord OAuth functionality which is accessing the user's Discord information. At the moment I only have the authorization code for the user's information, but need to send that along with other information to the Discord API.
+2. In addition, there will need to be some refactoring to properly separate the concerns of storing the user information and breaking down some components such that they aren't too big. 

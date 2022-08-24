@@ -1,4 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-22T23:53:16-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">4/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/22/day4.html" rel="alternate" type="text/html" title="4/100 Days of Code" /><published>2022-08-22T15:30:23-07:00</published><updated>2022-08-22T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/22/day4</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/22/day4.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-23T23:31:44-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">5/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/23/day5.html" rel="alternate" type="text/html" title="5/100 Days of Code" /><published>2022-08-23T15:30:23-07:00</published><updated>2022-08-23T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/23/day5</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/23/day5.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Discord OAuth&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Finally implemented Discord OAuth into the Paper Trader app!! There is still plenty of work to do in regards to storing and using the Discord user’s information, but that should be a more straightforward process.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;../../../../images/20220823discord-redirect.gif&quot; alt=&quot;Discord OAuth Redirect&quot; /&gt;&lt;/p&gt;
+
+&lt;ol start=&quot;2&quot;&gt;
+  &lt;li&gt;
+    &lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useSearchParams&lt;/code&gt; React Router hook turned out to be exactly what I needed to extract the authorization code from the Discord OAuth redirect URL. Made bringing over the code I wrote in my Discord OAuth test app very seamless.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Originally I had trouble dealing with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CORS&lt;/code&gt; in my app, and after spending some time digging around online, I ultimately decided to check my old projects for how I handled it before. Turns out it was the solution from an earlier &lt;a href=&quot;https://stackoverflow.com/a/43810132&quot;&gt;Stack Overflow discussion&lt;/a&gt; I encountered where I simply had to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install cors&lt;/code&gt; and add a few lines of code.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;express&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;express&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cors&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;cors&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;express&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;use&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Discord OAuth Redirect&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;When I initially brought over my Discord OAuth test code, I didn’t update the API token URL for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameter. This led to some confusion as all the configs and URLs I’m interacting was expected to work as there weren’t any changes. However, this &lt;a href=&quot;https://stackoverflow.com/a/70280164&quot;&gt;Stack Overflow&lt;/a&gt; turned up. As such, once I updated the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameter to be the same for both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;authorize&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;token&lt;/code&gt; Discord API routes, my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; requests started to succeed again.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Typescript and CORS&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;While adding the npm package &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cors&lt;/code&gt; to my app, turns out that isn’t enough for Typescript. With &lt;a href=&quot;https://www.twilio.com/blog/add-cors-support-express-typescript-api&quot;&gt;cors and Typescript&lt;/a&gt;, one also needs to install &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@types/cors&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;dotenv in ES6&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;I tried to utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dotenv&lt;/code&gt; like I had in my past &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;express&lt;/code&gt; applications, but in ES6 it’s a little different. Not that big of a difference, but much more consistent with the rest of my module imports.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// The way I&apos;m used to&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;dotenv&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// ES6&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;dotenv/config&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;I will need to add the second portion of the Discord OAuth functionality which is accessing the user’s Discord information. At the moment I only have the authorization code for the user’s information, but need to send that along with other information to the Discord API.&lt;/li&gt;
+  &lt;li&gt;In addition, there will need to be some refactoring to properly separate the concerns of storing the user information and breaking down some components such that they aren’t too big.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Finally implemented Discord OAuth into the Paper Trader app!! There is still plenty of work to do in regards to storing and using the Discord user’s information, but that should be a more straightforward process.</summary></entry><entry><title type="html">4/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/22/day4.html" rel="alternate" type="text/html" title="4/100 Days of Code" /><published>2022-08-22T15:30:23-07:00</published><updated>2022-08-22T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/22/day4</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/22/day4.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Discord OAuth&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;I brought over parts of the Discord OAuth code to my React Paper Trader app! Currently it has the basic functionalitly I needed, where clicking Log In with Discord sends the user to Discord’s authorization page and redirects back to the app with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;code&lt;/code&gt; parameter needed.
