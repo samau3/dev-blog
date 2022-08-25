@@ -33,7 +33,7 @@ Not much code was written today, but a lot of time was spent planning about how 
 
         ![Node environment variables](../../../../images/20220824envvars.png)
 
-    - Although I expected the `PUBLIC_URL` value to be the location that was loading my build, I saw the `NODE_ENV` had a value of `production`. Comparing this to my `localhost` development buiild, `NODE_ENV` had a value of `development`. With this information, that's how my friend and I decided to utilize `NODE_ENV` to set the `REDIRECT_URI` value.
+    - Although I expected the `PUBLIC_URL` value to be the location that was loading my build, I saw the `NODE_ENV` had a value of `production`. Comparing this to my `localhost` development build, `NODE_ENV` had a value of `development`. With this information, that's how my friend and I decided to utilize `NODE_ENV` to set the `REDIRECT_URI` value.
 
 
 ### Next Steps
