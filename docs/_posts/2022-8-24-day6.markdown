@@ -24,7 +24,13 @@ Not much code was written today, but a lot of time was spent planning about how 
     - Right now, the `redirect_uri` parameters are hardcoded with `localhost` as the base value. However, once deployed these parameters will no longer be valid as they're not URLs that will be interacted with in production.
     - As such, similar to how `BASE_URL` is implemented, there will some configuration `const` variable `REDIRECT_URI` that will have it's value set based on whether `NODE_ENV` is `development` or `production`
 
-5. A bigger refactoring process will be breaking up the server routes. At the moment, to get things started, all the routing is in a single `index.ts` file, which is starting to get messy. Therefore, the routes in the file need to be split up into different main paths.
+**Long Term Refactoring Goals**
+
+These are goals that will have to be handled as things progress, but at the moment the above four are higher priority as they need to be finished to wrap up the Discord OAuth implementation.
+
+1. Need to store the OAuth token to be reused for authorizing different paths. At the moment, the token isn't being stored and is just used to access a user's Discord profile. Storing the token may not be the necessary step, but somehow persisting the authorized information (either the token or the Discord username) will be needed to access protected routes down the line.
+
+2. A bigger refactoring process will be breaking up the server routes. At the moment, to get things started, all the routing is in a single `index.ts` file, which is starting to get messy. Therefore, the routes in the file need to be split up into different main paths.
     - This will also be helpful when adding middleware as everything will be better organized
 
 ### Learnings

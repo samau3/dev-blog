@@ -75,7 +75,18 @@
       <li>As such, similar to how <code class="language-plaintext highlighter-rouge">BASE_URL</code> is implemented, there will some configuration <code class="language-plaintext highlighter-rouge">const</code> variable <code class="language-plaintext highlighter-rouge">REDIRECT_URI</code> that will have it’s value set based on whether <code class="language-plaintext highlighter-rouge">NODE_ENV</code> is <code class="language-plaintext highlighter-rouge">development</code> or <code class="language-plaintext highlighter-rouge">production</code></li>
     </ul>
   </li>
-  <li>A bigger refactoring process will be breaking up the server routes. At the moment, to get things started, all the routing is in a single <code class="language-plaintext highlighter-rouge">index.ts</code> file, which is starting to get messy. Therefore, the routes in the file need to be split up into different main paths.
+</ol>
+
+<p><strong>Long Term Refactoring Goals</strong></p>
+
+<p>These are goals that will have to be handled as things progress, but at the moment the above four are higher priority as they need to be finished to wrap up the Discord OAuth implementation.</p>
+
+<ol>
+  <li>
+    <p>Need to store the OAuth token to be reused for authorizing different paths. At the moment, the token isn’t being stored and is just used to access a user’s Discord profile. Storing the token may not be the necessary step, but somehow persisting the authorized information (either the token or the Discord username) will be needed to access protected routes down the line.</p>
+  </li>
+  <li>
+    <p>A bigger refactoring process will be breaking up the server routes. At the moment, to get things started, all the routing is in a single <code class="language-plaintext highlighter-rouge">index.ts</code> file, which is starting to get messy. Therefore, the routes in the file need to be split up into different main paths.</p>
     <ul>
       <li>This will also be helpful when adding middleware as everything will be better organized</li>
     </ul>

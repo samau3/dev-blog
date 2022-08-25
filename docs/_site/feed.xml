@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-24T23:24:11-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">6/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/24/day6.html" rel="alternate" type="text/html" title="6/100 Days of Code" /><published>2022-08-24T15:30:23-07:00</published><updated>2022-08-24T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/24/day6</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/24/day6.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-24T23:32:19-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">6/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/24/day6.html" rel="alternate" type="text/html" title="6/100 Days of Code" /><published>2022-08-24T15:30:23-07:00</published><updated>2022-08-24T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/24/day6</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/24/day6.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Discord OAuth Refactoring&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Not much code was written today, but a lot of time was spent planning about how to refactor things and what the next necessary features I plan to work on will be. After discussing with a more experienced SWE friend, the changes I’ll need to make are:&lt;/p&gt;
@@ -26,7 +26,18 @@
       &lt;li&gt;As such, similar to how &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BASE_URL&lt;/code&gt; is implemented, there will some configuration &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const&lt;/code&gt; variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REDIRECT_URI&lt;/code&gt; that will have it’s value set based on whether &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt; is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;development&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;production&lt;/code&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;A bigger refactoring process will be breaking up the server routes. At the moment, to get things started, all the routing is in a single &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;index.ts&lt;/code&gt; file, which is starting to get messy. Therefore, the routes in the file need to be split up into different main paths.
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Long Term Refactoring Goals&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;These are goals that will have to be handled as things progress, but at the moment the above four are higher priority as they need to be finished to wrap up the Discord OAuth implementation.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Need to store the OAuth token to be reused for authorizing different paths. At the moment, the token isn’t being stored and is just used to access a user’s Discord profile. Storing the token may not be the necessary step, but somehow persisting the authorized information (either the token or the Discord username) will be needed to access protected routes down the line.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A bigger refactoring process will be breaking up the server routes. At the moment, to get things started, all the routing is in a single &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;index.ts&lt;/code&gt; file, which is starting to get messy. Therefore, the routes in the file need to be split up into different main paths.&lt;/p&gt;
     &lt;ul&gt;
       &lt;li&gt;This will also be helpful when adding middleware as everything will be better organized&lt;/li&gt;
     &lt;/ul&gt;
