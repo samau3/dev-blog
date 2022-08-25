@@ -1,0 +1,40 @@
+---
+layout: post
+title:  "6/100 Days of Code"
+date:   2022-08-24 15:30:23 -0700
+categories: 100Days
+---
+
+### Paper Trader
+**Discord OAuth Refactoring**
+
+Not much code was written today, but a lot of time was spent planning about how to refactor things and what the next necessary features I plan to work on will be. After discussing with a more experienced SWE friend, the changes I'll need to make are:
+
+1. Move my configuration variables (e.g. `const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:8080";`) to a separate `config.js` file out of my React components.
+    - This is to help better separate code logic from just setup related information.
+
+2. Change my Discord log in button from being a link appearing as a button, to be an actual button.
+    - Have an `onClick` function that will make the request to Discord's OAuth API.
+    - Will also need to figure out how to update the browser to to show the OAuth page if the function making the request doesn't load the page properly.
+
+3. In order to properly prevent CSRF clickjacking, have to add some code logic that validates the random string generated for the `state` parameter in `App.tsx` and the `state` parameter sent back from Discord API.
+    - At the moment, upon redirect the `state` parameter stored in `localstorage` is reset to the initial placeholder value of `token`. A quick change will be to add another conditional statement to check if there is a preexisting value and that it's not token which valdiates the `state`.
+
+4. Need to update the `redirect_uri` parameters in the Discord API requests to account for the deployed location.
+    - Right now, the `redirect_uri` parameters are hardcoded with `localhost` as the base value. However, once deployed these parameters will no longer be valid as they're not URLs that will be interacted with in production.
+    - As such, similar to how `BASE_URL` is implemented, there will some configuration `const` variable `REDIRECT_URI` that will have it's value set based on whether `NODE_ENV` is `development` or `production`
+
+5. A bigger refactoring process will be breaking up the server routes. At the moment, to get things started, all the routing is in a single `index.ts` file, which is starting to get messy. Therefore, the routes in the file need to be split up into different main paths.
+    - This will also be helpful when adding middleware as everything will be better organized
+
+### Learnings
+1. When trying to figure out the best way to handle how to set the `redirect_uri` parameter, I came across this [Stack Overflow discussion](https://stackoverflow.com/questions/48134785/how-to-set-a-base-url-for-react-router-at-the-app-level). 
+    - So, I tried accessing the `process.env.PUBLIC_URL` in a local build being served on my browser. 
+
+        ![Node environment variables](../../../../images/20220824envvars.png)
+
+    - Although I expected the `PUBLIC_URL` value to be the location that was loading my build, I saw the `NODE_ENV` had a value of `production`. Comparing this to my `localhost` development buiild, `NODE_ENV` had a value of `development`. With this information, that's how my friend and I decided to utilize `NODE_ENV` to set the `REDIRECT_URI` value.
+
+
+### Next Steps
+1. Pretty much the steps I outlined above for refactoring!

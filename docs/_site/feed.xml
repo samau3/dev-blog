@@ -1,4 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-23T23:31:44-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">5/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/23/day5.html" rel="alternate" type="text/html" title="5/100 Days of Code" /><published>2022-08-23T15:30:23-07:00</published><updated>2022-08-23T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/23/day5</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/23/day5.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-24T23:22:12-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">6/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/24/day6.html" rel="alternate" type="text/html" title="6/100 Days of Code" /><published>2022-08-24T15:30:23-07:00</published><updated>2022-08-24T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/24/day6</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/24/day6.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Discord OAuth Refactoring&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Not much code was written today, but a lot of time was spent planning about how to refactor things and what the next necessary features I plan to work on will be. After discussing with a more experienced SWE friend, the changes I’ll need to make are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Move my configuration variables (e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const BASE_URL = process.env.REACT_APP_BASE_URL || &quot;http://localhost:8080&quot;;&lt;/code&gt;) to a separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config.js&lt;/code&gt; file out of my React components.
+    &lt;ul&gt;
+      &lt;li&gt;This is to help better separate code logic from just setup related information.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Change my Discord log in button from being a link appearing as a button, to be an actual button.
+    &lt;ul&gt;
+      &lt;li&gt;Have an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;onClick&lt;/code&gt; function that will make the request to Discord’s OAuth API.&lt;/li&gt;
+      &lt;li&gt;Will also need to figure out how to update the browser to to show the OAuth page if the function making the request doesn’t load the page properly.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;In order to properly prevent CSRF clickjacking, have to add some code logic that validates the random string generated for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App.tsx&lt;/code&gt; and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter sent back from Discord API.
+    &lt;ul&gt;
+      &lt;li&gt;At the moment, upon redirect the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter stored in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localstorage&lt;/code&gt; is reset to the initial placeholder value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;token&lt;/code&gt;. A quick change will be to add another conditional statement to check if there is a preexisting value and that it’s not token which valdiates the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Need to update the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameters in the Discord API requests to account for the deployed location.
+    &lt;ul&gt;
+      &lt;li&gt;Right now, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameters are hardcoded with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localhost&lt;/code&gt; as the base value. However, once deployed these parameters will no longer be valid as they’re not URLs that will be interacted with in production.&lt;/li&gt;
+      &lt;li&gt;As such, similar to how &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BASE_URL&lt;/code&gt; is implemented, there will some configuration &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const&lt;/code&gt; variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REDIRECT_URI&lt;/code&gt; that will have it’s value set based on whether &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt; is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;development&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;production&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;A bigger refactoring process will be breaking up the server routes. At the moment, to get things started, all the routing is in a single &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;index.ts&lt;/code&gt; file, which is starting to get messy. Therefore, the routes in the file need to be split up into different main paths.
+    &lt;ul&gt;
+      &lt;li&gt;This will also be helpful when adding middleware as everything will be better organized&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;When trying to figure out the best way to handle how to set the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameter, I came across this &lt;a href=&quot;https://stackoverflow.com/questions/48134785/how-to-set-a-base-url-for-react-router-at-the-app-level&quot;&gt;Stack Overflow discussion&lt;/a&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;So, I tried accessing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;process.env.PUBLIC_URL&lt;/code&gt; in a local build being served on my browser.&lt;/p&gt;
+
+        &lt;p&gt;&lt;img src=&quot;../../../../images/20220824envvars.png&quot; alt=&quot;Node environment variables&quot; /&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Although I expected the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PUBLIC_URL&lt;/code&gt; value to be the location that was loading my build, I saw the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt; had a value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;production&lt;/code&gt;. Comparing this to my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localhost&lt;/code&gt; development buiild, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt; had a value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;development&lt;/code&gt;. With this information, that’s how my friend and I decided to utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt; to set the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REDIRECT_URI&lt;/code&gt; value.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Pretty much the steps I outlined above for refactoring!&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Refactoring</summary></entry><entry><title type="html">5/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/23/day5.html" rel="alternate" type="text/html" title="5/100 Days of Code" /><published>2022-08-23T15:30:23-07:00</published><updated>2022-08-23T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/23/day5</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/23/day5.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Discord OAuth&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;Finally implemented Discord OAuth into the Paper Trader app!! There is still plenty of work to do in regards to storing and using the Discord user’s information, but that should be a more straightforward process.&lt;/li&gt;
@@ -24,7 +78,7 @@
 &lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Discord OAuth Redirect&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
-  &lt;li&gt;When I initially brought over my Discord OAuth test code, I didn’t update the API token URL for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameter. This led to some confusion as all the configs and URLs I’m interacting was expected to work as there weren’t any changes. However, this &lt;a href=&quot;https://stackoverflow.com/a/70280164&quot;&gt;Stack Overflow&lt;/a&gt; turned up. As such, once I updated the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameter to be the same for both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;authorize&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;token&lt;/code&gt; Discord API routes, my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; requests started to succeed again.&lt;/li&gt;
+  &lt;li&gt;When I initially brought over my Discord OAuth test code, I didn’t update the API token URL for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameter. This led to some confusion as all the configs and URLs I’m interacting with was expected to work as there weren’t any changes. However, this &lt;a href=&quot;https://stackoverflow.com/a/70280164&quot;&gt;Stack Overflow discussion&lt;/a&gt; turned up. As such, once I updated the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameter to be the same for both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;authorize&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;token&lt;/code&gt; Discord API routes, my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; requests started to succeed again.&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;strong&gt;Typescript and CORS&lt;/strong&gt;&lt;/p&gt;
@@ -34,7 +88,7 @@
 
 &lt;p&gt;&lt;strong&gt;dotenv in ES6&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
-  &lt;li&gt;I tried to utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dotenv&lt;/code&gt; like I had in my past &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;express&lt;/code&gt; applications, but in ES6 it’s a little different. Not that big of a difference, but much more consistent with the rest of my module imports.&lt;/li&gt;
+  &lt;li&gt;I tried to utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dotenv&lt;/code&gt; like I had in my past &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;express&lt;/code&gt; applications, but in ES6 it’s a little different.&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// The way I&apos;m used to&lt;/span&gt;

@@ -73,7 +73,7 @@
 <h3 id="learnings">Learnings</h3>
 <p><strong>Discord OAuth Redirect</strong></p>
 <ol>
-  <li>When I initially brought over my Discord OAuth test code, I didn’t update the API token URL for the <code class="language-plaintext highlighter-rouge">redirect_uri</code> parameter. This led to some confusion as all the configs and URLs I’m interacting was expected to work as there weren’t any changes. However, this <a href="https://stackoverflow.com/a/70280164">Stack Overflow</a> turned up. As such, once I updated the <code class="language-plaintext highlighter-rouge">redirect_uri</code> parameter to be the same for both <code class="language-plaintext highlighter-rouge">authorize</code> and <code class="language-plaintext highlighter-rouge">token</code> Discord API routes, my <code class="language-plaintext highlighter-rouge">axios</code> requests started to succeed again.</li>
+  <li>When I initially brought over my Discord OAuth test code, I didn’t update the API token URL for the <code class="language-plaintext highlighter-rouge">redirect_uri</code> parameter. This led to some confusion as all the configs and URLs I’m interacting with was expected to work as there weren’t any changes. However, this <a href="https://stackoverflow.com/a/70280164">Stack Overflow discussion</a> turned up. As such, once I updated the <code class="language-plaintext highlighter-rouge">redirect_uri</code> parameter to be the same for both <code class="language-plaintext highlighter-rouge">authorize</code> and <code class="language-plaintext highlighter-rouge">token</code> Discord API routes, my <code class="language-plaintext highlighter-rouge">axios</code> requests started to succeed again.</li>
 </ol>
 
 <p><strong>Typescript and CORS</strong></p>
@@ -83,7 +83,7 @@
 
 <p><strong>dotenv in ES6</strong></p>
 <ol>
-  <li>I tried to utilize <code class="language-plaintext highlighter-rouge">dotenv</code> like I had in my past <code class="language-plaintext highlighter-rouge">express</code> applications, but in ES6 it’s a little different. Not that big of a difference, but much more consistent with the rest of my module imports.</li>
+  <li>I tried to utilize <code class="language-plaintext highlighter-rouge">dotenv</code> like I had in my past <code class="language-plaintext highlighter-rouge">express</code> applications, but in ES6 it’s a little different.</li>
 </ol>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// The way I'm used to</span>
