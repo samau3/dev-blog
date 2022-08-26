@@ -1,0 +1,67 @@
+---
+layout: post
+title:  "7/100 Days of Code"
+date:   2022-08-25 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**Discord OAuth Refactoring**
+
+Implemented the refactoring goals I set out yesterday, which helped clean up more components so they have better separation of concerns now!
+
+1. Changed my Discord log in "button" to be an actual button.
+    - Using `onClick` to call my `getDiscordOAuthCode` function, which sets the URL to Discord API's OAuth authorization route via `window.location.href`. Originally I tried using `axios`, causing a CORS issue, but trying `window.location.href` worked without any issues. 
+    - Additionally, in `getDiscordOAuthCode`, it encodes the random string that is included as a `state` parameter in the OAuth route and the `redirect_uri` parameter change in #3 below. This is necessary as there are some characters which need to be converted into a UTF-8 representation of the character in order for the URL to be valid. 
+
+2. Completed my incomplete CSRF prevention, so it checks if the local storage token matches the `state` parameter echoed from Discord's OAuth redirect.
+
+3. Updated the `redirect_uri` parameters in the Discord API requests to be dynamically set based on the `NODE_ENV` for server routes:
+
+    {%highlight javascript%}
+    const DISCORD_REDIRECT_URI = process.env.NODE_ENV === "production"
+    ? "https://paper-trader-182a4.web.app/login/discord-redirect"
+    : "http://localhost:3000/login/discord-redirect";
+    {%endhighlight%}
+
+{:start="4"}
+4. Moved configuration variables to a separate `config.ts` file and server related requests to an `Api.tsx` file. 
+    - Now my global constant variables (e.g. `DISCORD_REDIRECT_URI`) are all compiled in place and taken away from the components. This may not be necessary, since so far the components that I moved these values out of are still the only ones that use them. However, it does make the component files more organized if nothing else. 
+    - Since there will be more server requests for different routes once more functionality is added, such as buying stocks, I decided to move all server request functions into a class in a separate file. Here, I can organize all my server requests in one file and components can simply just import the methods as needed. 
+    
+    {%highlight javascript%}
+    import axios from "axios";
+
+    import { BACKEND_BASE_URL } from "./config";
+
+    class PaperTraderApi {
+
+        /** Makes a request to server with Discord OAuth authorization code input
+        * 
+        * Returns: 
+        *  "discord_username"
+        */
+        static async getDiscordUser(code: string) {
+            const discordUserData = await (await axios.get(`${BACKEND_BASE_URL}/login?code=${code}`)).data.user;
+            return discordUserData;
+        }
+    }
+    export default PaperTraderApi;
+    {%endhighlight%}
+
+### Learnings
+1. **String vs string**
+    - While trying to apply a type to an input that was a string, VS Code autocompleted to `String` for me. However when I checked my terminal, it showed a typescript compliation error. Researching this, I found this [Stack Overflow discussion](https://stackoverflow.com/questions/14727044/what-is-the-difference-between-types-string-and-string). Put simply, one shouldn't use the [capitalized types](https://stackoverflow.com/a/62081238) when working with typescript.
+2. **encodeURIComponent vs encodeURI**
+    - While trying to add my generated random string as a the `state` parameter for the Discord OAuth route, there would be errors when once I make the requested with the appended string. I noticed there where mismatched characters in the string and the URL, leading me to this [MDN article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
+    - However when I tried to utilize that in my files, VS Code showed `encodeURIComponent` and `encodeURI`, which brought me to this [Stack Overflow discussion](https://stackoverflow.com/questions/4540753/should-i-use-encodeuri-or-encodeuricomponent-for-encoding-urls). Since my use case was just encoding URL components (i.e. `state` and `redirect_uri`), `encodeURIComponent` was the clear choice.
+3. **Unused `setSearchParams`**
+    - Another small change I noticed was I kept writing `const [searchParams, setSearchParams] = useSearchParams();` in my components out of habit from usiting other React hooks, even though I only needed `searchParams` to extract URL parameters. To try to reduce the number of typescript warnings appearing in my terminal, I tried removing the unused `setSearchParams` from my files and that cleared everything up. Good to know that I don't always have to extract both values returned from React and React Router hooks. 
+4. **Trying to use `outletContext`**
+    - In my refactoring groove, I tried to reduce the number of times I had to extract the `code` parameter in my components via `searchParams.get('code')`. Namely, the parent *Login* component extracts `code` but so does the child component *DiscordRedirect*. Utilizing React Router's `outletContext`, which is similar to React's `Context`, I made the changes. However, I realized the *DiscordRedirect* component had to extract the `state` parameter and it wouldn't make sense for the *Login* component to extract that as well. 
+    - So either way, the child component *DiscordRedirect* would still have to use `searchParams` and the extra code needed to implement `outletContext` would be unnecessary (especially with having to handle the types properly).
+
+### Next Steps
+1. Deploy the Discord OAuth login implementation! 
+2. Start working on how to have the authorized user's token/information persist across the app such that they can access protected routes without having to reauthorize every time.

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>7/100 Days of Code | 100 Days of Code</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="7/100 Days of Code" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Paper Trader Discord OAuth Refactoring" />
+<meta property="og:description" content="Paper Trader Discord OAuth Refactoring" />
+<link rel="canonical" href="http://localhost:4000/dev-blog/100days/2022/08/25/day7.html" />
+<meta property="og:url" content="http://localhost:4000/dev-blog/100days/2022/08/25/day7.html" />
+<meta property="og:site_name" content="100 Days of Code" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-08-25T15:30:23-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="7/100 Days of Code" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-08-25T15:30:23-07:00","datePublished":"2022-08-25T15:30:23-07:00","description":"Paper Trader Discord OAuth Refactoring","headline":"7/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/dev-blog/100days/2022/08/25/day7.html"},"url":"http://localhost:4000/dev-blog/100days/2022/08/25/day7.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/dev-blog/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/dev-blog/feed.xml" title="100 Days of Code" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/dev-blog/">100 Days of Code</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/dev-blog/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">7/100 Days of Code</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-08-25T15:30:23-07:00" itemprop="datePublished">Aug 25, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h3 id="paper-trader">Paper Trader</h3>
+<p><strong>Discord OAuth Refactoring</strong></p>
+
+<p>Implemented the refactoring goals I set out yesterday, which helped clean up more components so they have better separation of concerns now!</p>
+
+<ol>
+  <li>Changed my Discord log in “button” to be an actual button.
+    <ul>
+      <li>Using <code class="language-plaintext highlighter-rouge">onClick</code> to call my <code class="language-plaintext highlighter-rouge">getDiscordOAuthCode</code> function, which sets the URL to Discord API’s OAuth authorization route via <code class="language-plaintext highlighter-rouge">window.location.href</code>. Originally I tried using <code class="language-plaintext highlighter-rouge">axios</code>, causing a CORS issue, but trying <code class="language-plaintext highlighter-rouge">window.location.href</code> worked without any issues.</li>
+      <li>Additionally, in <code class="language-plaintext highlighter-rouge">getDiscordOAuthCode</code>, it encodes the random string that is included as a <code class="language-plaintext highlighter-rouge">state</code> parameter in the OAuth route and the <code class="language-plaintext highlighter-rouge">redirect_uri</code> parameter change in #3 below. This is necessary as there are some characters which need to be converted into a UTF-8 representation of the character in order for the URL to be valid.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Completed my incomplete CSRF prevention, so it checks if the local storage token matches the <code class="language-plaintext highlighter-rouge">state</code> parameter echoed from Discord’s OAuth redirect.</p>
+  </li>
+  <li>Updated the <code class="language-plaintext highlighter-rouge">redirect_uri</code> parameters in the Discord API requests to be dynamically set based on the <code class="language-plaintext highlighter-rouge">NODE_ENV</code> for server routes:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript">    <span class="kd">const</span> <span class="nx">DISCORD_REDIRECT_URI</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">production</span><span class="dl">"</span>
+    <span class="p">?</span> <span class="dl">"</span><span class="s2">https://paper-trader-182a4.web.app/login/discord-redirect</span><span class="dl">"</span>
+    <span class="p">:</span> <span class="dl">"</span><span class="s2">http://localhost:3000/login/discord-redirect</span><span class="dl">"</span><span class="p">;</span>
+    </code></pre></figure>
+
+<ol start="4">
+  <li>Moved configuration variables to a separate <code class="language-plaintext highlighter-rouge">config.ts</code> file and server related requests to an <code class="language-plaintext highlighter-rouge">Api.tsx</code> file.
+    <ul>
+      <li>Now my global constant variables (e.g. <code class="language-plaintext highlighter-rouge">DISCORD_REDIRECT_URI</code>) are all compiled in place and taken away from the components. This may not be necessary, since so far the components that I moved these values out of are still the only ones that use them. However, it does make the component files more organized if nothing else.</li>
+      <li>Since there will be more server requests for different routes once more functionality is added, such as buying stocks, I decided to move all server request functions into a class in a separate file. Here, I can organize all my server requests in one file and components can simply just import the methods as needed.</li>
+    </ul>
+  </li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript">    <span class="k">import</span> <span class="nx">axios</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">axios</span><span class="dl">"</span><span class="p">;</span>
+
+    <span class="k">import</span> <span class="p">{</span> <span class="nx">BACKEND_BASE_URL</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./config</span><span class="dl">"</span><span class="p">;</span>
+
+    <span class="kd">class</span> <span class="nx">PaperTraderApi</span> <span class="p">{</span>
+
+        <span class="cm">/** Makes a request to server with Discord OAuth authorization code input
+        * 
+        * Returns: 
+        *  "discord_username"
+        */</span>
+        <span class="kd">static</span> <span class="k">async</span> <span class="nx">getDiscordUser</span><span class="p">(</span><span class="nx">code</span><span class="p">:</span> <span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">discordUserData</span> <span class="o">=</span> <span class="k">await</span> <span class="p">(</span><span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">BACKEND_BASE_URL</span><span class="p">}</span><span class="s2">/login?code=</span><span class="p">${</span><span class="nx">code</span><span class="p">}</span><span class="s2">`</span><span class="p">)).</span><span class="nx">data</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">discordUserData</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">export</span> <span class="k">default</span> <span class="nx">PaperTraderApi</span><span class="p">;</span>
+    </code></pre></figure>
+
+<h3 id="learnings">Learnings</h3>
+<ol>
+  <li><strong>String vs string</strong>
+    <ul>
+      <li>While trying to apply a type to an input that was a string, VS Code autocompleted to <code class="language-plaintext highlighter-rouge">String</code> for me. However when I checked my terminal, it showed a typescript compliation error. Researching this, I found this <a href="https://stackoverflow.com/questions/14727044/what-is-the-difference-between-types-string-and-string">Stack Overflow discussion</a>. Put simply, one shouldn’t use the <a href="https://stackoverflow.com/a/62081238">capitalized types</a> when working with typescript.</li>
+    </ul>
+  </li>
+  <li><strong>encodeURIComponent vs encodeURI</strong>
+    <ul>
+      <li>While trying to add my generated random string as a the <code class="language-plaintext highlighter-rouge">state</code> parameter for the Discord OAuth route, there would be errors when once I make the requested with the appended string. I noticed there where mismatched characters in the string and the URL, leading me to this <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">MDN article</a>.</li>
+      <li>However when I tried to utilize that in my files, VS Code showed <code class="language-plaintext highlighter-rouge">encodeURIComponent</code> and <code class="language-plaintext highlighter-rouge">encodeURI</code>, which brought me to this <a href="https://stackoverflow.com/questions/4540753/should-i-use-encodeuri-or-encodeuricomponent-for-encoding-urls">Stack Overflow discussion</a>. Since my use case was just encoding URL components (i.e. <code class="language-plaintext highlighter-rouge">state</code> and <code class="language-plaintext highlighter-rouge">redirect_uri</code>), <code class="language-plaintext highlighter-rouge">encodeURIComponent</code> was the clear choice.</li>
+    </ul>
+  </li>
+  <li><strong>Unused <code class="language-plaintext highlighter-rouge">setSearchParams</code></strong>
+    <ul>
+      <li>Another small change I noticed was I kept writing <code class="language-plaintext highlighter-rouge">const [searchParams, setSearchParams] = useSearchParams();</code> in my components out of habit from usiting other React hooks, even though I only needed <code class="language-plaintext highlighter-rouge">searchParams</code> to extract URL parameters. To try to reduce the number of typescript warnings appearing in my terminal, I tried removing the unused <code class="language-plaintext highlighter-rouge">setSearchParams</code> from my files and that cleared everything up. Good to know that I don’t always have to extract both values returned from React and React Router hooks.</li>
+    </ul>
+  </li>
+  <li><strong>Trying to use <code class="language-plaintext highlighter-rouge">outletContext</code></strong>
+    <ul>
+      <li>In my refactoring groove, I tried to reduce the number of times I had to extract the <code class="language-plaintext highlighter-rouge">code</code> parameter in my components via <code class="language-plaintext highlighter-rouge">searchParams.get('code')</code>. Namely, the parent <em>Login</em> component extracts <code class="language-plaintext highlighter-rouge">code</code> but so does the child component <em>DiscordRedirect</em>. Utilizing React Router’s <code class="language-plaintext highlighter-rouge">outletContext</code>, which is similar to React’s <code class="language-plaintext highlighter-rouge">Context</code>, I made the changes. However, I realized the <em>DiscordRedirect</em> component had to extract the <code class="language-plaintext highlighter-rouge">state</code> parameter and it wouldn’t make sense for the <em>Login</em> component to extract that as well.</li>
+      <li>So either way, the child component <em>DiscordRedirect</em> would still have to use <code class="language-plaintext highlighter-rouge">searchParams</code> and the extra code needed to implement <code class="language-plaintext highlighter-rouge">outletContext</code> would be unnecessary (especially with having to handle the types properly).</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="next-steps">Next Steps</h3>
+<ol>
+  <li>Deploy the Discord OAuth login implementation!</li>
+  <li>Start working on how to have the authorized user’s token/information persist across the app such that they can access protected routes without having to reauthorize every time.</li>
+</ol>
+
+  </div>
+
+  <a class="u-url" href="/dev-blog/100days/2022/08/25/day7.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/dev-blog/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">100 Days of Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">100 Days of Code</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/samau3"><svg class="svg-icon"><use xlink:href="/dev-blog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">samau3</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Sammy Au&#39;s 100 Days of Code</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
