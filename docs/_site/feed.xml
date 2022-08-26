@@ -1,4 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-24T23:32:19-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">6/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/24/day6.html" rel="alternate" type="text/html" title="6/100 Days of Code" /><published>2022-08-24T15:30:23-07:00</published><updated>2022-08-24T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/24/day6</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/24/day6.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-25T23:29:47-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">7/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/25/day7.html" rel="alternate" type="text/html" title="7/100 Days of Code" /><published>2022-08-25T15:30:23-07:00</published><updated>2022-08-25T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/25/day7</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/25/day7.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Discord OAuth Refactoring&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Implemented the refactoring goals I set out yesterday, which helped clean up more components so they have better separation of concerns now!&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Changed my Discord log in “button” to be an actual button.
+    &lt;ul&gt;
+      &lt;li&gt;Using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;onClick&lt;/code&gt; to call my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getDiscordOAuthCode&lt;/code&gt; function, which sets the URL to Discord API’s OAuth authorization route via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;window.location.href&lt;/code&gt;. Originally I tried using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt;, causing a CORS issue, but trying &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;window.location.href&lt;/code&gt; worked without any issues.&lt;/li&gt;
+      &lt;li&gt;Additionally, in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getDiscordOAuthCode&lt;/code&gt;, it encodes the random string that is included as a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter in the OAuth route and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameter change in #3 below. This is necessary as there are some characters which need to be converted into a UTF-8 representation of the character in order for the URL to be valid.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Completed my incomplete CSRF prevention, so it checks if the local storage token matches the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter echoed from Discord’s OAuth redirect.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Updated the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameters in the Discord API requests to be dynamically set based on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt; for server routes:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;DISCORD_REDIRECT_URI&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NODE_ENV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;production&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;https://paper-trader-182a4.web.app/login/discord-redirect&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;http://localhost:3000/login/discord-redirect&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ol start=&quot;4&quot;&gt;
+  &lt;li&gt;Moved configuration variables to a separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config.ts&lt;/code&gt; file and server related requests to an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Api.tsx&lt;/code&gt; file.
+    &lt;ul&gt;
+      &lt;li&gt;Now my global constant variables (e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DISCORD_REDIRECT_URI&lt;/code&gt;) are all compiled in place and taken away from the components. This may not be necessary, since so far the components that I moved these values out of are still the only ones that use them. However, it does make the component files more organized if nothing else.&lt;/li&gt;
+      &lt;li&gt;Since there will be more server requests for different routes once more functionality is added, such as buying stocks, I decided to move all server request functions into a class in a separate file. Here, I can organize all my server requests in one file and components can simply just import the methods as needed.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;    &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axios&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;axios&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;BACKEND_BASE_URL&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./config&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PaperTraderApi&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;cm&quot;&gt;/** Makes a request to server with Discord OAuth authorization code input
+        * 
+        * Returns: 
+        *  &quot;discord_username&quot;
+        */&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getDiscordUser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;discordUserData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axios&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;BACKEND_BASE_URL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/login?code=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;discordUserData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PaperTraderApi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;String vs string&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;While trying to apply a type to an input that was a string, VS Code autocompleted to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt; for me. However when I checked my terminal, it showed a typescript compliation error. Researching this, I found this &lt;a href=&quot;https://stackoverflow.com/questions/14727044/what-is-the-difference-between-types-string-and-string&quot;&gt;Stack Overflow discussion&lt;/a&gt;. Put simply, one shouldn’t use the &lt;a href=&quot;https://stackoverflow.com/a/62081238&quot;&gt;capitalized types&lt;/a&gt; when working with typescript.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;encodeURIComponent vs encodeURI&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;While trying to add my generated random string as a the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter for the Discord OAuth route, there would be errors when once I make the requested with the appended string. I noticed there where mismatched characters in the string and the URL, leading me to this &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent&quot;&gt;MDN article&lt;/a&gt;.&lt;/li&gt;
+      &lt;li&gt;However when I tried to utilize that in my files, VS Code showed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;encodeURIComponent&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;encodeURI&lt;/code&gt;, which brought me to this &lt;a href=&quot;https://stackoverflow.com/questions/4540753/should-i-use-encodeuri-or-encodeuricomponent-for-encoding-urls&quot;&gt;Stack Overflow discussion&lt;/a&gt;. Since my use case was just encoding URL components (i.e. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt;), &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;encodeURIComponent&lt;/code&gt; was the clear choice.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Unused &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setSearchParams&lt;/code&gt;&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Another small change I noticed was I kept writing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const [searchParams, setSearchParams] = useSearchParams();&lt;/code&gt; in my components out of habit from usiting other React hooks, even though I only needed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;searchParams&lt;/code&gt; to extract URL parameters. To try to reduce the number of typescript warnings appearing in my terminal, I tried removing the unused &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setSearchParams&lt;/code&gt; from my files and that cleared everything up. Good to know that I don’t always have to extract both values returned from React and React Router hooks.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Trying to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;outletContext&lt;/code&gt;&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;In my refactoring groove, I tried to reduce the number of times I had to extract the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;code&lt;/code&gt; parameter in my components via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;searchParams.get(&apos;code&apos;)&lt;/code&gt;. Namely, the parent &lt;em&gt;Login&lt;/em&gt; component extracts &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;code&lt;/code&gt; but so does the child component &lt;em&gt;DiscordRedirect&lt;/em&gt;. Utilizing React Router’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;outletContext&lt;/code&gt;, which is similar to React’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;, I made the changes. However, I realized the &lt;em&gt;DiscordRedirect&lt;/em&gt; component had to extract the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter and it wouldn’t make sense for the &lt;em&gt;Login&lt;/em&gt; component to extract that as well.&lt;/li&gt;
+      &lt;li&gt;So either way, the child component &lt;em&gt;DiscordRedirect&lt;/em&gt; would still have to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;searchParams&lt;/code&gt; and the extra code needed to implement &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;outletContext&lt;/code&gt; would be unnecessary (especially with having to handle the types properly).&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Deploy the Discord OAuth login implementation!&lt;/li&gt;
+  &lt;li&gt;Start working on how to have the authorized user’s token/information persist across the app such that they can access protected routes without having to reauthorize every time.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Refactoring</summary></entry><entry><title type="html">6/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/24/day6.html" rel="alternate" type="text/html" title="6/100 Days of Code" /><published>2022-08-24T15:30:23-07:00</published><updated>2022-08-24T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/24/day6</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/24/day6.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Discord OAuth Refactoring&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Not much code was written today, but a lot of time was spent planning about how to refactor things and what the next necessary features I plan to work on will be. After discussing with a more experienced SWE friend, the changes I’ll need to make are:&lt;/p&gt;
