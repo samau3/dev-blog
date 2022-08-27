@@ -9,17 +9,17 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Paper Trader Discord OAuth Worked through the example code from the Discord OAuth guide, and may have found what I needed to implement in my Paper Trader app. In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to display to Discord OAuth for users to authorize the application access. After a user authorizes application access, they’re redirected to the original page and triggers the fetch() API call (this was previously not reached due to the return statement that changes the link display style). In this fetch() call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to fetch() API not doing that automatically)" />
 <meta property="og:description" content="Paper Trader Discord OAuth Worked through the example code from the Discord OAuth guide, and may have found what I needed to implement in my Paper Trader app. In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to display to Discord OAuth for users to authorize the application access. After a user authorizes application access, they’re redirected to the original page and triggers the fetch() API call (this was previously not reached due to the return statement that changes the link display style). In this fetch() call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to fetch() API not doing that automatically)" />
-<link rel="canonical" href="samau3.github.io/dev-blog/100days/2022/08/20/day2.html" />
-<meta property="og:url" content="samau3.github.io/dev-blog/100days/2022/08/20/day2.html" />
+<link rel="canonical" href="http://localhost:4000/dev-blog/100days/2022/08/20/day2.html" />
+<meta property="og:url" content="http://localhost:4000/dev-blog/100days/2022/08/20/day2.html" />
 <meta property="og:site_name" content="100 Days of Code" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2022-08-20T15:30:23-07:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="2/100 Days of Code" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-08-20T15:30:23-07:00","datePublished":"2022-08-20T15:30:23-07:00","description":"Paper Trader Discord OAuth Worked through the example code from the Discord OAuth guide, and may have found what I needed to implement in my Paper Trader app. In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to display to Discord OAuth for users to authorize the application access. After a user authorizes application access, they’re redirected to the original page and triggers the fetch() API call (this was previously not reached due to the return statement that changes the link display style). In this fetch() call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to fetch() API not doing that automatically)","headline":"2/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"samau3.github.io/dev-blog/100days/2022/08/20/day2.html"},"url":"samau3.github.io/dev-blog/100days/2022/08/20/day2.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-08-20T15:30:23-07:00","datePublished":"2022-08-20T15:30:23-07:00","description":"Paper Trader Discord OAuth Worked through the example code from the Discord OAuth guide, and may have found what I needed to implement in my Paper Trader app. In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to display to Discord OAuth for users to authorize the application access. After a user authorizes application access, they’re redirected to the original page and triggers the fetch() API call (this was previously not reached due to the return statement that changes the link display style). In this fetch() call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to fetch() API not doing that automatically)","headline":"2/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/dev-blog/100days/2022/08/20/day2.html"},"url":"http://localhost:4000/dev-blog/100days/2022/08/20/day2.html"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/dev-blog/assets/main.css"><link type="application/atom+xml" rel="alternate" href="samau3.github.io/dev-blog/feed.xml" title="100 Days of Code" /></head>
+<link rel="stylesheet" href="/dev-blog/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/dev-blog/feed.xml" title="100 Days of Code" /></head>
 <body><header class="site-header" role="banner">
 
   <div class="wrapper"><a class="site-title" rel="author" href="/dev-blog/">100 Days of Code</a><nav class="site-nav">
@@ -122,24 +122,7 @@
   </div>
 
   <a class="u-url" href="/dev-blog/100days/2022/08/20/day2.html" hidden></a>
-</article><div id="disqus_thread"></div>
-<script>
-  var disqus_config = function () {
-    this.page.url = 'samau3.github.io/dev-blog/100days/2022/08/20/day2.html';
-    this.page.identifier = 'samau3.github.io/dev-blog/100days/2022/08/20/day2.html';
-  };
-
-  (function () {
-    var d = document, s = d.createElement('script');
-
-    s.src = 'https://samau3-github-io-dev-blog.disqus.com/embed.js';
-
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
-    powered by Disqus.</a></noscript>
+</article>
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/dev-blog/"></data>
