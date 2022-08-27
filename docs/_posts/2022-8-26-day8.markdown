@@ -1,0 +1,29 @@
+---
+layout: post
+title:  "8/100 Days of Code"
+date:   2022-08-26 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**Discord OAuth Refactoring**
+
+More refactoring!
+
+1. In my useEffect hooks, I was calling functions inside of them. My friend suggested moving them out of the hook but in doing so, I can't simply include the functions in the dependency array. 
+    - `The 'validateUser' function makes the dependencies of useEffect Hook (at line 58) change on every render. Move it inside the useEffect callback. Alternatively, wrap the definition of 'validateUser' in its own useCallback() Hook.`
+    - This is due to the factor ever time the component is rendered, the function `validateUser` would have a new reference, causing the `useEffect` hook to constantly render as it would treat `validateUser` as having changed. By wrapping `validateUser` in a `useCallback` hook, this returns a memoized function giving a stable reference to use in the dependency array of `useEffect`
+
+### React Portfolio
+1. While waiting for my friend to do a code review, I started to look into upgrading my personal website to utilize React. Below is a short collection of React websites I saw for inspiration that range from simple to *how*:
+    - [http://jessicaazchen.com/](http://jessicaazchen.com/)
+    - [https://alisapoon.herokuapp.com/](https://alisapoon.herokuapp.com/)
+    - [https://kulbachny.com/](https://kulbachny.com/)
+
+### Learnings
+1. **React Router and External Links**
+    - Although it is possible to create a `Link` component that goes to an external link, React Router is designed for in-application navigation. Therefore, in situations that an external URL needs to be accessed, a normal anchor tag or `window.location` is [probably](https://stackoverflow.com/questions/42914666/react-router-external-link) the way to go.
+
+### Next Steps
+1. Deploy the Discord OAuth login implementation (actually)!
