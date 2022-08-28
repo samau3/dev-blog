@@ -1,0 +1,48 @@
+---
+layout: post
+title:  "9/100 Days of Code"
+date:   2022-08-27 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**Discord OAuth Refactoring**
+
+More refactoring again!
+
+1. Taking another look at my `useCallback` and `useEffect` hooks, I started to wonder if separating the function calls inside `useEffect` was really necessary.
+    - I looked into Stack Overflow discussions for [`useEffect` vs `useCallback`](https://stackoverflow.com/questions/68172724/usecallback-vs-useeffect-in-react) and [when to use `useCallback`](https://stackoverflow.com/questions/57156582/should-i-wrap-all-functions-that-defined-in-component-in-usecallback).
+    - My functions were unlikely to be reused elsewhere and they are only meant to be ran one time, which is on component mounting. Therefore, my situation doesn't really need to utilize `useCallback` and I can keep my functions defined within the `useEffect` hooks. However, I did decide to move my `generateRandomString` function out into my `Api` file as that doesn't need to stay inside the `App` component. Before, my `useEffect` hook did look busier than necessary, but now looks much cleaner.
+    
+    {%highlight javascript%}
+    //Api.ts
+    class PaperTraderApi {
+
+    static generateRandomString() {
+        let randomString = '';
+        const randomNumber = Math.floor(Math.random() * 10);
+
+        for (let i = 0; i < 20 + randomNumber; i++) {
+            randomString += String.fromCharCode(33 + Math.floor(Math.random() * 94));
+        }
+        return randomString;
+    }
+    // export PaperTraderApi
+
+    //App.tsx
+    // import PaperTraderApi
+    useEffect(function storeCsrfTokenOnChange() {
+        if (localStorage['token'] === undefined) {
+            const randomString = PaperTraderApi.generateRandomString();
+            localStorage.setItem('token', randomString);
+            setCsrfToken(randomString);
+            console.log('inside effect:', csrfToken)
+        }
+    }, [csrfToken]);
+    {%endhighlight%}
+
+
+### Next Steps
+1. Deploy the Discord OAuth login implementation (actually...?)!
+2. Next post will likely be a retro on how this sprint went
