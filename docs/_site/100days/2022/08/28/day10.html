@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>10/100 Days of Code | 100 Days of Code</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="10/100 Days of Code" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Paper Trader Discord OAuth Refactoring" />
+<meta property="og:description" content="Paper Trader Discord OAuth Refactoring" />
+<link rel="canonical" href="http://localhost:4000/dev-blog/100days/2022/08/28/day10.html" />
+<meta property="og:url" content="http://localhost:4000/dev-blog/100days/2022/08/28/day10.html" />
+<meta property="og:site_name" content="100 Days of Code" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-08-28T15:30:23-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="10/100 Days of Code" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-08-28T15:30:23-07:00","datePublished":"2022-08-28T15:30:23-07:00","description":"Paper Trader Discord OAuth Refactoring","headline":"10/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/dev-blog/100days/2022/08/28/day10.html"},"url":"http://localhost:4000/dev-blog/100days/2022/08/28/day10.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/dev-blog/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/dev-blog/feed.xml" title="100 Days of Code" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/dev-blog/">100 Days of Code</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/dev-blog/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">10/100 Days of Code</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-08-28T15:30:23-07:00" itemprop="datePublished">Aug 28, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h3 id="paper-trader">Paper Trader</h3>
+<p><strong>Discord OAuth Refactoring</strong></p>
+
+<ol>
+  <li>Unnecessary state
+    <ul>
+      <li>Following up on the discussion on useCallback and useEffect, my friend wondered if the dependency on <code class="language-plaintext highlighter-rouge">csrfToken</code> was necessary. Currently, the <code class="language-plaintext highlighter-rouge">App</code> component generates a string and stores it in localStorage, which the <code class="language-plaintext highlighter-rouge">DiscordRedirect</code> component checks to validate with Discord OAuth’s echoed <code class="language-plaintext highlighter-rouge">state</code> parameter. Throughout this whole process, only the string in localStorage is being interacted with.</li>
+      <li>This brings to question the necessity of having <code class="language-plaintext highlighter-rouge">csrfToken</code> be a state in the <code class="language-plaintext highlighter-rouge">App</code> component. The state is not being changed or utilized, so to reduce unnecessary complexity, I removed the csrfToken state in the component and just had all relevant components just rely on localStorage.</li>
+      <li>When I start adding user sessions, I’ll revisit what states and tokens are needed, but with the way things are currently, this use of state is not needed.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="retrospective-on-the-discord-oauth-implementation">Retrospective on the Discord OAuth Implementation</h3>
+
+<ol>
+  <li><strong>Researching and Planning vs Jumping In</strong>
+    <ul>
+      <li>When I initially set out to implement the Discord OAuth flow for logging in, I skimmed the documentation and jumped to using their <strong>Authorization Code Grant</strong> flow. This led to constant back and forth of checking the documentation, writing code, encountering an error, checking the documentation again, then deleting the code I wrote. After spending a frustrating few hours of wondering why it wasn’t working, I decided to sit down and read through the documentation and the example that I was trying to follow. In doing so, I realized that what I was doing was only half of what I needed, and the first half of the documentation going over <strong>Implicit Grant</strong> flow had information and code that I also needed for <strong>Authorization Code Grant</strong> flow to work (<a href="https://samau3.github.io/dev-blog/100days/2022/08/19/day1.html">discussed on Day 1</a>).</li>
+      <li>There are times when just jumping around the documentation and picking out code chunks that you need will work. However, this didn’t work for me this time was because it was a new process I never worked with before. The lesson here is to implement documentation examples whenever working with something new. Also, differentiating between entire processes (OAuth flow) and just one function (a <code class="language-plaintext highlighter-rouge">ChartJS</code> component or an <code class="language-plaintext highlighter-rouge">axios</code> request) will help decide how through the documentation should be read before starting.</li>
+    </ul>
+    <p align="center">
+     <img src="https://i.redd.it/2z08tsdqms011.jpg" alt="Read documentation for a few minutes or read Stack Overflow for 2 hours" width="50%" />
+     <br />
+     <a href="https://www.reddit.com/r/ProgrammerHumor/comments/8myx9u/docs/">
+     Source
+     </a>
+ </p>
+  </li>
+  <li><strong>Getting things done vs preparing for future features</strong>
+    <ul>
+      <li>This one is pretty straightforward if one codes with reusability and separation of concerns in mind. However, when focused on just making sure things work to begin with, that’s when it gets unclear. While I was working on making components and routes for the Discord OAuth, I found myself not writing code and trying to plan around how to make sure my code isn’t too messy. However, without a clear idea of how it should work yet this led to going in circles about how to write something.</li>
+      <li>This led me to my process of making sure it all works and then refactor to clean up my functions and moving variables out into different files. However, since I knew I had to make those changes as I was writing my code, I made it easy to pull out and separate those pieces of code. As I gain more experience reading others’ code and how to write different functions, this process will come more quickly as I can see how things should be broken down earlier. I had a glimpse of that, but given my long refactoring process, there is still plenty to learn and work towards.</li>
+      <li>As I continue with this project, I imagine the refactoring process will go smoother, not necessarily faster. Especially since I have more code to refer back to on how to approach something along with my old projects. I’ll be keeping an eye on my refactoring process throughout <a href="https://samau3.github.io/dev-blog/">this journey</a>.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="next-steps">Next Steps</h3>
+<ol>
+  <li>Continue on with the roadmap for features to add (e.g. buy/sell stock, portfolio data, user sessions), with user session and route authorization being the next features to build on and utilize the Discord authorization.</li>
+  <li>However, the next major step will be finding a new service to host the backend server
+    <ul>
+      <li>Currently the app uses Heroku, but with the recent announcement that Heroku is getting rid of their free tier, I need to start looking for a replacement before expanding my backend further</li>
+      <li>At the moment, <a href="https://fly.io/docs/about/pricing/#free-allowances">Fly.io</a> and <a href="https://render.com/docs/free">Render</a> are looking like the next best replacement for what I wanted Heroku to do, namely hosting server and a PostgreSQL database.
+        <ul>
+          <li>Unfortunately, Render PostgreSQL databases are automatically deleted after 90 Days for free plans. Therefore, Fly.io is likely the service I’ll go with (pending further research into its documentation).</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+  </div>
+
+  <a class="u-url" href="/dev-blog/100days/2022/08/28/day10.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/dev-blog/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">100 Days of Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">100 Days of Code</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/samau3"><svg class="svg-icon"><use xlink:href="/dev-blog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">samau3</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Sammy Au&#39;s 100 Days of Code</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
