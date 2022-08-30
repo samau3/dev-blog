@@ -1,0 +1,31 @@
+---
+layout: post
+title:  "11/100 Days of Code"
+date:   2022-08-29 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**Fly.io Deployment**
+
+1. Deployed server on Fly.io 
+    - Following the docs, it was a pretty straightforward process. They even have a [speedrun guide](https://fly.io/docs/speedrun/) for deploying!
+    - In addition, I got a PostgreSQL set up and connected to the server as part of the deployment process. 
+    - Given how quickly I was able to get the server deployed on Fly.io, I decided to also add CI/CD via Github actions, but to be determined if that works properly since it'll only trigger when merges are made to the `main` branch
+    - So far, very happy with my experience with Fly.io. Though, as I start expanding the backend, add more environmental variable, and actually utilize the database, my opinion may change. 
+
+**Adding User Sessions**
+
+1. Utilizing JWTs
+    - Plan is to sign username and return a JWT after getting the user's username from Discord OAuth flow. 
+    - At the moment, I am having difficulty properly handling the JWT on the frontend
+        - Originally I used the regular `jsonwebtoken` npm package but that caused tons of errors. Leading my to switch to `react-jwt` per this [recommendation](https://stackoverflow.com/a/72571060). 
+        - However, this led to typing issues with my JWT decoding, where `decodeToken` from `react-jwt` was returning type `unkown`. Following [this discussion](https://stackoverflow.com/a/61201393), I made an interface for my token.
+        - Unfortunately, now I have an error with the object returned from `decodeToken` possibly being type `null`. 
+            - This is likely due to the possibility of user authorization from Discord failing before getting a valid signed JWT from the server. 
+            - I'll spend some more time trying to see if adding more validations before preparing the JWT will resolve this typing issue. If not, I'll take a look at the other JWT packages [mentioned here](https://stackoverflow.com/a/70856437) to see if I have better luck debugging the type issues.
+
+
+### Next Steps
+1. Continue to work on implementing user session
