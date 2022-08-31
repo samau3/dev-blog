@@ -100,7 +100,7 @@
       <li>
         <p>So, I tried accessing the <code class="language-plaintext highlighter-rouge">process.env.PUBLIC_URL</code> in a local build being served on my browser.</p>
 
-        <p><img src="../../../../images/20220824envvars.png" alt="Node environment variables" /></p>
+        <p><img src="../../../../images/20220824/envvars.png" alt="Node environment variables" /></p>
       </li>
       <li>
         <p>Although I expected the <code class="language-plaintext highlighter-rouge">PUBLIC_URL</code> value to be the location that was loading my build, I saw the <code class="language-plaintext highlighter-rouge">NODE_ENV</code> had a value of <code class="language-plaintext highlighter-rouge">production</code>. Comparing this to my <code class="language-plaintext highlighter-rouge">localhost</code> development build, <code class="language-plaintext highlighter-rouge">NODE_ENV</code> had a value of <code class="language-plaintext highlighter-rouge">development</code>. With this information, that’s how my friend and I decided to utilize <code class="language-plaintext highlighter-rouge">NODE_ENV</code> to set the <code class="language-plaintext highlighter-rouge">REDIRECT_URI</code> value.</p>

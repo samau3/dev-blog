@@ -1,4 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-29T21:53:31-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">11/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/29/day11.html" rel="alternate" type="text/html" title="11/100 Days of Code" /><published>2022-08-29T15:30:23-07:00</published><updated>2022-08-29T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/29/day11</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/29/day11.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-30T22:38:34-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">12/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/30/day12.html" rel="alternate" type="text/html" title="12/100 Days of Code" /><published>2022-08-30T15:30:23-07:00</published><updated>2022-08-30T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/30/day12</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/30/day12.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Fly.io CI/CD&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Yesterday, I added a Github Action that allowed for automatic build and deployment to Fly.io once the main branch receives a merge request. However, this build and redeploy doesn’t happen when there’s a pull request, which means that there could be deployment issues that won’t be caught until it hits production environment.&lt;/li&gt;
+  &lt;li&gt;To prevent this problem, I added a new Github Action that builds and deploys on pull request. Luckily there was an existing &lt;a href=&quot;https://github.com/superfly/fly-pr-review-apps&quot;&gt;Github Action&lt;/a&gt; that I could utilize. Implementing this required more work than I initially anticipated though:
+    &lt;ul&gt;
+      &lt;li&gt;When trying to install the action from Github Marketplace, it didn’t offer the customization that I needed:
+ &lt;img src=&quot;../../../../images/20220830/PRflyactionmarket.png&quot; alt=&quot;PR Review Apps on fly.io action on Github Marketplace&quot; /&gt;&lt;/li&gt;
+      &lt;li&gt;Then when I manually try to add the action by creating a new workflow on Github, it creates it on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; branch and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.yml&lt;/code&gt; syntax still isn’t all complete:
+ &lt;img src=&quot;../../../../images/20220830/PRflyaction.png&quot; alt=&quot;PR Review Apps on fly.io action via new workflow&quot; /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;This led me to utilize the basic example from the &lt;a href=&quot;https://github.com/superfly/fly-pr-review-apps&quot;&gt;Github repository&lt;/a&gt; for the action, but that also had issues:
+    &lt;ul&gt;
+      &lt;li&gt;The name of the action is outdated, being called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;brentd/fly-staging-app@v1&lt;/code&gt;, which left me confused about how the this action is utilized in the example. I checked if others had this issue by checking the Issues and Pull Requests tabs, and found that there’s already an open PR regarding this issue. Hopefully it gets accepted and merged. 
+ &lt;img src=&quot;../../../../images/20220830/PRflyactionmarketPR.png&quot; alt=&quot;Open PR for this action&quot; /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;After adjusting the example and customizing my options, I tried to utilize the action but encountered a few errors:
+    &lt;ul&gt;
+      &lt;li&gt;Without a name for the app, the action is supposed to set one based on the default option &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Defaults to pr-{number}-{repo_org}-{repo_name}.&lt;/code&gt; However, I got &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pr-{number}-null-null&lt;/code&gt;, and there is an &lt;a href=&quot;https://github.com/superfly/fly-pr-review-apps/issues/10&quot;&gt;open issue&lt;/a&gt; about it at the time of writing this.&lt;/li&gt;
+      &lt;li&gt;Another issue is that the action had another error log related to having two active apps in an organization as I was building a temporary app in the same organization as the production app.
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ...
+  Error failed to get app: Could not find App &quot;paper-trader-pr15&quot;
+  ...
+  Error To create more than 2 apps please add a payment method. https://fly.io/dashboard/paper-trader/billing
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;To fix the naming issue, I decided to just give it a name following the repo instructions of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;myapp-pr-$&lt;/code&gt;. For the 2 apps issue, I created a new organization in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly.io&lt;/code&gt; account and had the action create the temporary build deploy there by updating the action environment variable to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;env: FLY_ORG: paper-trader-test&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;After that, the build and deploy on PR worked! But another feature of this action was not working properly - when the PR is closed, the action destroys the fly app and removes the github environment. Unfortunately, the Github environments are not being removed.
+    &lt;ul&gt;
+      &lt;li&gt;Looking up the error, there was this &lt;a href=&quot;https://github.com/actions/first-interaction/issues/10&quot;&gt;issue&lt;/a&gt; and the discussion mentioned it happens when there are permission issues.
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  Error: Resource not accessible by integration
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Then I remembered a comment in the action that handles deleting Github environments…
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  name: Clean up GitHub environment
+  uses: strumwolf/delete-deployment-environment@v2
+  if: $
+  with:
+    # ⚠️ The provided token needs permission for admin write:org
+    token: $
+    environment: pr-$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;So I created a new token that does have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;admin write:org&lt;/code&gt; permissions!&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Unfortunately, after getting passed the permissions error, a new one popped up
+    &lt;ul&gt;
+      &lt;li&gt;This one appears to be related to the wrong naming convention for the environments? I will have to do more digging into it tomorrow. If I’m unable to find a solution I’ll probably remove the action that cleans up Github environments and just manually delete them to move on for now.
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  deactivating deployments in environment pr-16
+  Error: Not Found
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Adding User Sessions&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Most of my day was spent trying to figure out the Github actions, but did briefly jump back to my JWT issue. Latching on to my assumption from yesteday about Discord authorization failing so no token it returned, a quick solution was to only utilize the JWT object if it’s valid.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;decodedToken&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;decodeToken&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// decodeToken is a function from react-jwt&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;username&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;decodedToken&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;decodedToken&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;username&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Invalid&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Spend a little more time with the Github action, then go back to working on user session&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Fly.io CI/CD</summary></entry><entry><title type="html">11/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/29/day11.html" rel="alternate" type="text/html" title="11/100 Days of Code" /><published>2022-08-29T15:30:23-07:00</published><updated>2022-08-29T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/29/day11</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/29/day11.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Fly.io Deployment&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ol&gt;
@@ -303,7 +378,7 @@
       &lt;li&gt;
         &lt;p&gt;So, I tried accessing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;process.env.PUBLIC_URL&lt;/code&gt; in a local build being served on my browser.&lt;/p&gt;
 
-        &lt;p&gt;&lt;img src=&quot;../../../../images/20220824envvars.png&quot; alt=&quot;Node environment variables&quot; /&gt;&lt;/p&gt;
+        &lt;p&gt;&lt;img src=&quot;../../../../images/20220824/envvars.png&quot; alt=&quot;Node environment variables&quot; /&gt;&lt;/p&gt;
       &lt;/li&gt;
       &lt;li&gt;
         &lt;p&gt;Although I expected the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PUBLIC_URL&lt;/code&gt; value to be the location that was loading my build, I saw the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt; had a value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;production&lt;/code&gt;. Comparing this to my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localhost&lt;/code&gt; development build, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt; had a value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;development&lt;/code&gt;. With this information, that’s how my friend and I decided to utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt; to set the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REDIRECT_URI&lt;/code&gt; value.&lt;/p&gt;
@@ -321,7 +396,7 @@
   &lt;li&gt;Finally implemented Discord OAuth into the Paper Trader app!! There is still plenty of work to do in regards to storing and using the Discord user’s information, but that should be a more straightforward process.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;../../../../images/20220823discord-redirect.gif&quot; alt=&quot;Discord OAuth Redirect&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../../images/20220823/discord-redirect.gif&quot; alt=&quot;Discord OAuth Redirect&quot; /&gt;&lt;/p&gt;
 
 &lt;ol start=&quot;2&quot;&gt;
   &lt;li&gt;
@@ -375,7 +450,7 @@
   &lt;li&gt;Currently testing out a new React router hook, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useSearchParams&lt;/code&gt; which will be very helpful for the next step when sending a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;POST&lt;/code&gt; request to the Discord API. Not sure yet if I’ll have the Discord redirect to a new route which will call post to the Discord API, or include it in the Home page &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt;.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;../../../../images/20220822discord-redirect.gif&quot; alt=&quot;Discord OAuth Redirect&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../../images/20220822/discord-redirect.gif&quot; alt=&quot;Discord OAuth Redirect&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;learningsthoughts&quot;&gt;Learnings/Thoughts&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Axios Post Request&lt;/strong&gt;&lt;/p&gt;
@@ -437,74 +512,4 @@
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;I now have a working understanding of what needs to be done to implement the Discord OAuth API in the Paper Trader app! With a few more tweaks once I bring it over (namely storing the authorization tokens and implementing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useContext&lt;/code&gt; React hook), I will have a functioning user authentication and authorization system.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth I was able to properly send the authorized request to access a Discord user’s information, however it was done with hardcoded Axios post request (based on this Stackoverflow discussion).</summary></entry><entry><title type="html">2/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/20/day2.html" rel="alternate" type="text/html" title="2/100 Days of Code" /><published>2022-08-20T15:30:23-07:00</published><updated>2022-08-20T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/20/day2</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/20/day2.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Discord OAuth&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Worked through the example code from the &lt;a href=&quot;https://discordjs.guide/oauth2/#a-quick-example&quot;&gt;Discord OAuth guide&lt;/a&gt;, and may have found what I needed to implement in my Paper Trader app.
-    &lt;ul&gt;
-      &lt;li&gt;In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;display&lt;/code&gt; to Discord OAuth for users to authorize the application access. After a user authorizes application access, they’re redirected to the original page and triggers the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fetch()&lt;/code&gt; API call (this was previously not reached due to the return statement that changes the link display style). In this &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fetch()&lt;/code&gt; call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fetch()&lt;/code&gt; API not doing that automatically)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;info&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Hi!&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- the display style will get changed if no access token exists in the URL --&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- (i.e. not accessing this page via discord oauth redirect) --&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;login&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;style=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;display: none;&quot;&lt;/span&gt; 
-    &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;discord-oauth-url&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    Identify Yourself
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;generateRandomString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;//...&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;randomString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-
-&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// window.location represents the URL location the object is linked to, &lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// in this case it will pull the URL of the website we&apos;re on&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fragment&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;URLSearchParams&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;accessToken&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tokenType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fragment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;access_token&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; 
-                                             &lt;span class=&quot;nx&quot;&gt;fragment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;token_type&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-                                             &lt;span class=&quot;nx&quot;&gt;fragment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)];&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;accessToken&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;randomString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;generateRandomString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;localStorage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;setItem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;oauth-state&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;randomString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;// a quick and simple way to prevent CSRF attacks by appending a &lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// random string that represents the state of the application&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;login&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;href&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`&amp;amp;state=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;btoa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;randomString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;login&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;localStorage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getItem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;oauth-state&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;atob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;decodeURIComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;You may have been clickjacked!&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// note the below fetch call isn&apos;t reached on initial loading of the page as &lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// !accessToken returns, so it&apos;s only called after the redirect and if&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// there&apos;s a valid application state&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// accesses the user&apos;s information from the discord API to pull necessary&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// identification info&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://discord.com/api/users/@me&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;authorization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tokenType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;accessToken&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;discriminator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;innerText&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;` &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;discriminator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Try the authorization grant flow portion of the Discord Oauth API docs and start to implement the learnings in Paper Trader. The biggest changes look like changing what the link the Discord Log In button should be and bringing over the authorization grant flow example fetch structure.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Worked through the example code from the Discord OAuth guide, and may have found what I needed to implement in my Paper Trader app. In the implicit grant flow, the example extracts the URL from the window object. If the window object does not contain an authorization code or token, then it returns and changes a link style to display to Discord OAuth for users to authorize the application access. After a user authorizes application access, they’re redirected to the original page and triggers the fetch() API call (this was previously not reached due to the return statement that changes the link display style). In this fetch() call, the relevant authorization values are sent in the header to the Discord API, and the username and discriminator data is pulled from the response (note the need to convert the response into json due to fetch() API not doing that automatically)</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth I was able to properly send the authorized request to access a Discord user’s information, however it was done with hardcoded Axios post request (based on this Stackoverflow discussion).</summary></entry></feed>
