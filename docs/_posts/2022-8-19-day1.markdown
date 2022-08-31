@@ -18,7 +18,7 @@ categories: 100Days
     />
     {% endhighlight %}
 
-![Infinitely growing line component](../../../../images/20220819chartjs.gif)
+![Infinitely growing line component](../../../../images/20220819/chartjs.gif)
 
 **Discord OAuth**
 1. Started working on implementing the Discord OAuth API for users to log in. Originally I spent some time trying to wrap my head around properly separating out the frontend function to call the server to reach the Discord API. However, decided to push forward with trying to get the OAuth to work before refactoring the code structure to have better separation of concerns. Using this [guide](https://discordjs.guide/oauth2/#a-quick-example), I started to add the starting structure for the Discord OAuth API:

@@ -9,7 +9,7 @@ categories: 100Days
 **Discord OAuth**
 1. Finally implemented Discord OAuth into the Paper Trader app!! There is still plenty of work to do in regards to storing and using the Discord user's information, but that should be a more straightforward process. 
 
-![Discord OAuth Redirect](../../../../images/20220823discord-redirect.gif)
+![Discord OAuth Redirect](../../../../images/20220823/discord-redirect.gif)
 
 {:start="2"}
 2. The `useSearchParams` React Router hook turned out to be exactly what I needed to extract the authorization code from the Discord OAuth redirect URL. Made bringing over the code I wrote in my Discord OAuth test app very seamless.

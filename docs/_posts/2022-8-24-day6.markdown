@@ -38,7 +38,7 @@ These are goals that will have to be handled as things progress, but at the mome
 1. When trying to figure out the best way to handle how to set the `redirect_uri` parameter, I came across this [Stack Overflow discussion](https://stackoverflow.com/questions/48134785/how-to-set-a-base-url-for-react-router-at-the-app-level). 
     - So, I tried accessing the `process.env.PUBLIC_URL` in a local build being served on my browser. 
 
-        ![Node environment variables](../../../../images/20220824envvars.png)
+        ![Node environment variables](../../../../images/20220824/envvars.png)
 
     - Although I expected the `PUBLIC_URL` value to be the location that was loading my build, I saw the `NODE_ENV` had a value of `production`. Comparing this to my `localhost` development build, `NODE_ENV` had a value of `development`. With this information, that's how my friend and I decided to utilize `NODE_ENV` to set the `REDIRECT_URI` value.
 

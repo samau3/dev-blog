@@ -11,7 +11,7 @@ categories: 100Days
  - Note that to prevent a CSRF issue, a random string is generated to append to the Discord Authorization. As things progress, I would like to switch it to be a JWT, but that may not be necessary according to this [discussion](https://stackoverflow.com/questions/71810147/discord-oauth2-state-parameter-best-practice) and this [article](https://evertpot.com/jwt-is-a-bad-default/).
 2. Currently testing out a new React router hook, `useSearchParams` which will be very helpful for the next step when sending a `POST` request to the Discord API. Not sure yet if I'll have the Discord redirect to a new route which will call post to the Discord API, or include it in the Home page `useEffect`.
 
-![Discord OAuth Redirect](../../../../images/20220822discord-redirect.gif)
+![Discord OAuth Redirect](../../../../images/20220822/discord-redirect.gif)
 
 ### Learnings/Thoughts
 **Axios Post Request**
