@@ -1,4 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-30T22:38:34-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">12/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/30/day12.html" rel="alternate" type="text/html" title="12/100 Days of Code" /><published>2022-08-30T15:30:23-07:00</published><updated>2022-08-30T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/30/day12</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/30/day12.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-31T23:30:04-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">13/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/31/day13.html" rel="alternate" type="text/html" title="13/100 Days of Code" /><published>2022-08-31T15:30:23-07:00</published><updated>2022-08-31T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/31/day13</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/31/day13.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Fly.io CI/CD debugging&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Another full day trying to figure out deployment issues. Depsite the frustration, this should set the ground work for easier build and deployment when future features are implemented!&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The first issue I tried tackling was leftover from yesterday, the Github Action that deletes the temporary Github Environments from a PR.
+    &lt;ul&gt;
+      &lt;li&gt;The action would find the environment, detect the number of deployments in it, and deactive them all before deleting the entire environment. That’s the expected behavior.&lt;/li&gt;
+      &lt;li&gt;However, when I ran the action, it would find the environment and detect the deployments, but would stop and spit out &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;**Error** Not Found&lt;/code&gt;
+  &lt;img src=&quot;../../../../images/20220831/githubactionerror.png&quot; alt=&quot;Github Action Error on PR Close&quot; /&gt;&lt;/li&gt;
+      &lt;li&gt;Oddly, when I pass in an environment value that doesn’t exist, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;non-existent-env&lt;/code&gt;, it would run the action without issues
+  &lt;img src=&quot;../../../../images/20220831/githubactionsuccess.png&quot; alt=&quot;Github Action Success on PR Close with nonexistent environment&quot; /&gt;&lt;/li&gt;
+      &lt;li&gt;Given the lack of progress of getting through this error, I decided to just comment out this portion of the Github Action to revist in the future&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Next, I wanted to finally close the PR for Discord OAuth implementation, which meant I had to set the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BACKEND_BASE_URL&lt;/code&gt; for React to know where the server is located. However, there wasn’t anyway to set that on Firebase since it’s more of a build time variable. Thus, I changed the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config.ts&lt;/code&gt; to explictly set the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BACKEND_BASE_URL&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;    &lt;span class=&quot;c1&quot;&gt;// previously &lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;BACKEND_BASE_URL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;REACT_BASE_URL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;http://localhost:8080&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// currently&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;BACKEND_BASE_URL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NODE_ENV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;production&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;https://paper-trader.fly.dev/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// trailing &quot;/&quot;...&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;http://localhost:8080&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ol start=&quot;3&quot;&gt;
+  &lt;li&gt;Now that the Github Actions for CI/CD were finalized, I merged the previous PR for Discord OAuth to main and watched the magic happen as everything was automatically rebuilt and redeployed!
+    &lt;ul&gt;
+      &lt;li&gt;Except when I tried the Discord OAuth flow on the deployed app, I got a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CORS&lt;/code&gt; error and a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;502&lt;/code&gt; error.
+        &lt;ul&gt;
+          &lt;li&gt;In the console, I noticed there was an extra &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/&lt;/code&gt; in the server URL, so made a quick change to that in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config.ts&lt;/code&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;However, after that change I still got errors after getting redirected from Discord
+        &lt;ul&gt;
+          &lt;li&gt;So I went to dig through the logs on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly&lt;/code&gt; and noticed my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; was still saying &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localhost&lt;/code&gt;…&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;I knew my Firebase React frontend is in production as the Discord OAuth authorization confirmation page showed the deployed URL. Which meant my deployed backend on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly&lt;/code&gt; doesn’t have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV=&apos;production&apos;&lt;/code&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;After tons of searching and digging into the docs, I found an &lt;a href=&quot;https://github.com/superfly/flyctl-actions/issues/9&quot;&gt;open issue for the Github Action&lt;/a&gt; I was using that was very similar to my problem.&lt;/li&gt;
+      &lt;li&gt;Based on the discussion, I added &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV=&quot;production&quot;&lt;/code&gt; as both an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;env&lt;/code&gt; variable and a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[build.args]&lt;/code&gt; sections of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly.toml&lt;/code&gt; file.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;With these changes, I can wrap up CI/CD for now such that adding new features and expanding the app will deploy automatically once changes are made to the main branch.
+    &lt;ul&gt;
+      &lt;li&gt;Of course, tests need to be added to the CI/CD pipeline later on…&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Can finally go back to working out user sessions!&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Fly.io CI/CD debugging</summary></entry><entry><title type="html">12/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/30/day12.html" rel="alternate" type="text/html" title="12/100 Days of Code" /><published>2022-08-30T15:30:23-07:00</published><updated>2022-08-30T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/30/day12</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/30/day12.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Fly.io CI/CD&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ol&gt;
@@ -474,42 +533,4 @@
 &lt;ol&gt;
   &lt;li&gt;I will need to add the second portion of the Discord OAuth functionality which is accessing the user’s Discord information. At the moment I only have the authorization code for the user’s information, but need to send that along with other information to the Discord API.&lt;/li&gt;
   &lt;li&gt;In addition, there will need to be some refactoring to properly separate the concerns of storing the user information and breaking down some components such that they aren’t too big.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth I brought over parts of the Discord OAuth code to my React Paper Trader app! Currently it has the basic functionalitly I needed, where clicking Log In with Discord sends the user to Discord’s authorization page and redirects back to the app with the code parameter needed. Note that to prevent a CSRF issue, a random string is generated to append to the Discord Authorization. As things progress, I would like to switch it to be a JWT, but that may not be necessary according to this discussion and this article. Currently testing out a new React router hook, useSearchParams which will be very helpful for the next step when sending a POST request to the Discord API. Not sure yet if I’ll have the Discord redirect to a new route which will call post to the Discord API, or include it in the Home page useEffect.</summary></entry><entry><title type="html">3/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/21/day3.html" rel="alternate" type="text/html" title="3/100 Days of Code" /><published>2022-08-21T15:30:23-07:00</published><updated>2022-08-21T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/21/day3</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/21/day3.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Discord OAuth&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;I was able to properly send the authorized request to access a Discord user’s information, however it was done with hardcoded Axios post request (&lt;a href=&quot;https://stackoverflow.com/questions/55391068/discord-oauth2-receiving-invalid-client-error&quot;&gt;based on this Stackoverflow discussion&lt;/a&gt;).&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tokenResponseData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axios&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-                    &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://discord.com/api/oauth2/token&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                    &lt;span class=&quot;c1&quot;&gt;//`client_id=...code=${code}`,&lt;/span&gt;
-                    &lt;span class=&quot;nx&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Content-Type&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;application/x-www-form-urlencoded&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;
-                    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I wanted to write it as a more flexible Axios object, similar to the one presented in the &lt;a href=&quot;https://discordjs.guide/oauth2/#a-quick-example&quot;&gt;Discord OAuth guide&lt;/a&gt;, but kept encountering a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;401&lt;/code&gt; error since the Axios post was not sending the URL parameters properly. If after spending more time trying to get the below code to work proves unsuccessful, I am likely to move on with the above code snippet and mark this down as a code chunk for refactoring.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tokenResponseData2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axios&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;POST&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://discord.com/api/oauth2/token&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;URLSearchParams&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;client_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clientId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;client_secret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clientSecret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;grant_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;authorization_code&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;redirect_uri&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`http://localhost:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;identify&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}),&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Content-Type&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;application/x-www-form-urlencoded&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;I now have a working understanding of what needs to be done to implement the Discord OAuth API in the Paper Trader app! With a few more tweaks once I bring it over (namely storing the authorization tokens and implementing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useContext&lt;/code&gt; React hook), I will have a functioning user authentication and authorization system.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth I was able to properly send the authorized request to access a Discord user’s information, however it was done with hardcoded Axios post request (based on this Stackoverflow discussion).</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth I brought over parts of the Discord OAuth code to my React Paper Trader app! Currently it has the basic functionalitly I needed, where clicking Log In with Discord sends the user to Discord’s authorization page and redirects back to the app with the code parameter needed. Note that to prevent a CSRF issue, a random string is generated to append to the Discord Authorization. As things progress, I would like to switch it to be a JWT, but that may not be necessary according to this discussion and this article. Currently testing out a new React router hook, useSearchParams which will be very helpful for the next step when sending a POST request to the Discord API. Not sure yet if I’ll have the Discord redirect to a new route which will call post to the Discord API, or include it in the Home page useEffect.</summary></entry></feed>
