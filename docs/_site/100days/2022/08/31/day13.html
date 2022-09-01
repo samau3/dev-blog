@@ -76,16 +76,16 @@
     </code></pre></figure>
 
 <ol start="3">
-  <li>Now that the Github Actions for CI/CD were finalized, I merged the previous PR for Discord OAuth to main and watched the magic happen as everything was automatically rebuilt and redeployed!
+  <li>Now that the Github Actions for CI/CD were finalized, I merged the previous PR for Discord OAuth to <code class="language-plaintext highlighter-rouge">main</code> and watched the magic happen as everything was automatically rebuilt and redeployed!
     <ul>
       <li>Except when I tried the Discord OAuth flow on the deployed app, I got a <code class="language-plaintext highlighter-rouge">CORS</code> error and a <code class="language-plaintext highlighter-rouge">502</code> error.
         <ul>
           <li>In the console, I noticed there was an extra <code class="language-plaintext highlighter-rouge">/</code> in the server URL, so made a quick change to that in the <code class="language-plaintext highlighter-rouge">config.ts</code></li>
         </ul>
       </li>
-      <li>However, after that change I still got errors after getting redirected from Discord
+      <li>However, after that change I still got errors after being redirected from Discord
         <ul>
-          <li>So I went to dig through the logs on <code class="language-plaintext highlighter-rouge">fly</code> and noticed my <code class="language-plaintext highlighter-rouge">redirect_uri</code> was still saying <code class="language-plaintext highlighter-rouge">localhost</code>…</li>
+          <li>So I went to dig through the logs on <a href="https://fly.io/">fly.io</a> and noticed my <code class="language-plaintext highlighter-rouge">redirect_uri</code> was still saying <code class="language-plaintext highlighter-rouge">localhost</code>…</li>
         </ul>
       </li>
     </ul>
@@ -93,7 +93,7 @@
   <li>I knew my Firebase React frontend is in production as the Discord OAuth authorization confirmation page showed the deployed URL. Which meant my deployed backend on <code class="language-plaintext highlighter-rouge">fly</code> doesn’t have <code class="language-plaintext highlighter-rouge">NODE_ENV='production'</code>.
     <ul>
       <li>After tons of searching and digging into the docs, I found an <a href="https://github.com/superfly/flyctl-actions/issues/9">open issue for the Github Action</a> I was using that was very similar to my problem.</li>
-      <li>Based on the discussion, I added <code class="language-plaintext highlighter-rouge">NODE_ENV="production"</code> as both an <code class="language-plaintext highlighter-rouge">env</code> variable and a <code class="language-plaintext highlighter-rouge">[build.args]</code> sections of the <code class="language-plaintext highlighter-rouge">fly.toml</code> file.</li>
+      <li>Based on the discussion, I added <code class="language-plaintext highlighter-rouge">NODE_ENV="production"</code> as a variable in both the <code class="language-plaintext highlighter-rouge">env</code> and <code class="language-plaintext highlighter-rouge">[build.args]</code> sections of the <code class="language-plaintext highlighter-rouge">fly.toml</code> file.</li>
     </ul>
   </li>
   <li>With these changes, I can wrap up CI/CD for now such that adding new features and expanding the app will deploy automatically once changes are made to the main branch.

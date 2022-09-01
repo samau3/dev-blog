@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-31T23:30:04-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">13/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/31/day13.html" rel="alternate" type="text/html" title="13/100 Days of Code" /><published>2022-08-31T15:30:23-07:00</published><updated>2022-08-31T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/31/day13</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/31/day13.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-31T23:35:43-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">13/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/31/day13.html" rel="alternate" type="text/html" title="13/100 Days of Code" /><published>2022-08-31T15:30:23-07:00</published><updated>2022-08-31T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/31/day13</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/31/day13.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Fly.io CI/CD debugging&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Another full day trying to figure out deployment issues. Depsite the frustration, this should set the ground work for easier build and deployment when future features are implemented!&lt;/p&gt;
@@ -27,16 +27,16 @@
     &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ol start=&quot;3&quot;&gt;
-  &lt;li&gt;Now that the Github Actions for CI/CD were finalized, I merged the previous PR for Discord OAuth to main and watched the magic happen as everything was automatically rebuilt and redeployed!
+  &lt;li&gt;Now that the Github Actions for CI/CD were finalized, I merged the previous PR for Discord OAuth to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; and watched the magic happen as everything was automatically rebuilt and redeployed!
     &lt;ul&gt;
       &lt;li&gt;Except when I tried the Discord OAuth flow on the deployed app, I got a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CORS&lt;/code&gt; error and a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;502&lt;/code&gt; error.
         &lt;ul&gt;
           &lt;li&gt;In the console, I noticed there was an extra &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/&lt;/code&gt; in the server URL, so made a quick change to that in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config.ts&lt;/code&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
-      &lt;li&gt;However, after that change I still got errors after getting redirected from Discord
+      &lt;li&gt;However, after that change I still got errors after being redirected from Discord
         &lt;ul&gt;
-          &lt;li&gt;So I went to dig through the logs on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly&lt;/code&gt; and noticed my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; was still saying &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localhost&lt;/code&gt;…&lt;/li&gt;
+          &lt;li&gt;So I went to dig through the logs on &lt;a href=&quot;https://fly.io/&quot;&gt;fly.io&lt;/a&gt; and noticed my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; was still saying &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localhost&lt;/code&gt;…&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
@@ -44,7 +44,7 @@
   &lt;li&gt;I knew my Firebase React frontend is in production as the Discord OAuth authorization confirmation page showed the deployed URL. Which meant my deployed backend on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly&lt;/code&gt; doesn’t have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV=&apos;production&apos;&lt;/code&gt;.
     &lt;ul&gt;
       &lt;li&gt;After tons of searching and digging into the docs, I found an &lt;a href=&quot;https://github.com/superfly/flyctl-actions/issues/9&quot;&gt;open issue for the Github Action&lt;/a&gt; I was using that was very similar to my problem.&lt;/li&gt;
-      &lt;li&gt;Based on the discussion, I added &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV=&quot;production&quot;&lt;/code&gt; as both an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;env&lt;/code&gt; variable and a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[build.args]&lt;/code&gt; sections of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly.toml&lt;/code&gt; file.&lt;/li&gt;
+      &lt;li&gt;Based on the discussion, I added &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV=&quot;production&quot;&lt;/code&gt; as a variable in both the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;env&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[build.args]&lt;/code&gt; sections of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly.toml&lt;/code&gt; file.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;With these changes, I can wrap up CI/CD for now such that adding new features and expanding the app will deploy automatically once changes are made to the main branch.

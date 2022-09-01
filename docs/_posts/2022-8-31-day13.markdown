@@ -30,14 +30,14 @@ Another full day trying to figure out deployment issues. Depsite the frustration
     {%endhighlight%}
 
 {:start="3"}
-3. Now that the Github Actions for CI/CD were finalized, I merged the previous PR for Discord OAuth to main and watched the magic happen as everything was automatically rebuilt and redeployed!
+3. Now that the Github Actions for CI/CD were finalized, I merged the previous PR for Discord OAuth to `main` and watched the magic happen as everything was automatically rebuilt and redeployed!
     - Except when I tried the Discord OAuth flow on the deployed app, I got a `CORS` error and a `502` error. 
         - In the console, I noticed there was an extra `/` in the server URL, so made a quick change to that in the `config.ts`
-    - However, after that change I still got errors after getting redirected from Discord
-        - So I went to dig through the logs on `fly` and noticed my `redirect_uri` was still saying `localhost`...
+    - However, after that change I still got errors after being redirected from Discord
+        - So I went to dig through the logs on [fly.io](https://fly.io/) and noticed my `redirect_uri` was still saying `localhost`...
 4. I knew my Firebase React frontend is in production as the Discord OAuth authorization confirmation page showed the deployed URL. Which meant my deployed backend on `fly` doesn't have `NODE_ENV='production'`.
     - After tons of searching and digging into the docs, I found an [open issue for the Github Action](https://github.com/superfly/flyctl-actions/issues/9) I was using that was very similar to my problem.
-    - Based on the discussion, I added `NODE_ENV="production"` as both an `env` variable and a `[build.args]` sections of the `fly.toml` file. 
+    - Based on the discussion, I added `NODE_ENV="production"` as a variable in both the `env` and `[build.args]` sections of the `fly.toml` file. 
 5. With these changes, I can wrap up CI/CD for now such that adding new features and expanding the app will deploy automatically once changes are made to the main branch.
     - Of course, tests need to be added to the CI/CD pipeline later on...
 
