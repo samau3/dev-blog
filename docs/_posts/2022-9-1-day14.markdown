@@ -1,0 +1,35 @@
+---
+layout: post
+title:  "14/100 Days of Code"
+date:   2022-09-1 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**User Session**
+
+Jumped back into working on getting user sessions set up! <sub>Except I had to spend some time resolving merge conflicts with the `main` branch after all my recent PRs being merged...</sub>
+
+1. First thing I needed to change was figuring out how to store user information for the entire app to have access to.
+    1. I updated my `DiscordRedirect` component to store the JWT sent from the server.
+        - This component will likely be removed as I expand the app since it was more of a temporary component to make sure I could get Discord OAuth working.
+    2. Then in the `App` component I needed an extra function, `getCurrentUser`, inside the `useEffect` hook that checks if there's a JWT token in `localStorage`.
+        - The goal of this function is to decode the JWT token and extract the username from the token to send to the server.
+        - Upon successful validation of the information in the JWT token, the server will send back the user's info which will be set as the current user
+    3. In order for this whole flow to work out, I would need a new route in my server (e.g. `/user/:username`), a new `PaperTraderApi` method to send the necessary information to this route, and utilize `React.Context` to share the current user information for all components that subscribe to the context.
+2. With the plan set up, implementing it was mostly straightforward. Everything went smoothly except for trying to decode the JWT token in my `getCurrentUser` function, where I encountered a very confusing bug.
+    1. I had some type issues with the returned value from the `decodeToken`function. I tried doing the same conditional checks that I did when I last had type issues with `decodeToken` by only accessing the value within conditional statements that are true.
+    2. Unfortunately that wasn't enough, and after whittling away at the issue, my bug came down to:
+        - The Chrome console showed that the value from `decodeToken`, which I named `decodedToken` is an `Object` variable that had key value pairs `{username: USERNAME_STRING, iat: NUMBERS}` where `username` is the key value pair I wanted to extract
+        - However, I kept getting a compilation error from Typescript where `decodedToken` was treated as a `string` so when I tried to access the `username` key via `dedcodedToken.username`, I got an error that stated `Property 'username' does not exist on type 'string'.`.
+    3. This was very confusing as when I did `console.log(typeof decodedToken)`, I got `object` and the variable showed up as an object structure with key value pairs
+3. After some time, I asked a friend for help and he suggested trying to convert the variable into JSON which worked!
+    1. First, I had to do `JSON.stringify(decodedToken)` and store that as a variable, `jsonToken`
+    2. Then, I saved the result of `JSON.parse(jsonToken)` as `parsedJson`
+    3. Finally, I could do `parsedJson.username` to access the `username` value without any errors
+4. This felt like a very roundabout way resolve this issue. However, the typing of the `decodedToken` is explicitly changed into a `string` and then an `object`, which is probably why Typescript compilation doesn't have issues anymore. 
+
+### Next Steps
+1. Continue expanding the user session implementation, and then start refactoring again
+    - There are some functions and states that could be brought up higher in the component hierarchy now that I've expanded on what data the components need to have access to

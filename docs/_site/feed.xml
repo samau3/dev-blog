@@ -1,4 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-08-31T23:35:43-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">13/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/31/day13.html" rel="alternate" type="text/html" title="13/100 Days of Code" /><published>2022-08-31T15:30:23-07:00</published><updated>2022-08-31T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/31/day13</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/31/day13.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-01T23:05:18-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">14/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/01/day14.html" rel="alternate" type="text/html" title="14/100 Days of Code" /><published>2022-09-01T15:30:23-07:00</published><updated>2022-09-01T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/01/day14</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/01/day14.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;User Session&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Jumped back into working on getting user sessions set up! &lt;sub&gt;Except I had to spend some time resolving merge conflicts with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; branch after all my recent PRs being merged…&lt;/sub&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First thing I needed to change was figuring out how to store user information for the entire app to have access to.
+    &lt;ol&gt;
+      &lt;li&gt;I updated my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component to store the JWT sent from the server.
+        &lt;ul&gt;
+          &lt;li&gt;This component will likely be removed as I expand the app since it was more of a temporary component to make sure I could get Discord OAuth working.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Then in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component I needed an extra function, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getCurrentUser&lt;/code&gt;, inside the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hook that checks if there’s a JWT token in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localStorage&lt;/code&gt;.
+        &lt;ul&gt;
+          &lt;li&gt;The goal of this function is to decode the JWT token and extract the username from the token to send to the server.&lt;/li&gt;
+          &lt;li&gt;Upon successful validation of the information in the JWT token, the server will send back the user’s info which will be set as the current user&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;In order for this whole flow to work out, I would need a new route in my server (e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/user/:username&lt;/code&gt;), a new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PaperTraderApi&lt;/code&gt; method to send the necessary information to this route, and utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;React.Context&lt;/code&gt; to share the current user information for all components that subscribe to the context.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;With the plan set up, implementing it was mostly straightforward. Everything went smoothly except for trying to decode the JWT token in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getCurrentUser&lt;/code&gt; function, where I encountered a very confusing bug.
+    &lt;ol&gt;
+      &lt;li&gt;I had some type issues with the returned value from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodeToken&lt;/code&gt;function. I tried doing the same conditional checks that I did when I last had type issues with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodeToken&lt;/code&gt; by only accessing the value within conditional statements that are true.&lt;/li&gt;
+      &lt;li&gt;Unfortunately that wasn’t enough, and after whittling away at the issue, my bug came down to:
+        &lt;ul&gt;
+          &lt;li&gt;The Chrome console showed that the value from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodeToken&lt;/code&gt;, which I named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodedToken&lt;/code&gt; is an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Object&lt;/code&gt; variable that had key value pairs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{username: USERNAME_STRING, iat: NUMBERS}&lt;/code&gt; where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt; is the key value pair I wanted to extract&lt;/li&gt;
+          &lt;li&gt;However, I kept getting a compilation error from Typescript where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodedToken&lt;/code&gt; was treated as a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; so when I tried to access the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt; key via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dedcodedToken.username&lt;/code&gt;, I got an error that stated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Property &apos;username&apos; does not exist on type &apos;string&apos;.&lt;/code&gt;.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;This was very confusing as when I did &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.log(typeof decodedToken)&lt;/code&gt;, I got &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;object&lt;/code&gt; and the variable showed up as an object structure with key value pairs&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;After some time, I asked a friend for help and he suggested trying to convert the variable into JSON which worked!
+    &lt;ol&gt;
+      &lt;li&gt;First, I had to do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JSON.stringify(decodedToken)&lt;/code&gt; and store that as a variable, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jsonToken&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Then, I saved the result of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JSON.parse(jsonToken)&lt;/code&gt; as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;parsedJson&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Finally, I could do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;parsedJson.username&lt;/code&gt; to access the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt; value without any errors&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;This felt like a very roundabout way resolve this issue. However, the typing of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodedToken&lt;/code&gt; is explicitly changed into a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; and then an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;object&lt;/code&gt;, which is probably why Typescript compilation doesn’t have issues anymore.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Continue expanding the user session implementation, and then start refactoring again
+    &lt;ul&gt;
+      &lt;li&gt;There are some functions and states that could be brought up higher in the component hierarchy now that I’ve expanded on what data the components need to have access to&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session</summary></entry><entry><title type="html">13/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/31/day13.html" rel="alternate" type="text/html" title="13/100 Days of Code" /><published>2022-08-31T15:30:23-07:00</published><updated>2022-08-31T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/31/day13</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/31/day13.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Fly.io CI/CD debugging&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Another full day trying to figure out deployment issues. Depsite the frustration, this should set the ground work for easier build and deployment when future features are implemented!&lt;/p&gt;
@@ -498,39 +549,4 @@
 &lt;ol&gt;
   &lt;li&gt;I will need to add the second portion of the Discord OAuth functionality which is accessing the user’s Discord information. At the moment I only have the authorization code for the user’s information, but need to send that along with other information to the Discord API.&lt;/li&gt;
   &lt;li&gt;In addition, there will need to be some refactoring to properly separate the concerns of storing the user information and breaking down some components such that they aren’t too big.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Finally implemented Discord OAuth into the Paper Trader app!! There is still plenty of work to do in regards to storing and using the Discord user’s information, but that should be a more straightforward process.</summary></entry><entry><title type="html">4/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/22/day4.html" rel="alternate" type="text/html" title="4/100 Days of Code" /><published>2022-08-22T15:30:23-07:00</published><updated>2022-08-22T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/22/day4</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/22/day4.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Discord OAuth&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;I brought over parts of the Discord OAuth code to my React Paper Trader app! Currently it has the basic functionalitly I needed, where clicking Log In with Discord sends the user to Discord’s authorization page and redirects back to the app with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;code&lt;/code&gt; parameter needed.
-    &lt;ul&gt;
-      &lt;li&gt;Note that to prevent a CSRF issue, a random string is generated to append to the Discord Authorization. As things progress, I would like to switch it to be a JWT, but that may not be necessary according to this &lt;a href=&quot;https://stackoverflow.com/questions/71810147/discord-oauth2-state-parameter-best-practice&quot;&gt;discussion&lt;/a&gt; and this &lt;a href=&quot;https://evertpot.com/jwt-is-a-bad-default/&quot;&gt;article&lt;/a&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Currently testing out a new React router hook, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useSearchParams&lt;/code&gt; which will be very helpful for the next step when sending a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;POST&lt;/code&gt; request to the Discord API. Not sure yet if I’ll have the Discord redirect to a new route which will call post to the Discord API, or include it in the Home page &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;../../../../images/20220822/discord-redirect.gif&quot; alt=&quot;Discord OAuth Redirect&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;learningsthoughts&quot;&gt;Learnings/Thoughts&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Axios Post Request&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;As I spent more time looking into the &lt;a href=&quot;https://axios-http.com/docs/api_intro&quot;&gt;Axios API&lt;/a&gt;, and multiple Stack Overflow discussions, it seems like my approach is the best way to achieve what I want to do. My current assumption for why is because Axios posting tries to send the values I want in the body rather than as URL parameters. The simplest fix is to use string template literals to build up the URL string explicitly in the Axios post function.
-    &lt;ul&gt;
-      &lt;li&gt;A small tweak would be to change the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; to also be a string template literal and have the value be based on the environmental variables.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axios&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://discord.com/api/oauth2/token&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;`client_id=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;amp;client_secret=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientSecret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;amp;grant_type=authorization_code&amp;amp;redirect_uri=http://localhost:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;amp;scope=identify&amp;amp;code=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Content-Type&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;application/x-www-form-urlencoded&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;I will need to add the second portion of the Discord OAuth functionality which is accessing the user’s Discord information. At the moment I only have the authorization code for the user’s information, but need to send that along with other information to the Discord API.&lt;/li&gt;
-  &lt;li&gt;In addition, there will need to be some refactoring to properly separate the concerns of storing the user information and breaking down some components such that they aren’t too big.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth I brought over parts of the Discord OAuth code to my React Paper Trader app! Currently it has the basic functionalitly I needed, where clicking Log In with Discord sends the user to Discord’s authorization page and redirects back to the app with the code parameter needed. Note that to prevent a CSRF issue, a random string is generated to append to the Discord Authorization. As things progress, I would like to switch it to be a JWT, but that may not be necessary according to this discussion and this article. Currently testing out a new React router hook, useSearchParams which will be very helpful for the next step when sending a POST request to the Discord API. Not sure yet if I’ll have the Discord redirect to a new route which will call post to the Discord API, or include it in the Home page useEffect.</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Finally implemented Discord OAuth into the Paper Trader app!! There is still plenty of work to do in regards to storing and using the Discord user’s information, but that should be a more straightforward process.</summary></entry></feed>
