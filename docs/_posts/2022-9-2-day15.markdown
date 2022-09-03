@@ -1,0 +1,31 @@
+---
+layout: post
+title:  "15/100 Days of Code"
+date:   2022-09-2 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**User Session**
+
+1. Tried to flesh out the user session process today
+    - The planned flow at a high level is:
+        1. On app's first load of the app/portfolio page, it reaches out to backend
+        2. (If logged in) backend will take JWT and return the application `Context` + portfolio info
+        3. Username will be available from application `Context`
+2. This brings to question if decoding the username and then sending that back to the backend is necessary
+    - The original idea was decoding the username from the JWT in localStorage and sending that as a parameter to a backend route that would return the user's information (like portfolio) along with a JWT to be verified
+    - Then the returned user information will be stored in the application `Context`
+3. However with this approach there's a concern about the returned data being too big (e.g. a large portfolio) and the app context really only needs the username 
+    - At the moment I'll be marking these concerns down to think about but I'll continue on with the approach of returning the user's information/portfolio to be stored in `Context`
+4. In addition to trying to expand on how to handle user sessions, I moved my login function from the `DiscordRedirect` component up to the `App` component. This was needed as the `App` component is where I want the `Context` to be set and provided from, and logging in also provides the information needed for updating the `Context`. This login function is then passed down to the `DiscordRedirect` component
+    - This will also be helpful for when if I decide to remove the `DiscordRedirect` component and have the login function passed to a different component
+5. With this change in the login function and having it update `Context` too, I encountered type issues regarding the state used for the `Context`
+    - As it stands, the default state for the `currentUser` state is `null` and upon logging in or restoring a user session, the `currentUser` is set to the user's username (for now while I'm working on making sure user sessions is working).
+    - Haven't looked too deeply into this issue yet, but possible solutions I've seen are [applying an interface](https://stackoverflow.com/questions/59125973/react-typescript-argument-of-type-is-not-assignable-to-parameter-of-type) or maybe utilizing a guard statement. 
+
+### Next Steps
+1. Continue expanding the user session implementation and debug these typing issues. 
+2. Refactor the `DiscordRedirect` component as that now has a lot of overloaded variables and removing them may present more issues that'll need to be resolved.
+3. I imagine this is the final stretch for this feature, so a retro will be coming soon 

@@ -1,4 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-01T23:05:18-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">14/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/01/day14.html" rel="alternate" type="text/html" title="14/100 Days of Code" /><published>2022-09-01T15:30:23-07:00</published><updated>2022-09-01T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/01/day14</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/01/day14.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-02T23:27:10-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">15/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/02/day15.html" rel="alternate" type="text/html" title="15/100 Days of Code" /><published>2022-09-02T15:30:23-07:00</published><updated>2022-09-02T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/02/day15</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/02/day15.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;User Session&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Tried to flesh out the user session process today
+    &lt;ul&gt;
+      &lt;li&gt;The planned flow at a high level is:
+        &lt;ol&gt;
+          &lt;li&gt;On app’s first load of the app/portfolio page, it reaches out to backend&lt;/li&gt;
+          &lt;li&gt;(If logged in) backend will take JWT and return the application &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt; + portfolio info&lt;/li&gt;
+          &lt;li&gt;Username will be available from application &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;This brings to question if decoding the username and then sending that back to the backend is necessary
+    &lt;ul&gt;
+      &lt;li&gt;The original idea was decoding the username from the JWT in localStorage and sending that as a parameter to a backend route that would return the user’s information (like portfolio) along with a JWT to be verified&lt;/li&gt;
+      &lt;li&gt;Then the returned user information will be stored in the application &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;However with this approach there’s a concern about the returned data being too big (e.g. a large portfolio) and the app context really only needs the username
+    &lt;ul&gt;
+      &lt;li&gt;At the moment I’ll be marking these concerns down to think about but I’ll continue on with the approach of returning the user’s information/portfolio to be stored in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;In addition to trying to expand on how to handle user sessions, I moved my login function from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component up to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component. This was needed as the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component is where I want the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt; to be set and provided from, and logging in also provides the information needed for updating the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;. This login function is then passed down to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component
+    &lt;ul&gt;
+      &lt;li&gt;This will also be helpful for when if I decide to remove the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component and have the login function passed to a different component&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;With this change in the login function and having it update &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt; too, I encountered type issues regarding the state used for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;As it stands, the default state for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;currentUser&lt;/code&gt; state is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; and upon logging in or restoring a user session, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;currentUser&lt;/code&gt; is set to the user’s username (for now while I’m working on making sure user sessions is working).&lt;/li&gt;
+      &lt;li&gt;Haven’t looked too deeply into this issue yet, but possible solutions I’ve seen are &lt;a href=&quot;https://stackoverflow.com/questions/59125973/react-typescript-argument-of-type-is-not-assignable-to-parameter-of-type&quot;&gt;applying an interface&lt;/a&gt; or maybe utilizing a guard statement.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Continue expanding the user session implementation and debug these typing issues.&lt;/li&gt;
+  &lt;li&gt;Refactor the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component as that now has a lot of overloaded variables and removing them may present more issues that’ll need to be resolved.&lt;/li&gt;
+  &lt;li&gt;I imagine this is the final stretch for this feature, so a retro will be coming soon&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session</summary></entry><entry><title type="html">14/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/01/day14.html" rel="alternate" type="text/html" title="14/100 Days of Code" /><published>2022-09-01T15:30:23-07:00</published><updated>2022-09-01T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/01/day14</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/01/day14.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;User Session&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Jumped back into working on getting user sessions set up! &lt;sub&gt;Except I had to spend some time resolving merge conflicts with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; branch after all my recent PRs being merged…&lt;/sub&gt;&lt;/p&gt;
@@ -500,53 +544,4 @@
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Pretty much the steps I outlined above for refactoring!&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Refactoring</summary></entry><entry><title type="html">5/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/23/day5.html" rel="alternate" type="text/html" title="5/100 Days of Code" /><published>2022-08-23T15:30:23-07:00</published><updated>2022-08-23T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/23/day5</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/23/day5.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Discord OAuth&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Finally implemented Discord OAuth into the Paper Trader app!! There is still plenty of work to do in regards to storing and using the Discord user’s information, but that should be a more straightforward process.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;../../../../images/20220823/discord-redirect.gif&quot; alt=&quot;Discord OAuth Redirect&quot; /&gt;&lt;/p&gt;
-
-&lt;ol start=&quot;2&quot;&gt;
-  &lt;li&gt;
-    &lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useSearchParams&lt;/code&gt; React Router hook turned out to be exactly what I needed to extract the authorization code from the Discord OAuth redirect URL. Made bringing over the code I wrote in my Discord OAuth test app very seamless.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Originally I had trouble dealing with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CORS&lt;/code&gt; in my app, and after spending some time digging around online, I ultimately decided to check my old projects for how I handled it before. Turns out it was the solution from an earlier &lt;a href=&quot;https://stackoverflow.com/a/43810132&quot;&gt;Stack Overflow discussion&lt;/a&gt; I encountered where I simply had to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install cors&lt;/code&gt; and add a few lines of code.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;express&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;express&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cors&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;cors&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;express&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;use&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Discord OAuth Redirect&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;When I initially brought over my Discord OAuth test code, I didn’t update the API token URL for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameter. This led to some confusion as all the configs and URLs I’m interacting with was expected to work as there weren’t any changes. However, this &lt;a href=&quot;https://stackoverflow.com/a/70280164&quot;&gt;Stack Overflow discussion&lt;/a&gt; turned up. As such, once I updated the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect_uri&lt;/code&gt; parameter to be the same for both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;authorize&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;token&lt;/code&gt; Discord API routes, my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; requests started to succeed again.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Typescript and CORS&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;While adding the npm package &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cors&lt;/code&gt; to my app, turns out that isn’t enough for Typescript. With &lt;a href=&quot;https://www.twilio.com/blog/add-cors-support-express-typescript-api&quot;&gt;cors and Typescript&lt;/a&gt;, one also needs to install &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@types/cors&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;dotenv in ES6&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;I tried to utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dotenv&lt;/code&gt; like I had in my past &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;express&lt;/code&gt; applications, but in ES6 it’s a little different.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// The way I&apos;m used to&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;dotenv&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// ES6&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;dotenv/config&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;I will need to add the second portion of the Discord OAuth functionality which is accessing the user’s Discord information. At the moment I only have the authorization code for the user’s information, but need to send that along with other information to the Discord API.&lt;/li&gt;
-  &lt;li&gt;In addition, there will need to be some refactoring to properly separate the concerns of storing the user information and breaking down some components such that they aren’t too big.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Finally implemented Discord OAuth into the Paper Trader app!! There is still plenty of work to do in regards to storing and using the Discord user’s information, but that should be a more straightforward process.</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Refactoring</summary></entry></feed>
