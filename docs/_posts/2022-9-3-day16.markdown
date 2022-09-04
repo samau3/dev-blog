@@ -1,0 +1,41 @@
+---
+layout: post
+title:  "16/100 Days of Code"
+date:   2022-09-3 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**User Session**
+Another day of trying to debug type issues!
+
+1. Following the [Stack Overflow discussion](https://stackoverflow.com/questions/59125973/react-typescript-argument-of-type-is-not-assignable-to-parameter-of-type) I saw yesterday, I added an `interface` and assigned the type to my `useState` input, resolving that error message.
+    {%highlight javascript%}
+    interface UserData {
+       username: string
+    }
+
+    function App() {
+        const [currentUser, setCurrentUser] = useState<UserData | null>(null);
+        //...
+        return (
+            <UserContext.Provider value={currentUser}>
+            //...
+            </UserContext.Provider>
+        )
+    }
+    {%endhighlight%}
+- However, making this change broke my login function as that also set the `currentUser` as a `string` for the App Context, but adding the interface cause a type disagreement. Luckily, the solution was simply removing `setCurrentUser` from the login function and only allow the `useEffect` hook that has the localStorage token in the dependency array to set the `currentUser`. 
+    - Note this works because the login function is what sets the token in the `useEffect` dependency array
+
+{:start="2"}
+2. Then going back to clean up my `DiscordRedirect` component to utilize the `useContext` hook I encountered another interesting bug
+    - At the moment, my `useContext` provides the value for `UserContext` which is a `null` object until the username is set from the `getCurrentUser` function in the `useEffect` hook in the App component. 
+    - However, when I check the `typeof` for the value `user` extracted from UserContext after it's set, the type is a `string`.
+    - Despite it being a `string` when I pass `user` into the Paragraph component from the Evergreen component library, I receive an error `This JSX tag's 'children' prop expects a single child of type 'Element | undefined', but multiple children were provided`.
+3. To resolve this bug, I came across these possible solutions from [Stack Overflow](https://stackoverflow.com/questions/62382324/react-typescript-this-jsx-tags-children-prop-expects-a-single-child-of-type) and a [blog post](https://bobbyhadz.com/blog/react-this-tags-children-prop-expects-single-child) about this error.
+    - For my use case, wrapping the `prop` being passed into the `Paragraph` component in a fragment is enough. This may be an issue as the data in the Context expands to include other values, but in terms of trying to figure out how to properly provide and subscribe to Context, this is good for now.
+
+### Next Steps
+1. Continue cleaning up and refactoring my hooks, namely the `useEffect` in `DiscordRedirect` as there is a dependency array warning that will cause build errors.
