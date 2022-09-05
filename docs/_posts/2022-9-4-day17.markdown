@@ -1,0 +1,31 @@
+---
+layout: post
+title:  "17/100 Days of Code"
+date:   2022-09-4 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**User Session**
+
+Started the refactoring process... but ended up fleshing out user session some more.
+
+1. First refactoring I had to do was wrap my `handleLogin` function, which is essentially my `validateUser` function from early on, in a `useCallback` hook to resolve the compilation warning about missing dependencies in `useEffect`.
+2. However, after that I realized I need to properly handle the JWT being stored from the `getCurrentUser` function in the App `useEffect`. This led to creating middleware that verifies the JWT, named `authenticateJWT` which utilizes the `jsonwebtoken` library's `verify` function, and `ensureCurrectUser`, which checks if the username being queried is the same as the one saved in localStorage making the request. In addition, I needed to send the JWT with my `axios` requests.
+    - Not too complicated to implement currently as I don't have many routes that need this protection yet, so as I add more routes this may become a painpoint if the authorization hasn't been implemented properly.
+    - The only unexpected part of this was when I created the middleware in a separate function, I had to define the type for the `request`, `response`, and `next` function parameters. Luckily, this was a very straight forward fix by following this [Stack Overflow discussion](https://stackoverflow.com/questions/27676884/explicitly-specifying-types-for-express-application-request-response).
+    - For the axios calls, it was also straightfoward - adding an Authorization header containing the token and then having that be extracted in `authenticateJWT`
+3. Now that I'm adding some route protection and user session is becoming more fleshed out, I need to redirect users away from the `/login` page if they're already logged in and send them to the `/login/discord-redirect` page. 
+    - My initial idea was to add an additional condition in my `Login` component's `useEffect` that checks if the component is being accessed after receiving an auth code from Discord.
+    - Unfortunately this led to both the `Login` component and the `DiscordRedirect` component to not mount properly.
+4. As it stands, I'm not quite sure how to properly implement the redirecting with my current set up. My possible solutions are:
+    - Changing how I determine how the `DiscordRedirect` component is mounted
+        - I'm using a boolean state based on if there's an auth code in the URL (which happens if Discord redirects back to my app). If a user were to access the `login` route and I try to redirect to `discord-redirect`, there won't be an auth code to properly change the boolean state
+    - Separate out the `DiscordRedirect` component so it's not a nested route with `Login` and then utilize React Router to have private route components. 
+        - This may be the likely approach as the DiscordRedirect was intended to be a temporary component anyways and it's starting to act more like a `Profile` component. 
+    - Either way, there would be a fair amount of restructing and refactoring of my components to handle this change in data flow. 
+
+### Next Steps
+1. Delve deeper into how to handle the login route redirecting based on UserContext and update the docstrings as appropriate (since a few of them are now inaccurate with the recent refactoring).
+2. I also noticed my default tab spacing was set at `4` when it really should have been set to `2`. Since changing the formatting will show up as changes to everything in a file, that will likely be a separate PR which doesn't make any other changes to the code. 

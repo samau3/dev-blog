@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>17/100 Days of Code | 100 Days of Code</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="17/100 Days of Code" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Paper Trader User Session" />
+<meta property="og:description" content="Paper Trader User Session" />
+<link rel="canonical" href="http://localhost:4000/dev-blog/100days/2022/09/04/day17.html" />
+<meta property="og:url" content="http://localhost:4000/dev-blog/100days/2022/09/04/day17.html" />
+<meta property="og:site_name" content="100 Days of Code" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-09-04T15:30:23-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="17/100 Days of Code" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-09-04T15:30:23-07:00","datePublished":"2022-09-04T15:30:23-07:00","description":"Paper Trader User Session","headline":"17/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/dev-blog/100days/2022/09/04/day17.html"},"url":"http://localhost:4000/dev-blog/100days/2022/09/04/day17.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/dev-blog/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/dev-blog/feed.xml" title="100 Days of Code" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/dev-blog/">100 Days of Code</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/dev-blog/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">17/100 Days of Code</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-09-04T15:30:23-07:00" itemprop="datePublished">Sep 4, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h3 id="paper-trader">Paper Trader</h3>
+<p><strong>User Session</strong></p>
+
+<p>Started the refactoring process… but ended up fleshing out user session some more.</p>
+
+<ol>
+  <li>First refactoring I had to do was wrap my <code class="language-plaintext highlighter-rouge">handleLogin</code> function, which is essentially my <code class="language-plaintext highlighter-rouge">validateUser</code> function from early on, in a <code class="language-plaintext highlighter-rouge">useCallback</code> hook to resolve the compilation warning about missing dependencies in <code class="language-plaintext highlighter-rouge">useEffect</code>.</li>
+  <li>However, after that I realized I need to properly handle the JWT being stored from the <code class="language-plaintext highlighter-rouge">getCurrentUser</code> function in the App <code class="language-plaintext highlighter-rouge">useEffect</code>. This led to creating middleware that verifies the JWT, named <code class="language-plaintext highlighter-rouge">authenticateJWT</code> which utilizes the <code class="language-plaintext highlighter-rouge">jsonwebtoken</code> library’s <code class="language-plaintext highlighter-rouge">verify</code> function, and <code class="language-plaintext highlighter-rouge">ensureCurrectUser</code>, which checks if the username being queried is the same as the one saved in localStorage making the request. In addition, I needed to send the JWT with my <code class="language-plaintext highlighter-rouge">axios</code> requests.
+    <ul>
+      <li>Not too complicated to implement currently as I don’t have many routes that need this protection yet, so as I add more routes this may become a painpoint if the authorization hasn’t been implemented properly.</li>
+      <li>The only unexpected part of this was when I created the middleware in a separate function, I had to define the type for the <code class="language-plaintext highlighter-rouge">request</code>, <code class="language-plaintext highlighter-rouge">response</code>, and <code class="language-plaintext highlighter-rouge">next</code> function parameters. Luckily, this was a very straight forward fix by following this <a href="https://stackoverflow.com/questions/27676884/explicitly-specifying-types-for-express-application-request-response">Stack Overflow discussion</a>.</li>
+      <li>For the axios calls, it was also straightfoward - adding an Authorization header containing the token and then having that be extracted in <code class="language-plaintext highlighter-rouge">authenticateJWT</code></li>
+    </ul>
+  </li>
+  <li>Now that I’m adding some route protection and user session is becoming more fleshed out, I need to redirect users away from the <code class="language-plaintext highlighter-rouge">/login</code> page if they’re already logged in and send them to the <code class="language-plaintext highlighter-rouge">/login/discord-redirect</code> page.
+    <ul>
+      <li>My initial idea was to add an additional condition in my <code class="language-plaintext highlighter-rouge">Login</code> component’s <code class="language-plaintext highlighter-rouge">useEffect</code> that checks if the component is being accessed after receiving an auth code from Discord.</li>
+      <li>Unfortunately this led to both the <code class="language-plaintext highlighter-rouge">Login</code> component and the <code class="language-plaintext highlighter-rouge">DiscordRedirect</code> component to not mount properly.</li>
+    </ul>
+  </li>
+  <li>As it stands, I’m not quite sure how to properly implement the redirecting with my current set up. My possible solutions are:
+    <ul>
+      <li>Changing how I determine how the <code class="language-plaintext highlighter-rouge">DiscordRedirect</code> component is mounted
+        <ul>
+          <li>I’m using a boolean state based on if there’s an auth code in the URL (which happens if Discord redirects back to my app). If a user were to access the <code class="language-plaintext highlighter-rouge">login</code> route and I try to redirect to <code class="language-plaintext highlighter-rouge">discord-redirect</code>, there won’t be an auth code to properly change the boolean state</li>
+        </ul>
+      </li>
+      <li>Separate out the <code class="language-plaintext highlighter-rouge">DiscordRedirect</code> component so it’s not a nested route with <code class="language-plaintext highlighter-rouge">Login</code> and then utilize React Router to have private route components.
+        <ul>
+          <li>This may be the likely approach as the DiscordRedirect was intended to be a temporary component anyways and it’s starting to act more like a <code class="language-plaintext highlighter-rouge">Profile</code> component.</li>
+        </ul>
+      </li>
+      <li>Either way, there would be a fair amount of restructing and refactoring of my components to handle this change in data flow.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="next-steps">Next Steps</h3>
+<ol>
+  <li>Delve deeper into how to handle the login route redirecting based on UserContext and update the docstrings as appropriate (since a few of them are now inaccurate with the recent refactoring).</li>
+  <li>I also noticed my default tab spacing was set at <code class="language-plaintext highlighter-rouge">4</code> when it really should have been set to <code class="language-plaintext highlighter-rouge">2</code>. Since changing the formatting will show up as changes to everything in a file, that will likely be a separate PR which doesn’t make any other changes to the code.</li>
+</ol>
+
+  </div>
+
+  <a class="u-url" href="/dev-blog/100days/2022/09/04/day17.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/dev-blog/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">100 Days of Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">100 Days of Code</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/samau3"><svg class="svg-icon"><use xlink:href="/dev-blog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">samau3</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Sammy Au&#39;s 100 Days of Code</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
