@@ -1,4 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-04T23:46:45-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">17/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/04/day17.html" rel="alternate" type="text/html" title="17/100 Days of Code" /><published>2022-09-04T15:30:23-07:00</published><updated>2022-09-04T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/04/day17</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/04/day17.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-06T00:07:35-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">18/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/05/day18.html" rel="alternate" type="text/html" title="18/100 Days of Code" /><published>2022-09-05T15:30:23-07:00</published><updated>2022-09-05T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/05/day18</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/05/day18.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;User Session&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Continued on with the refactoring to clean up the user session implementation!&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The first big change was deleting the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component.
+    &lt;ul&gt;
+      &lt;li&gt;This was always a temporary component to make sure the Discord OAuth flow redirect worked, but it was also supposed to act as a buffer page that would redirect the user again to hide the extra URL parameters that come from Discord (i.e. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;code&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt;).&lt;/li&gt;
+      &lt;li&gt;However, with React Router, I can simply add the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replace&lt;/code&gt; prop when using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; component to redirect the user. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replace&lt;/code&gt; prop removes the previous location from the user’s history so they can’t hit the back button to access the route they were redirected away from.&lt;/li&gt;
+      &lt;li&gt;This means that if I redirect back to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; component from Discord and utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replace&lt;/code&gt; prop to redirect the user to where I actually want them to go, say &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Profile&lt;/code&gt;, this solves the original purpose of having the DiscordRedirect component. Therefore, I came to the obvious decicion to delete the unnecessary component.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Fortunately, not all the code from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; went to waste as some of it lives on in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Profile&lt;/code&gt; component and others moved up into the parent &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; component.
+    &lt;ul&gt;
+      &lt;li&gt;This restructuring also helped resolve my issue on implementing user session redirecting that I had trouble with yesterday.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Overall, a majority of today was just refactoring without much new code being written. Some other changes that had to be made were:
+    &lt;ol&gt;
+      &lt;li&gt;Updating the redirect URIs for Discord OAuth now that I’m no longer using the buffer route/component &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Updating docstrings after the component shuffling&lt;/li&gt;
+      &lt;li&gt;Adding a conditional that redirects the user if they’re already logged in&lt;/li&gt;
+      &lt;li&gt;Updating &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hooks (see next section)&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;While adding my conditional statement to see if a user existed in Context, I placed it near the top of my components, above the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hooks. However, this created an error: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;React Hook &quot;useEffect&quot; is called conditionally. React Hooks must be called in the exact same order in every component render.&lt;/code&gt; Luckily, a quick solution once again by following this &lt;a href=&quot;https://stackoverflow.com/a/57621246&quot;&gt;Stack Overflow discussion&lt;/a&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;The error makes sense as React needs to always be in control over what is rendered on the DOM. If a conditional blocked the rendering of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hook, it loses track of what has been called from previous renders. In addition, this is defined as the first &lt;a href=&quot;https://reactjs.org/docs/hooks-rules.html&quot;&gt;Rule of Hooks&lt;/a&gt; from the official React documention.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Try to add a logout function. This will require major reworking of the existing navigation bar, so that may have to be saved for a new PR.&lt;/li&gt;
+  &lt;li&gt;Start a PR and get a code review!&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session</summary></entry><entry><title type="html">17/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/04/day17.html" rel="alternate" type="text/html" title="17/100 Days of Code" /><published>2022-09-04T15:30:23-07:00</published><updated>2022-09-04T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/04/day17</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/04/day17.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;User Session&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Started the refactoring process… but ended up fleshing out user session some more.&lt;/p&gt;
@@ -451,41 +492,4 @@ Another day of trying to debug type issues!&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;Deploy the Discord OAuth login implementation (actually…?)!&lt;/li&gt;
   &lt;li&gt;Next post will likely be a retro on how this sprint went&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Refactoring</summary></entry><entry><title type="html">8/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/26/day8.html" rel="alternate" type="text/html" title="8/100 Days of Code" /><published>2022-08-26T15:30:23-07:00</published><updated>2022-08-26T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/26/day8</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/26/day8.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Discord OAuth Refactoring&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;More refactoring!&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;In my useEffect hooks, I was calling functions inside of them. My friend suggested moving them out of the hook but in doing so, I can’t simply include the functions in the dependency array.
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;The &apos;validateUser&apos; function makes the dependencies of useEffect Hook (at line 58) change on every render. Move it inside the useEffect callback. Alternatively, wrap the definition of &apos;validateUser&apos; in its own useCallback() Hook.&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;This is due to the factor ever time the component is rendered, the function &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;validateUser&lt;/code&gt; would have a new reference, causing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hook to constantly render as it would treat &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;validateUser&lt;/code&gt; as having changed. By wrapping &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;validateUser&lt;/code&gt; in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useCallback&lt;/code&gt; hook, this returns a memoized function giving a stable reference to use in the dependency array of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;react-portfolio&quot;&gt;React Portfolio&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;While waiting for my friend to do a code review, I started to look into upgrading my personal website to utilize React. Below is a short collection of React websites I saw for inspiration that range from simple to &lt;em&gt;how&lt;/em&gt;:
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;http://jessicaazchen.com/&quot;&gt;http://jessicaazchen.com/&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://alisapoon.herokuapp.com/&quot;&gt;https://alisapoon.herokuapp.com/&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://kulbachny.com/&quot;&gt;https://kulbachny.com/&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;React Router and External Links&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Although it is possible to create a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Link&lt;/code&gt; component that goes to an external link, React Router is designed for in-application navigation. Therefore, in situations that an external URL needs to be accessed, a normal anchor tag or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;window.location&lt;/code&gt; is &lt;a href=&quot;https://stackoverflow.com/questions/42914666/react-router-external-link&quot;&gt;probably&lt;/a&gt; the way to go.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Deploy the Discord OAuth login implementation (actually)!&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Refactoring</summary></entry></feed>
