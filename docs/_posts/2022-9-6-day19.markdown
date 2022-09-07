@@ -1,0 +1,39 @@
+---
+layout: post
+title:  "19/100 Days of Code"
+date:   2022-09-6 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**User Session Refactoring**
+
+Had the first review of my PR for adding User Session!  
+
+1. Some more major refactoring needs to be done
+    1. A lot of my functions that handle user session were written in the App component, but my friend suggested moving those out into a separate file too
+        - Hopefully this will be a frictionless change but I imagine there might be some errors related to the function types and `useEffect` dependencies
+    2. My `getCurrentUser` function which just checks if there's a user that has been previously logged in by looking for a JWT in the localStorage could be streamlined better
+        - Specifically, decoding the JWT for the username to send back to the server, which still decodes the JWT anyway to extract the username.
+        - Making this change would also mean changing the way the route handles getting the user's information from the eventual PostgreSQL database.
+        - Current plans to make the changes would be having a simple `/profile` route and when a request is made to the route, the JWT is decoded for the username and is used to query the database for that user's information.
+    3. I can also move my `Routes` components into a different file so simplify my `App` component further
+
+**Logout Function**
+
+Also started implementing a logout function to end the user session.
+
+1. The function itself wasn't too complicated. 
+    - Set the `user` and `token` states to `null`
+    - Clear the localStorage of the `userToken` JWT
+2. However, the tricky part came with how to display the Logout option in the navbar.
+    - The way I had it set up was using a `.map` method on an array of strings that represented my navbar tabs. `['Home', 'Profile', 'Login']`
+    - However, if a user exists, I wanted to replace the `Login` tab with `Logout` with an `onClick` function that calls my logout function.
+3. I'll need to do more tinkering around to see how to utilize the `map` method, where the last element `Logout` will receive a different component
+    - At the moment, I switched to hard coded navbar tabs. This may be the permanent solution if I can't get the `map` method to work without errors. However, the Evergreen UI documentation use `map` for their navbars so I want to follow that as much as possible. 
+
+### Next Steps
+1. Wrap up the refactoring as I approach the end of this feature so I can start working on my retrospective
+2. Wrap up the logout feature soon too as it's closely tied to user sessions
+    - I excluded it from this recent PR as it was already getting to big with about 15 file changes, 80 commits, and almost 500 lines of code added
