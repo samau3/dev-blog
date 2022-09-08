@@ -1,4 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-06T23:44:58-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">19/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/06/day19.html" rel="alternate" type="text/html" title="19/100 Days of Code" /><published>2022-09-06T15:30:23-07:00</published><updated>2022-09-06T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/06/day19</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/06/day19.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-07T23:33:42-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">20/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/07/day20.html" rel="alternate" type="text/html" title="20/100 Days of Code" /><published>2022-09-07T15:30:23-07:00</published><updated>2022-09-07T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/07/day20</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/07/day20.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;User Session Refactoring&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;I was unsure what some of the comments I received on the PR, so I had a short discussion with my friend about how to approach some changes:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;More consistent error handling. At the moment my error handling is pretty much just placeholder statements to come back to once I flesh out Error cases. However, there is a danger that this gets buried as a todo that is never revisited. As such, I’ll bump up the priority for having error classes started. Some quick notes from the discussion with my friend just so I have a record of it too:
+    &lt;ul&gt;
+      &lt;li&gt;It’s important to consider how a user could end up in a specific case that triggers an error&lt;/li&gt;
+      &lt;li&gt;in those situations one should consider reasonable ways to handle the error, eg. redirecting them back to the login page&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;I didn’t realize I could &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;export&lt;/code&gt; variables individually. Not a big change but will help in the future if I add more &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const&lt;/code&gt; variables that need to be exported so I don’t have to remember to change the last line of the file to include it.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;    &lt;span class=&quot;c1&quot;&gt;// doing this&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;KEY1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;some string 1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;KEY2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;some string 2&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    
+    &lt;span class=&quot;c1&quot;&gt;// instead of this&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;KEY1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;some string 1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;KEY2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;some string 2&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;KEY1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;KEY2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// will need to update this everytime to export new variables&lt;/span&gt;
+    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ol start=&quot;3&quot;&gt;
+  &lt;li&gt;Originally my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component acted as just my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Routes&lt;/code&gt; file, but as more functions were added, that was no longer the case. This makes pulling them my new functions and routes into different files necessary.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Implement the changes to the PR and hopefully merge them into the main branch soon! (After another round of code review)&lt;/li&gt;
+  &lt;li&gt;The next few PRs should be popping up soon:
+    &lt;ol&gt;
+      &lt;li&gt;Reformat all the files and exclude it from the commit history so &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git blame&lt;/code&gt; doesn’t get overriden.&lt;/li&gt;
+      &lt;li&gt;Add Error classes and routes.&lt;/li&gt;
+      &lt;li&gt;The logout function is will have to be delayed as the above PRs will likely take precendent so I can minimize merge conflicts as much as possible.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Refactoring</summary></entry><entry><title type="html">19/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/06/day19.html" rel="alternate" type="text/html" title="19/100 Days of Code" /><published>2022-09-06T15:30:23-07:00</published><updated>2022-09-06T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/06/day19</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/06/day19.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;User Session Refactoring&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Had the first review of my PR for adding User Session!&lt;/p&gt;
@@ -454,55 +494,4 @@ Another day of trying to debug type issues!&lt;/p&gt;
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Continue to work on implementing user session&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Fly.io Deployment</summary></entry><entry><title type="html">10/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/28/day10.html" rel="alternate" type="text/html" title="10/100 Days of Code" /><published>2022-08-28T15:30:23-07:00</published><updated>2022-08-28T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/28/day10</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/28/day10.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Discord OAuth Refactoring&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Unnecessary state
-    &lt;ul&gt;
-      &lt;li&gt;Following up on the discussion on useCallback and useEffect, my friend wondered if the dependency on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;csrfToken&lt;/code&gt; was necessary. Currently, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component generates a string and stores it in localStorage, which the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component checks to validate with Discord OAuth’s echoed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter. Throughout this whole process, only the string in localStorage is being interacted with.&lt;/li&gt;
-      &lt;li&gt;This brings to question the necessity of having &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;csrfToken&lt;/code&gt; be a state in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component. The state is not being changed or utilized, so to reduce unnecessary complexity, I removed the csrfToken state in the component and just had all relevant components just rely on localStorage.&lt;/li&gt;
-      &lt;li&gt;When I start adding user sessions, I’ll revisit what states and tokens are needed, but with the way things are currently, this use of state is not needed.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;retrospective-on-the-discord-oauth-implementation&quot;&gt;Retrospective on the Discord OAuth Implementation&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Researching and Planning vs Jumping In&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;When I initially set out to implement the Discord OAuth flow for logging in, I skimmed the documentation and jumped to using their &lt;strong&gt;Authorization Code Grant&lt;/strong&gt; flow. This led to constant back and forth of checking the documentation, writing code, encountering an error, checking the documentation again, then deleting the code I wrote. After spending a frustrating few hours of wondering why it wasn’t working, I decided to sit down and read through the documentation and the example that I was trying to follow. In doing so, I realized that what I was doing was only half of what I needed, and the first half of the documentation going over &lt;strong&gt;Implicit Grant&lt;/strong&gt; flow had information and code that I also needed for &lt;strong&gt;Authorization Code Grant&lt;/strong&gt; flow to work (&lt;a href=&quot;https://samau3.github.io/dev-blog/100days/2022/08/19/day1.html&quot;&gt;discussed on Day 1&lt;/a&gt;).&lt;/li&gt;
-      &lt;li&gt;There are times when just jumping around the documentation and picking out code chunks that you need will work. However, this time that didn’t work for me because OAuth was a process I never worked with before. The lesson here is to try to implement documentation examples whenever possible if working with something new. Also, differentiating between entire processes (OAuth flow) and just one function (a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ChartJS&lt;/code&gt; component or an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request) will help decide how thorough the documentation should be read before starting.&lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;p align=&quot;center&quot;&gt;
-     &lt;img src=&quot;https://i.redd.it/2z08tsdqms011.jpg&quot; alt=&quot;Read documentation for a few minutes or read Stack Overflow for 2 hours&quot; width=&quot;50%&quot; /&gt;
-     &lt;br /&gt;
-     &lt;a href=&quot;https://www.reddit.com/r/ProgrammerHumor/comments/8myx9u/docs/&quot;&gt;
-     Source
-     &lt;/a&gt;
- &lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Getting things done vs preparing for future features&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;This one is pretty straightforward if one codes with reusability and separation of concerns in mind. However, when focused on just making sure things work to begin with, that’s when it gets unclear. While I was working on making components and routes for the Discord OAuth, I found myself not writing code and trying to plan around how to make sure my code isn’t too messy. However, without a clear idea of how it should work yet this led to going in circles about how to write something.&lt;/li&gt;
-      &lt;li&gt;To overcome this, I changed my approach and started to make sure I could get code that works, and then refactor to clean up my functions and moving things out into different files. However, since I knew I had to make those changes as I was writing my code, I made it easy to pull out and separate those pieces of code. As I gain more experience reading others’ code and how to write different functions, this process will come more quickly as I can better plan out how things should be broken down earlier. I had a glimpse of that, but given my long refactoring process, there is still plenty to learn and work towards.&lt;/li&gt;
-      &lt;li&gt;As I continue with this project, I imagine the refactoring process will go smoother, not necessarily faster. Especially since I have more code to refer back to on how to approach something along with my old projects. I’ll be keeping an eye on my refactoring process throughout &lt;a href=&quot;https://samau3.github.io/dev-blog/&quot;&gt;this journey&lt;/a&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Continue on with the roadmap for features to add (e.g. buy/sell stock, portfolio data, user sessions), with user session and route authorization being the next features to build on and utilize the Discord authorization.&lt;/li&gt;
-  &lt;li&gt;However, the next major step will be finding a new service to host the backend server
-    &lt;ul&gt;
-      &lt;li&gt;Currently the app uses Heroku, but with the recent announcement that Heroku is getting rid of their free tier, I need to start looking for a replacement before expanding my backend further&lt;/li&gt;
-      &lt;li&gt;At the moment, &lt;a href=&quot;https://fly.io/docs/about/pricing/#free-allowances&quot;&gt;Fly.io&lt;/a&gt; and &lt;a href=&quot;https://render.com/docs/free&quot;&gt;Render&lt;/a&gt; are looking like the next best replacement for what I wanted Heroku to do, namely hosting server and a PostgreSQL database.
-        &lt;ul&gt;
-          &lt;li&gt;Unfortunately, Render PostgreSQL databases are automatically deleted after 90 Days for free plans. Therefore, Fly.io is likely the service I’ll go with (pending further research into its documentation).&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Discord OAuth Refactoring</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Fly.io Deployment</summary></entry></feed>

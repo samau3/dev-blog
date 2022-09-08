@@ -1,0 +1,39 @@
+---
+layout: post
+title:  "20/100 Days of Code"
+date:   2022-09-7 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**User Session Refactoring**
+
+I was unsure what some of the comments I received on the PR, so I had a short discussion with my friend about how to approach some changes:
+
+1. More consistent error handling. At the moment my error handling is pretty much just placeholder statements to come back to once I flesh out Error cases. However, there is a danger that this gets buried as a todo that is never revisited. As such, I'll bump up the priority for having error classes started. Some quick notes from the discussion with my friend just so I have a record of it too:
+    - It's important to consider how a user could end up in a specific case that triggers an error
+    - in those situations one should consider reasonable ways to handle the error, eg. redirecting them back to the login page
+2. I didn't realize I could `export` variables individually. Not a big change but will help in the future if I add more `const` variables that need to be exported so I don't have to remember to change the last line of the file to include it.
+    {%highlight javascript%}
+    // doing this
+    export const KEY1 = "some string 1";
+    export const KEY2 = "some string 2";
+    
+    // instead of this
+    const KEY1 = "some string 1"
+    const KEY2 = "some string 2"
+
+    export {KEY1, KEY2}; // will need to update this everytime to export new variables
+    {%endhighlight%}
+
+{:start="3"}
+3. Originally my `App` component acted as just my `Routes` file, but as more functions were added, that was no longer the case. This makes pulling them my new functions and routes into different files necessary.
+
+
+### Next Steps
+1. Implement the changes to the PR and hopefully merge them into the main branch soon! (After another round of code review)
+2. The next few PRs should be popping up soon:
+    1. Reformat all the files and exclude it from the commit history so `git blame` doesn't get overriden.
+    2. Add Error classes and routes.
+    3. The logout function is will have to be delayed as the above PRs will likely take precendent so I can minimize merge conflicts as much as possible.
