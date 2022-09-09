@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>21/100 Days of Code | 100 Days of Code</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="21/100 Days of Code" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Paper Trader User Session Refactoring Again" />
+<meta property="og:description" content="Paper Trader User Session Refactoring Again" />
+<link rel="canonical" href="http://localhost:4000/dev-blog/100days/2022/09/08/day21.html" />
+<meta property="og:url" content="http://localhost:4000/dev-blog/100days/2022/09/08/day21.html" />
+<meta property="og:site_name" content="100 Days of Code" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-09-08T15:30:23-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="21/100 Days of Code" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-09-08T15:30:23-07:00","datePublished":"2022-09-08T15:30:23-07:00","description":"Paper Trader User Session Refactoring Again","headline":"21/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/dev-blog/100days/2022/09/08/day21.html"},"url":"http://localhost:4000/dev-blog/100days/2022/09/08/day21.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/dev-blog/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/dev-blog/feed.xml" title="100 Days of Code" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/dev-blog/">100 Days of Code</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/dev-blog/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">21/100 Days of Code</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-09-08T15:30:23-07:00" itemprop="datePublished">Sep 8, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h3 id="paper-trader">Paper Trader</h3>
+<p><strong>User Session Refactoring Again</strong></p>
+
+<p>A somewhat straightforward day of just implementing the changes planned out yesterday. However, with refactoring comes the breaking of previously functional parts.</p>
+
+<ol>
+  <li>Moved all my login/user session related functions that were previously defined in the <code class="language-plaintext highlighter-rouge">App</code> component and used in a <code class="language-plaintext highlighter-rouge">useEffect</code> to a separate <code class="language-plaintext highlighter-rouge">UserSession.ts</code> file. These functions were then defined as class methods to better organize the functions.
+    <ul>
+      <li>I orginially thought I would have to wrap these functions in a <code class="language-plaintext highlighter-rouge">useCallback</code> hook when defining them in the UserSession class, and list them as a dependency in the <code class="language-plaintext highlighter-rouge">useEffect</code> that calls them</li>
+      <li>However, this would break the <a href="https://reactjs.org/docs/hooks-rules.html">Rule of Hooks</a>, where they can only be used inside React functions. In addition, the were no compliation errors or linter warnings from not including these functions as in the <code class="language-plaintext highlighter-rouge">useEffect</code> dependency array.</li>
+    </ul>
+  </li>
+  <li>I changed my previous <code class="language-plaintext highlighter-rouge">/users/:username</code> route to just be <code class="language-plaintext highlighter-rouge">/profile</code>, where the JWT is decoded in the backend to determine what username to query the future database for.
+    <ul>
+      <li>However in doing so, I also had to change what was being stored in <code class="language-plaintext highlighter-rouge">res.locals.user</code> after the JWT is verified by my middleware.</li>
+      <li>Previously I would just store the entire JWT in <code class="language-plaintext highlighter-rouge">res.locals.user</code> and after all my middleware, the <code class="language-plaintext highlighter-rouge">/users/:username</code> route would determine the username from <code class="language-plaintext highlighter-rouge">req.params.username</code>. However since I’m no longer sending a <code class="language-plaintext highlighter-rouge">username</code> parameter, I needed to access just the <code class="language-plaintext highlighter-rouge">username</code> property of the JWT being stored to <code class="language-plaintext highlighter-rouge">res.locals.user</code>.</li>
+      <li>The solution was to extract the <code class="language-plaintext highlighter-rouge">username</code> property only if the verified JWT returned an object. This way I didn’t have to change the other parts of my app that relied on the returned JSON from <code class="language-plaintext highlighter-rouge">/profile</code> having a different structure.</li>
+    </ul>
+  </li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript">    <span class="kd">const</span> <span class="nx">verifiedUser</span> <span class="o">=</span> <span class="nx">jwt</span><span class="p">.</span><span class="nx">verify</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span> <span class="nx">JWT_SECRET_KEY</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">verifiedUser</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">string</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">verifiedUser</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+    <span class="p">}</span>
+    </code></pre></figure>
+
+<ol start="3">
+  <li>Along with moving code to different files, I also started to organize them into different directories. Luckily VS Code prompted to automatically update the pathing for files that imported from these reorganized files. Unluckily, this not all files updated so there was some disgruntled <code class="language-plaintext highlighter-rouge">Shift</code> +<code class="language-plaintext highlighter-rouge"> Ctrl</code> + <code class="language-plaintext highlighter-rouge">+</code> and checking error messages to find the files that needed updating.
+    <ul>
+      <li>There was also an error with VS Code not properly finding a file after it was renamed from <code class="language-plaintext highlighter-rouge">userSession.ts</code> to <code class="language-plaintext highlighter-rouge">UserSession.ts</code>. I had to quit and reopen VS Code to resolve the issue.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="next-steps">Next Steps</h3>
+<ol>
+  <li>I noticed that there can be a long delay between redirecting the user to the Profile page after being redirected from Discord’s OAuth flow.
+    <ul>
+      <li>A quick fix that I tried was to add an additional conditional statement to see if there is a <code class="language-plaintext highlighter-rouge">code</code> parameter in the URL. If there is, then the component will load a spinner. Then if there is a <code class="language-plaintext highlighter-rouge">user</code> in the App context, upon remounting of the component it will redirect to the Profile page before it hits the spinner condition.</li>
+      <li>I’ll have to dig deeper to make the spinner appear properly, but good to know that this is a possible solution that can be fleshed out.</li>
+    </ul>
+  </li>
+  <li>Based on this, a (growing) list of PRs to make just for fixing issues and improving the user experience:
+    <ol>
+      <li>Change the formatting for all the files.</li>
+      <li>Resolve navbar highlighting not being accurate after Discord Redirect.
+        <ul>
+          <li>Though I may have to scrap this feature altogether as my navbar is being redone for the logout function.</li>
+        </ul>
+      </li>
+      <li>Having a Loading screen/spinner after Discord redirect so the user can tell their being logged in.</li>
+    </ol>
+  </li>
+</ol>
+
+  </div>
+
+  <a class="u-url" href="/dev-blog/100days/2022/09/08/day21.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/dev-blog/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">100 Days of Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">100 Days of Code</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/samau3"><svg class="svg-icon"><use xlink:href="/dev-blog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">samau3</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Sammy Au&#39;s 100 Days of Code</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

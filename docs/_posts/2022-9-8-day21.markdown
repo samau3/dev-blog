@@ -1,0 +1,40 @@
+---
+layout: post
+title:  "21/100 Days of Code"
+date:   2022-09-8 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**User Session Refactoring Again**
+
+A somewhat straightforward day of just implementing the changes planned out yesterday. However, with refactoring comes the breaking of previously functional parts.
+
+1. Moved all my login/user session related functions that were previously defined in the `App` component and used in a `useEffect` to a separate `UserSession.ts` file. These functions were then defined as class methods to better organize the functions.
+    - I orginially thought I would have to wrap these functions in a `useCallback` hook when defining them in the UserSession class, and list them as a dependency in the `useEffect` that calls them
+    - However, this would break the [Rule of Hooks](https://reactjs.org/docs/hooks-rules.html), where they can only be used inside React functions. In addition, the were no compliation errors or linter warnings from not including these functions as in the `useEffect` dependency array.
+2. I changed my previous `/users/:username` route to just be `/profile`, where the JWT is decoded in the backend to determine what username to query the future database for. 
+    - However in doing so, I also had to change what was being stored in `res.locals.user` after the JWT is verified by my middleware.
+    - Previously I would just store the entire JWT in `res.locals.user` and after all my middleware, the `/users/:username` route would determine the username from `req.params.username`. However since I'm no longer sending a `username` parameter, I needed to access just the `username` property of the JWT being stored to `res.locals.user`.
+    - The solution was to extract the `username` property only if the verified JWT returned an object. This way I didn't have to change the other parts of my app that relied on the returned JSON from `/profile` having a different structure.
+    {%highlight javascript%}
+    const verifiedUser = jwt.verify(token, JWT_SECRET_KEY)
+    if (typeof verifiedUser !== 'string') {
+        res.locals.user = verifiedUser.username;
+    }
+    {%endhighlight%}
+
+{:start="3"}
+3. Along with moving code to different files, I also started to organize them into different directories. Luckily VS Code prompted to automatically update the pathing for files that imported from these reorganized files. Unluckily, this not all files updated so there was some disgruntled `Shift` +` Ctrl` + `+` and checking error messages to find the files that needed updating.
+    - There was also an error with VS Code not properly finding a file after it was renamed from `userSession.ts` to `UserSession.ts`. I had to quit and reopen VS Code to resolve the issue.
+
+### Next Steps
+1. I noticed that there can be a long delay between redirecting the user to the Profile page after being redirected from Discord's OAuth flow.
+    - A quick fix that I tried was to add an additional conditional statement to see if there is a `code` parameter in the URL. If there is, then the component will load a spinner. Then if there is a `user` in the App context, upon remounting of the component it will redirect to the Profile page before it hits the spinner condition.
+    - I'll have to dig deeper to make the spinner appear properly, but good to know that this is a possible solution that can be fleshed out.
+2. Based on this, a (growing) list of PRs to make just for fixing issues and improving the user experience:
+    1. Change the formatting for all the files.
+    2. Resolve navbar highlighting not being accurate after Discord Redirect.
+        - Though I may have to scrap this feature altogether as my navbar is being redone for the logout function.
+    3. Having a Loading screen/spinner after Discord redirect so the user can tell their being logged in.
