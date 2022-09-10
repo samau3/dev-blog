@@ -1,0 +1,36 @@
+---
+layout: post
+title:  "22/100 Days of Code"
+date:   2022-09-9 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+**Final User Session Refactoring?**
+
+1. My friend and I were discussing if the typing for `useState` needed to be `useState<AN_INTERFACE | null>(null)` or if it could just be `useState<AN_INTERFACE>(null)`. 
+    - I used this [Stack Overflow discussion](https://stackoverflow.com/a/59126275) to defend what I currently have, while my friend referred to [this one](https://stackoverflow.com/a/61823158/7995306).
+    - After discussing the error I receive from not using `| null`, it came down to potentially different linters in our development environments. An interesting conclusion, but not clear which is necessarily better. 
+2. Another discussion that came out of this issue is the use `null` versus `undefined`. 
+    - I personally thought `null` was better since it's more of an explicit "the value is set to nothing", and shows that the value is not supposed to be have a value.
+    - However my friend advocated for the use of `undefined` instead as:
+
+        > I like to think of null as "set to nothing", whereas undefined is more like "nothing is set"
+
+    - This lead me to digging deeper into `null` vs `undefined` use cases. Two discussions convinced me to try using `undefined` more often than `null`:
+        - A [Dev post by Andreas Bergqvist](https://dev.to/andreasbergqvist/typescript-undefined-vs-null-3a22).
+        - And a much longer [Github discussion](https://github.com/sindresorhus/meta/discussions/7).
+    - Note, it comes down to use case as `null` and `undefined` are used frequently in external libraries and APIs anyway ([also looks like using both is a popular opinion](https://twitter.com/sindresorhus/status/1114895254602129408?s=20&t=3WR93AtgXahsJuMb3VQyPA)). But, I'll definitely give using `undefined` more a shot.
+
+3. Switched my `generateRandomString` function to just utilize `uuid` instead to form random strings. No need to reinvent the wheel for this one!
+4. Also did some minor file/function changes like renaming my `Api.ts` file to be `PaperTraderApi.ts` to match the class being exported.
+
+### Learnings
+1. In the process of switching my functions to use `undefined` instead of `null`, I noticed I was being inconsistent with how I was accessing localStorage, sometimes using the functional interface and sometimes using direct property access.
+    - This lead me to finding this [discussion on localStorage](https://stackoverflow.com/questions/12632463/is-localstorage-getitemitem-better-than-localstorage-item-or-localstoragei/24904863#24904863) best practices. 
+    - Here, it's mentioned that using the functional interface (e.g. `getItem()` instead of `[item]`) is the preferred approach. However, the functional interface returns `null` if the item doesn't exist whereas direct property access returns `undefined`. 
+    - So right after my decision to use `undefined` over `null`, I already encounted an exception. Given the fact that functional interface is the preferred method for iteracting with localStorage, I decided to stick to that and be flexible in my use of `undefined` and `null` in this web app.
+
+### Next Steps
+1. A restrospective?

@@ -1,4 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-08T22:47:57-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">21/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/08/day21.html" rel="alternate" type="text/html" title="21/100 Days of Code" /><published>2022-09-08T15:30:23-07:00</published><updated>2022-09-08T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/08/day21</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/08/day21.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-10T00:50:04-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">22/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/09/day22.html" rel="alternate" type="text/html" title="22/100 Days of Code" /><published>2022-09-09T15:30:23-07:00</published><updated>2022-09-09T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/09/day22</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/09/day22.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Final User Session Refactoring?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;My friend and I were discussing if the typing for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useState&lt;/code&gt; needed to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useState&amp;lt;AN_INTERFACE | null&amp;gt;(null)&lt;/code&gt; or if it could just be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useState&amp;lt;AN_INTERFACE&amp;gt;(null)&lt;/code&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;I used this &lt;a href=&quot;https://stackoverflow.com/a/59126275&quot;&gt;Stack Overflow discussion&lt;/a&gt; to defend what I currently have, while my friend referred to &lt;a href=&quot;https://stackoverflow.com/a/61823158/7995306&quot;&gt;this one&lt;/a&gt;.&lt;/li&gt;
+      &lt;li&gt;After discussing the error I receive from not using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;| null&lt;/code&gt;, it came down to potentially different linters in our development environments. An interesting conclusion, but not clear which is necessarily better.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Another discussion that came out of this issue is the use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; versus &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;I personally thought &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; was better since it’s more of an explicit “the value is set to nothing”, and shows that the value is not supposed to be have a value.&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;However my friend advocated for the use of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; instead as:&lt;/p&gt;
+
+        &lt;blockquote&gt;
+          &lt;p&gt;I like to think of null as “set to nothing”, whereas undefined is more like “nothing is set”&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+      &lt;li&gt;This lead me to digging deeper into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; vs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; use cases. Two discussions convinced me to try using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; more often than &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt;:
+        &lt;ul&gt;
+          &lt;li&gt;A &lt;a href=&quot;https://dev.to/andreasbergqvist/typescript-undefined-vs-null-3a22&quot;&gt;Dev post by Andreas Bergqvist&lt;/a&gt;.&lt;/li&gt;
+          &lt;li&gt;And a much longer &lt;a href=&quot;https://github.com/sindresorhus/meta/discussions/7&quot;&gt;Github discussion&lt;/a&gt;.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Note, it comes down to use case as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; are used frequently in external libraries and APIs anyway (&lt;a href=&quot;https://twitter.com/sindresorhus/status/1114895254602129408?s=20&amp;amp;t=3WR93AtgXahsJuMb3VQyPA&quot;&gt;also looks like using both is a popular opinion&lt;/a&gt;). But, I’ll definitely give using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; more a shot.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Switched my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;generateRandomString&lt;/code&gt; function to just utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uuid&lt;/code&gt; instead to form random strings. No need to reinvent the wheel for this one!&lt;/li&gt;
+  &lt;li&gt;Also did some minor file/function changes like renaming my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Api.ts&lt;/code&gt; file to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PaperTraderApi.ts&lt;/code&gt; to match the class being exported.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;In the process of switching my functions to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt;, I noticed I was being inconsistent with how I was accessing localStorage, sometimes using the functional interface and sometimes using direct property access.
+    &lt;ul&gt;
+      &lt;li&gt;This lead me to finding this &lt;a href=&quot;https://stackoverflow.com/questions/12632463/is-localstorage-getitemitem-better-than-localstorage-item-or-localstoragei/24904863#24904863&quot;&gt;discussion on localStorage&lt;/a&gt; best practices.&lt;/li&gt;
+      &lt;li&gt;Here, it’s mentioned that using the functional interface (e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getItem()&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[item]&lt;/code&gt;) is the preferred approach. However, the functional interface returns &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; if the item doesn’t exist whereas direct property access returns &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt;.&lt;/li&gt;
+      &lt;li&gt;So right after my decision to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; over &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt;, I already encounted an exception. Given the fact that functional interface is the preferred method for iteracting with localStorage, I decided to stick to that and be flexible in my use of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; in this web app.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;A restrospective?&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Final User Session Refactoring?</summary></entry><entry><title type="html">21/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/08/day21.html" rel="alternate" type="text/html" title="21/100 Days of Code" /><published>2022-09-08T15:30:23-07:00</published><updated>2022-09-08T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/08/day21</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/08/day21.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;User Session Refactoring Again&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;A somewhat straightforward day of just implementing the changes planned out yesterday. However, with refactoring comes the breaking of previously functional parts.&lt;/p&gt;
@@ -434,79 +481,4 @@ Another day of trying to debug type issues!&lt;/p&gt;
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Can finally go back to working out user sessions!&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Fly.io CI/CD debugging</summary></entry><entry><title type="html">12/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/08/30/day12.html" rel="alternate" type="text/html" title="12/100 Days of Code" /><published>2022-08-30T15:30:23-07:00</published><updated>2022-08-30T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/08/30/day12</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/08/30/day12.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Fly.io CI/CD&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Yesterday, I added a Github Action that allowed for automatic build and deployment to Fly.io once the main branch receives a merge request. However, this build and redeploy doesn’t happen when there’s a pull request, which means that there could be deployment issues that won’t be caught until it hits production environment.&lt;/li&gt;
-  &lt;li&gt;To prevent this problem, I added a new Github Action that builds and deploys on pull request. Luckily there was an existing &lt;a href=&quot;https://github.com/superfly/fly-pr-review-apps&quot;&gt;Github Action&lt;/a&gt; that I could utilize. Implementing this required more work than I initially anticipated though:
-    &lt;ul&gt;
-      &lt;li&gt;When trying to install the action from Github Marketplace, it didn’t offer the customization that I needed:
- &lt;img src=&quot;../../../../images/20220830/PRflyactionmarket.png&quot; alt=&quot;PR Review Apps on fly.io action on Github Marketplace&quot; /&gt;&lt;/li&gt;
-      &lt;li&gt;Then when I manually try to add the action by creating a new workflow on Github, it creates it on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; branch and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.yml&lt;/code&gt; syntax still isn’t all complete:
- &lt;img src=&quot;../../../../images/20220830/PRflyaction.png&quot; alt=&quot;PR Review Apps on fly.io action via new workflow&quot; /&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;This led me to utilize the basic example from the &lt;a href=&quot;https://github.com/superfly/fly-pr-review-apps&quot;&gt;Github repository&lt;/a&gt; for the action, but that also had issues:
-    &lt;ul&gt;
-      &lt;li&gt;The name of the action is outdated, being called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;brentd/fly-staging-app@v1&lt;/code&gt;, which left me confused about how the this action is utilized in the example. I checked if others had this issue by checking the Issues and Pull Requests tabs, and found that there’s already an open PR regarding this issue. Hopefully it gets accepted and merged. 
- &lt;img src=&quot;../../../../images/20220830/PRflyactionmarketPR.png&quot; alt=&quot;Open PR for this action&quot; /&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;After adjusting the example and customizing my options, I tried to utilize the action but encountered a few errors:
-    &lt;ul&gt;
-      &lt;li&gt;Without a name for the app, the action is supposed to set one based on the default option &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Defaults to pr-{number}-{repo_org}-{repo_name}.&lt;/code&gt; However, I got &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pr-{number}-null-null&lt;/code&gt;, and there is an &lt;a href=&quot;https://github.com/superfly/fly-pr-review-apps/issues/10&quot;&gt;open issue&lt;/a&gt; about it at the time of writing this.&lt;/li&gt;
-      &lt;li&gt;Another issue is that the action had another error log related to having two active apps in an organization as I was building a temporary app in the same organization as the production app.
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ...
-  Error failed to get app: Could not find App &quot;paper-trader-pr15&quot;
-  ...
-  Error To create more than 2 apps please add a payment method. https://fly.io/dashboard/paper-trader/billing
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;To fix the naming issue, I decided to just give it a name following the repo instructions of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;myapp-pr-$&lt;/code&gt;. For the 2 apps issue, I created a new organization in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly.io&lt;/code&gt; account and had the action create the temporary build deploy there by updating the action environment variable to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;env: FLY_ORG: paper-trader-test&lt;/code&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;After that, the build and deploy on PR worked! But another feature of this action was not working properly - when the PR is closed, the action destroys the fly app and removes the github environment. Unfortunately, the Github environments are not being removed.
-    &lt;ul&gt;
-      &lt;li&gt;Looking up the error, there was this &lt;a href=&quot;https://github.com/actions/first-interaction/issues/10&quot;&gt;issue&lt;/a&gt; and the discussion mentioned it happens when there are permission issues.
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  Error: Resource not accessible by integration
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Then I remembered a comment in the action that handles deleting Github environments…
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  name: Clean up GitHub environment
-  uses: strumwolf/delete-deployment-environment@v2
-  if: $
-  with:
-    # ⚠️ The provided token needs permission for admin write:org
-    token: $
-    environment: pr-$
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;So I created a new token that does have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;admin write:org&lt;/code&gt; permissions!&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Unfortunately, after getting passed the permissions error, a new one popped up
-    &lt;ul&gt;
-      &lt;li&gt;This one appears to be related to the wrong naming convention for the environments? I will have to do more digging into it tomorrow. If I’m unable to find a solution I’ll probably remove the action that cleans up Github environments and just manually delete them to move on for now.
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  deactivating deployments in environment pr-16
-  Error: Not Found
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Adding User Sessions&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Most of my day was spent trying to figure out the Github actions, but did briefly jump back to my JWT issue. Latching on to my assumption from yesteday about Discord authorization failing so no token it returned, a quick solution was to only utilize the JWT object if it’s valid.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;decodedToken&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;decodeToken&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// decodeToken is a function from react-jwt&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;username&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;decodedToken&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;decodedToken&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;username&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Invalid&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
-    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Spend a little more time with the Github action, then go back to working on user session&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Fly.io CI/CD</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Fly.io CI/CD debugging</summary></entry></feed>
