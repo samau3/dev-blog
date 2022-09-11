@@ -1,0 +1,20 @@
+---
+layout: post
+title:  "23/100 Days of Code"
+date:   2022-09-10 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader User Session Retrospective
+
+Finally can wrap up this feature implementation! One more small change needs to be checked before I can merge the branch into main, but it's essentially good to go at this point. As such, some quick thoughts on how this feature went about:
+
+1. There were a few changes that my friend suggested that I considered doing originally, but ended up unsure if it was necessary. While it is frustrating to have to change code I wrote to what I considered originally, it's also assuring to know that I knew what the better solution was. In terms of making that right decision more often, it comes down to having more experience and weighing the why one decision is preferrable over the other.
+
+2. Although I enjoyed refactoring my code after I was comfortable that it works, there are situations where I focus on cleaning up the existing code rather than finding an alternative that could be better. A good example was cleaning up my `randomStringGenerator` function, when I could have just used the `uuid` package. I'd attribute this to being too deep in the code and needing to take time to step back and reevaluate the code objectively. However, the more exposure I have to these different problems, the better I'll be at determining the optimal approach earlier on. 
+
+That's about it for the User Session retrospective. It's been a while since the last one but that's because I didn't do one for the Fly.io deployment process. That process doesn't really need a retrospective since it was more or less a straightforward process of following documentation and checking Stack Overflow discussions to resolve errors. After going through the Discord OAuth process, that experience carried over to helping me work through the Fly.io CI/CD process.
+
+### Next Steps
+1. Time to start all those PRs! Will probably start with adding the logout function since that has already been started, though I will have to deal with merge conflicts before I continue on.
