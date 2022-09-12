@@ -1,4 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-11T00:23:40-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">23/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/10/day23.html" rel="alternate" type="text/html" title="23/100 Days of Code" /><published>2022-09-10T15:30:23-07:00</published><updated>2022-09-10T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/10/day23</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/10/day23.html">&lt;h3 id=&quot;paper-trader-user-session-retrospective&quot;&gt;Paper Trader User Session Retrospective&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-12T00:31:02-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">24/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/11/day24.html" rel="alternate" type="text/html" title="24/100 Days of Code" /><published>2022-09-11T15:30:23-07:00</published><updated>2022-09-11T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/11/day24</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/11/day24.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
+
+&lt;p&gt;Finally was able to merge my PR for User Sessions after a few more minor commits! Unfortunately, now I’m encountering fly.io issues.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;My Github action encountered deployment issues to fly.io, but when I deploy from my machine directly, there are no deployment issues despite no changes in the fly.toml (deployment configuration file) or code.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Then, it seems the newly deployed app was being cached by fly.io where my new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REDIRECT_URI&lt;/code&gt; value wasn’t being updated to go to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/login&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/login/discord-redirect&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Given that it seems to be cached, I tried deleting the deployed app and redoing the entire deployment process. However, now when I try to access the deployed app on fly.io, I get a connection reset message…&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;After spending so much time trying to debug this, I’ll have to try again tomorrow. Very unfortunate with how fly.io is turning out since it seemed very functional early on. Not too much to write about today since most of it has been digging through fly.io logs and trying to debug what’s going wrong.&lt;/p&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Try to figure out what’s going wrong with my fly.io deployments, possibly redoing the deployment process again.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Fly.io Issues</summary></entry><entry><title type="html">23/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/10/day23.html" rel="alternate" type="text/html" title="23/100 Days of Code" /><published>2022-09-10T15:30:23-07:00</published><updated>2022-09-10T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/10/day23</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/10/day23.html">&lt;h3 id=&quot;paper-trader-user-session-retrospective&quot;&gt;Paper Trader User Session Retrospective&lt;/h3&gt;
 
 &lt;p&gt;Finally can wrap up this feature implementation! One more small change needs to be checked before I can merge the branch into main, but it’s essentially good to go at this point. As such, some quick thoughts on how this feature went about:&lt;/p&gt;
 
@@ -389,55 +410,4 @@ Another day of trying to debug type issues!&lt;/p&gt;
   &lt;li&gt;Continue expanding the user session implementation and debug these typing issues.&lt;/li&gt;
   &lt;li&gt;Refactor the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component as that now has a lot of overloaded variables and removing them may present more issues that’ll need to be resolved.&lt;/li&gt;
   &lt;li&gt;I imagine this is the final stretch for this feature, so a retro will be coming soon&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session</summary></entry><entry><title type="html">14/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/01/day14.html" rel="alternate" type="text/html" title="14/100 Days of Code" /><published>2022-09-01T15:30:23-07:00</published><updated>2022-09-01T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/01/day14</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/01/day14.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;User Session&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Jumped back into working on getting user sessions set up! &lt;sub&gt;Except I had to spend some time resolving merge conflicts with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; branch after all my recent PRs being merged…&lt;/sub&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;First thing I needed to change was figuring out how to store user information for the entire app to have access to.
-    &lt;ol&gt;
-      &lt;li&gt;I updated my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component to store the JWT sent from the server.
-        &lt;ul&gt;
-          &lt;li&gt;This component will likely be removed as I expand the app since it was more of a temporary component to make sure I could get Discord OAuth working.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Then in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component I needed an extra function, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getCurrentUser&lt;/code&gt;, inside the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hook that checks if there’s a JWT token in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localStorage&lt;/code&gt;.
-        &lt;ul&gt;
-          &lt;li&gt;The goal of this function is to decode the JWT token and extract the username from the token to send to the server.&lt;/li&gt;
-          &lt;li&gt;Upon successful validation of the information in the JWT token, the server will send back the user’s info which will be set as the current user&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;In order for this whole flow to work out, I would need a new route in my server (e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/user/:username&lt;/code&gt;), a new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PaperTraderApi&lt;/code&gt; method to send the necessary information to this route, and utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;React.Context&lt;/code&gt; to share the current user information for all components that subscribe to the context.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;With the plan set up, implementing it was mostly straightforward. Everything went smoothly except for trying to decode the JWT token in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getCurrentUser&lt;/code&gt; function, where I encountered a very confusing bug.
-    &lt;ol&gt;
-      &lt;li&gt;I had some type issues with the returned value from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodeToken&lt;/code&gt;function. I tried doing the same conditional checks that I did when I last had type issues with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodeToken&lt;/code&gt; by only accessing the value within conditional statements that are true.&lt;/li&gt;
-      &lt;li&gt;Unfortunately that wasn’t enough, and after whittling away at the issue, my bug came down to:
-        &lt;ul&gt;
-          &lt;li&gt;The Chrome console showed that the value from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodeToken&lt;/code&gt;, which I named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodedToken&lt;/code&gt; is an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Object&lt;/code&gt; variable that had key value pairs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{username: USERNAME_STRING, iat: NUMBERS}&lt;/code&gt; where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt; is the key value pair I wanted to extract&lt;/li&gt;
-          &lt;li&gt;However, I kept getting a compilation error from Typescript where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodedToken&lt;/code&gt; was treated as a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; so when I tried to access the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt; key via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dedcodedToken.username&lt;/code&gt;, I got an error that stated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Property &apos;username&apos; does not exist on type &apos;string&apos;.&lt;/code&gt;.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;This was very confusing as when I did &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.log(typeof decodedToken)&lt;/code&gt;, I got &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;object&lt;/code&gt; and the variable showed up as an object structure with key value pairs&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;After some time, I asked a friend for help and he suggested trying to convert the variable into JSON which worked!
-    &lt;ol&gt;
-      &lt;li&gt;First, I had to do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JSON.stringify(decodedToken)&lt;/code&gt; and store that as a variable, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jsonToken&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;Then, I saved the result of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JSON.parse(jsonToken)&lt;/code&gt; as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;parsedJson&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;Finally, I could do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;parsedJson.username&lt;/code&gt; to access the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt; value without any errors&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;This felt like a very roundabout way resolve this issue. However, the typing of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;decodedToken&lt;/code&gt; is explicitly changed into a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; and then an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;object&lt;/code&gt;, which is probably why Typescript compilation doesn’t have issues anymore.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Continue expanding the user session implementation, and then start refactoring again
-    &lt;ul&gt;
-      &lt;li&gt;There are some functions and states that could be brought up higher in the component hierarchy now that I’ve expanded on what data the components need to have access to&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session</summary></entry></feed>
