@@ -1,0 +1,24 @@
+---
+layout: post
+title:  "25/100 Days of Code"
+date:   2022-09-12 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Fly.io Issues
+
+1. Tried to resolve my Fly.io Deployment problems to no avail. However I do have some notes about the process:
+    1. Sometimes when I deploy on `fly`, I have issues connecting to the deployed app on [https://paper-trader.fly.dev](https://paper-trader.fly.dev) where the page never loads and eventually returns a `Connection was reset` page. In addition, when I try to make a request to it via Insomnia, I receive an `SSL connect error`. Looking into the community forums for fly, this is a [known issue as of December 2021](https://community.fly.io/t/connection-reset/3467) which is supposed to be eventually fixed. Not sure if there has been any updates that were made to resolve the issue, but after waiting around 20 to 30 minutes, the app can be accessed properly.
+    2. At the moment, I wrote a post about how my deployments aren't showing the new changes made on the forums. Hoping to get an answer, but I may just have to wait a few days before deploying again in case there's a cooldown period between deployments that's causing my caching issues.
+
+### Paper Trader
+
+1. Merged my `main` branch to my `add-logout` branch after the big PR merged into `main` yesterday for user session
+    - I'll mention this again when I do the retrospective on the logout function, but definitely learned that big PRs are a pain to process, both for code reviews and managing merge conflicts
+    - Luckily VS Code has some good GUI to help with handling merge conflicts. Though I still had to manually search for `HEAD` to see if there were any other merge conflicts that weren't resolved yet.
+
+### Next Steps
+1. Try to wrap up the logout function as it's pretty much done already. 
+    - The logout function just has a few lines to clear the user session related states and localStorage, and the navbar had to be adjusted depending on if a user was logged in or not
+    - I want to spend some more time to see if I can get active Tab highlighting to work and clean up docstrings, but other than a PR should be ready to go very soon.

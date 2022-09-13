@@ -1,4 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-12T00:31:02-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">24/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/11/day24.html" rel="alternate" type="text/html" title="24/100 Days of Code" /><published>2022-09-11T15:30:23-07:00</published><updated>2022-09-11T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/11/day24</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/11/day24.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-12T22:56:20-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">25/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/12/day25.html" rel="alternate" type="text/html" title="25/100 Days of Code" /><published>2022-09-12T15:30:23-07:00</published><updated>2022-09-12T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/12/day25</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/12/day25.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Tried to resolve my Fly.io Deployment problems to no avail. However I do have some notes about the process:
+    &lt;ol&gt;
+      &lt;li&gt;Sometimes when I deploy on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly&lt;/code&gt;, I have issues connecting to the deployed app on &lt;a href=&quot;https://paper-trader.fly.dev&quot;&gt;https://paper-trader.fly.dev&lt;/a&gt; where the page never loads and eventually returns a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Connection was reset&lt;/code&gt; page. In addition, when I try to make a request to it via Insomnia, I receive an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SSL connect error&lt;/code&gt;. Looking into the community forums for fly, this is a &lt;a href=&quot;https://community.fly.io/t/connection-reset/3467&quot;&gt;known issue as of December 2021&lt;/a&gt; which is supposed to be eventually fixed. Not sure if there has been any updates that were made to resolve the issue, but after waiting around 20 to 30 minutes, the app can be accessed properly.&lt;/li&gt;
+      &lt;li&gt;At the moment, I wrote a post about how my deployments aren’t showing the new changes made on the forums. Hoping to get an answer, but I may just have to wait a few days before deploying again in case there’s a cooldown period between deployments that’s causing my caching issues.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Merged my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; branch to my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add-logout&lt;/code&gt; branch after the big PR merged into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; yesterday for user session
+    &lt;ul&gt;
+      &lt;li&gt;I’ll mention this again when I do the retrospective on the logout function, but definitely learned that big PRs are a pain to process, both for code reviews and managing merge conflicts&lt;/li&gt;
+      &lt;li&gt;Luckily VS Code has some good GUI to help with handling merge conflicts. Though I still had to manually search for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HEAD&lt;/code&gt; to see if there were any other merge conflicts that weren’t resolved yet.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Try to wrap up the logout function as it’s pretty much done already.
+    &lt;ul&gt;
+      &lt;li&gt;The logout function just has a few lines to clear the user session related states and localStorage, and the navbar had to be adjusted depending on if a user was logged in or not&lt;/li&gt;
+      &lt;li&gt;I want to spend some more time to see if I can get active Tab highlighting to work and clean up docstrings, but other than a PR should be ready to go very soon.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Fly.io Issues</summary></entry><entry><title type="html">24/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/11/day24.html" rel="alternate" type="text/html" title="24/100 Days of Code" /><published>2022-09-11T15:30:23-07:00</published><updated>2022-09-11T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/11/day24</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/11/day24.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
 
 &lt;p&gt;Finally was able to merge my PR for User Sessions after a few more minor commits! Unfortunately, now I’m encountering fly.io issues.&lt;/p&gt;
 
@@ -366,48 +396,4 @@ Another day of trying to debug type issues!&lt;/p&gt;
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Continue cleaning up and refactoring my hooks, namely the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; as there is a dependency array warning that will cause build errors.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Another day of trying to debug type issues!</summary></entry><entry><title type="html">15/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/02/day15.html" rel="alternate" type="text/html" title="15/100 Days of Code" /><published>2022-09-02T15:30:23-07:00</published><updated>2022-09-02T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/02/day15</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/02/day15.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;User Session&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Tried to flesh out the user session process today
-    &lt;ul&gt;
-      &lt;li&gt;The planned flow at a high level is:
-        &lt;ol&gt;
-          &lt;li&gt;On app’s first load of the app/portfolio page, it reaches out to backend&lt;/li&gt;
-          &lt;li&gt;(If logged in) backend will take JWT and return the application &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt; + portfolio info&lt;/li&gt;
-          &lt;li&gt;Username will be available from application &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;This brings to question if decoding the username and then sending that back to the backend is necessary
-    &lt;ul&gt;
-      &lt;li&gt;The original idea was decoding the username from the JWT in localStorage and sending that as a parameter to a backend route that would return the user’s information (like portfolio) along with a JWT to be verified&lt;/li&gt;
-      &lt;li&gt;Then the returned user information will be stored in the application &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;However with this approach there’s a concern about the returned data being too big (e.g. a large portfolio) and the app context really only needs the username
-    &lt;ul&gt;
-      &lt;li&gt;At the moment I’ll be marking these concerns down to think about but I’ll continue on with the approach of returning the user’s information/portfolio to be stored in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;In addition to trying to expand on how to handle user sessions, I moved my login function from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component up to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component. This was needed as the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component is where I want the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt; to be set and provided from, and logging in also provides the information needed for updating the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;. This login function is then passed down to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component
-    &lt;ul&gt;
-      &lt;li&gt;This will also be helpful for when if I decide to remove the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component and have the login function passed to a different component&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;With this change in the login function and having it update &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt; too, I encountered type issues regarding the state used for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Context&lt;/code&gt;
-    &lt;ul&gt;
-      &lt;li&gt;As it stands, the default state for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;currentUser&lt;/code&gt; state is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; and upon logging in or restoring a user session, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;currentUser&lt;/code&gt; is set to the user’s username (for now while I’m working on making sure user sessions is working).&lt;/li&gt;
-      &lt;li&gt;Haven’t looked too deeply into this issue yet, but possible solutions I’ve seen are &lt;a href=&quot;https://stackoverflow.com/questions/59125973/react-typescript-argument-of-type-is-not-assignable-to-parameter-of-type&quot;&gt;applying an interface&lt;/a&gt; or maybe utilizing a guard statement.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Continue expanding the user session implementation and debug these typing issues.&lt;/li&gt;
-  &lt;li&gt;Refactor the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component as that now has a lot of overloaded variables and removing them may present more issues that’ll need to be resolved.&lt;/li&gt;
-  &lt;li&gt;I imagine this is the final stretch for this feature, so a retro will be coming soon&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Another day of trying to debug type issues!</summary></entry></feed>
