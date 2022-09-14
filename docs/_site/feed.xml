@@ -1,4 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-12T22:56:20-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">25/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/12/day25.html" rel="alternate" type="text/html" title="25/100 Days of Code" /><published>2022-09-12T15:30:23-07:00</published><updated>2022-09-12T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/12/day25</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/12/day25.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-13T22:36:53-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">26/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/13/day26.html" rel="alternate" type="text/html" title="26/100 Days of Code" /><published>2022-09-13T15:30:23-07:00</published><updated>2022-09-13T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/13/day26</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/13/day26.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Might have to abandon debugging the deployment issues as I’m not really making much progress on solving the issue.
+    &lt;ol&gt;
+      &lt;li&gt;My current assumption is there’s caching of the deployment files so when I deploy, it’s not applying any changes. I tried running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm run build&lt;/code&gt; in case deploying somehow uses my local build files, but that didn’t have any changes on the deployment either.&lt;/li&gt;
+      &lt;li&gt;Another assumption that I’ll have to look into in the future is potentially an error with the build command not running. Some brief searching online for the error I receive in my Github action showed that this could be related to build.
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;https://community.fly.io/t/nodejs-failed-due-to-unhealthy-allocations/5013/2&quot;&gt;A fly.io community post about a similar issue&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/70495483/node-js-only-resolving-dist-index-js-other-files-in-module-are-not-found&quot;&gt;A more generic SO discussion about the Error message I see in the Github action logs&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Opened my PR for the logout function!
+    &lt;ul&gt;
+      &lt;li&gt;Not too many changes from yesterday, but I did manage to find out how to set the active &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tab&lt;/code&gt; to be highlighted.
+        &lt;ul&gt;
+          &lt;li&gt;With Evergreen UI, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tab&lt;/code&gt; component has a property &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;isSelected&lt;/code&gt; that is a boolean which determines if it’s active and should be highlighted.&lt;/li&gt;
+          &lt;li&gt;Pair that with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;react-router-dom&lt;/code&gt;’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useLocation&lt;/code&gt; hook, I just need to compare if the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pathname&lt;/code&gt; property from the returned object of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useLocation&lt;/code&gt; matches the path corresponding to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tab&lt;/code&gt;.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;There may be a way to apply these changes more dynamically as everything is hard coded, but for now since the file is small this is tolerable.
+        &lt;ul&gt;
+          &lt;li&gt;I may revisit the use of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Array.map&lt;/code&gt; to have the tabs be dynamically set, but the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Logout&lt;/code&gt; tab would have to be excluded from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;map&lt;/code&gt; callback as it won’t have the same properties as the other tabs.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Apply changes that may come in from the code review of my PR.&lt;/li&gt;
+  &lt;li&gt;A retrospective, which will likely be pretty brief.&lt;/li&gt;
+  &lt;li&gt;Start working on the login redirect spinner.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Fly.io Issues</summary></entry><entry><title type="html">25/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/12/day25.html" rel="alternate" type="text/html" title="25/100 Days of Code" /><published>2022-09-12T15:30:23-07:00</published><updated>2022-09-12T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/12/day25</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/12/day25.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
 
 &lt;ol&gt;
   &lt;li&gt;Tried to resolve my Fly.io Deployment problems to no avail. However I do have some notes about the process:
@@ -347,53 +388,4 @@
 &lt;ol&gt;
   &lt;li&gt;Delve deeper into how to handle the login route redirecting based on UserContext and update the docstrings as appropriate (since a few of them are now inaccurate with the recent refactoring).&lt;/li&gt;
   &lt;li&gt;I also noticed my default tab spacing was set at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;4&lt;/code&gt; when it really should have been set to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;2&lt;/code&gt;. Since changing the formatting will show up as changes to everything in a file, that will likely be a separate PR which doesn’t make any other changes to the code.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session</summary></entry><entry><title type="html">16/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/03/day16.html" rel="alternate" type="text/html" title="16/100 Days of Code" /><published>2022-09-03T15:30:23-07:00</published><updated>2022-09-03T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/03/day16</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/03/day16.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;User Session&lt;/strong&gt;
-Another day of trying to debug type issues!&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Following the &lt;a href=&quot;https://stackoverflow.com/questions/59125973/react-typescript-argument-of-type-is-not-assignable-to-parameter-of-type&quot;&gt;Stack Overflow discussion&lt;/a&gt; I saw yesterday, I added an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;interface&lt;/code&gt; and assigned the type to my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useState&lt;/code&gt; input, resolving that error message.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;    &lt;span class=&quot;kr&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;UserData&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-       &lt;span class=&quot;nl&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;string&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;App&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;currentUser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;setCurrentUser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;useState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;UserData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;//...&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-            &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;UserContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Provider&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;currentUser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;//...&lt;/span&gt;
-            &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/UserContext.Provider&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
-&lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;However, making this change broke my login function as that also set the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;currentUser&lt;/code&gt; as a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; for the App Context, but adding the interface cause a type disagreement. Luckily, the solution was simply removing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setCurrentUser&lt;/code&gt; from the login function and only allow the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hook that has the localStorage token in the dependency array to set the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;currentUser&lt;/code&gt;.
-    &lt;ul&gt;
-      &lt;li&gt;Note this works because the login function is what sets the token in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; dependency array&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol start=&quot;2&quot;&gt;
-  &lt;li&gt;Then going back to clean up my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component to utilize the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useContext&lt;/code&gt; hook I encountered another interesting bug
-    &lt;ul&gt;
-      &lt;li&gt;At the moment, my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useContext&lt;/code&gt; provides the value for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserContext&lt;/code&gt; which is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; object until the username is set from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getCurrentUser&lt;/code&gt; function in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hook in the App component.&lt;/li&gt;
-      &lt;li&gt;However, when I check the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;typeof&lt;/code&gt; for the value &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user&lt;/code&gt; extracted from UserContext after it’s set, the type is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;.&lt;/li&gt;
-      &lt;li&gt;Despite it being a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt; when I pass &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user&lt;/code&gt; into the Paragraph component from the Evergreen component library, I receive an error &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;This JSX tag&apos;s &apos;children&apos; prop expects a single child of type &apos;Element | undefined&apos;, but multiple children were provided&lt;/code&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;To resolve this bug, I came across these possible solutions from &lt;a href=&quot;https://stackoverflow.com/questions/62382324/react-typescript-this-jsx-tags-children-prop-expects-a-single-child-of-type&quot;&gt;Stack Overflow&lt;/a&gt; and a &lt;a href=&quot;https://bobbyhadz.com/blog/react-this-tags-children-prop-expects-single-child&quot;&gt;blog post&lt;/a&gt; about this error.
-    &lt;ul&gt;
-      &lt;li&gt;For my use case, wrapping the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;prop&lt;/code&gt; being passed into the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Paragraph&lt;/code&gt; component in a fragment is enough. This may be an issue as the data in the Context expands to include other values, but in terms of trying to figure out how to properly provide and subscribe to Context, this is good for now.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Continue cleaning up and refactoring my hooks, namely the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; as there is a dependency array warning that will cause build errors.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Another day of trying to debug type issues!</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session</summary></entry></feed>

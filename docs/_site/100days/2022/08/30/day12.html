@@ -88,11 +88,11 @@
       <li>Then I remembered a comment in the action that handles deleting Github environments…
         <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  name: Clean up GitHub environment
   uses: strumwolf/delete-deployment-environment@v2
-  if: $
+  if: ${{ github.event.action == 'closed' }}
   with:
     # ⚠️ The provided token needs permission for admin write:org
-    token: $
-    environment: pr-$
+    token: ${{ secrets.GITHUB_TOKEN }}
+    environment: pr-${{ github.event.number }}
 </code></pre></div>        </div>
       </li>
       <li>So I created a new token that does have <code class="language-plaintext highlighter-rouge">admin write:org</code> permissions!</li>

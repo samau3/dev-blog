@@ -1,0 +1,29 @@
+---
+layout: post
+title:  "26/100 Days of Code"
+date:   2022-09-13 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Fly.io Issues
+
+1. Might have to abandon debugging the deployment issues as I'm not really making much progress on solving the issue.
+    1. My current assumption is there's caching of the deployment files so when I deploy, it's not applying any changes. I tried running `npm run build` in case deploying somehow uses my local build files, but that didn't have any changes on the deployment either.
+    2. Another assumption that I'll have to look into in the future is potentially an error with the build command not running. Some brief searching online for the error I receive in my Github action showed that this could be related to build.
+        - [A fly.io community post about a similar issue](https://community.fly.io/t/nodejs-failed-due-to-unhealthy-allocations/5013/2)
+        - [A more generic SO discussion about the Error message I see in the Github action logs](https://stackoverflow.com/questions/70495483/node-js-only-resolving-dist-index-js-other-files-in-module-are-not-found)
+
+### Paper Trader
+
+1. Opened my PR for the logout function!
+    - Not too many changes from yesterday, but I did manage to find out how to set the active `Tab` to be highlighted.
+        - With Evergreen UI, the `Tab` component has a property `isSelected` that is a boolean which determines if it's active and should be highlighted.
+        - Pair that with `react-router-dom`'s `useLocation` hook, I just need to compare if the `pathname` property from the returned object of `useLocation` matches the path corresponding to the `Tab`.
+    - There may be a way to apply these changes more dynamically as everything is hard coded, but for now since the file is small this is tolerable. 
+        - I may revisit the use of `Array.map` to have the tabs be dynamically set, but the `Logout` tab would have to be excluded from the `map` callback as it won't have the same properties as the other tabs.
+
+### Next Steps
+1. Apply changes that may come in from the code review of my PR.
+2. A retrospective, which will likely be pretty brief.
+3. Start working on the login redirect spinner.
