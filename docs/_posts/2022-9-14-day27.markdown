@@ -1,0 +1,39 @@
+---
+layout: post
+title:  "27/100 Days of Code"
+date:   2022-09-14 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Fly.io Issues
+
+1. While working on the logout PR and recently the login spinner PR, I noticed there is inconsistent deployment behavior.
+    1. When I opened the PRs for the two features, the Github action to deploy to fly.io fail, despite working previously and having no changes to the configuration settings to deploy. However, once I make a commit to the PR and the Github action runs again, it successfully deploys. No idea what's going on here, other than recognizing this behavior as very odd.
+
+
+
+### Paper Trader Logout Function And Corresponding Retrospective
+
+1. Going back to my decision between `null` and `undefined`, and how `localStorage`'s functional interface returns `null`, I figured I'd be using both in the app. However, my friend suggested just setting the values for the variables and functions that rely on the result from `localStorage`'s functional interface to be `undefined`, which would resolve issues deciding between if I should be checking a value is `null` or `undefined`. So I made a few changes from `localStorage.getItem()` to `localStorage.getItem() ?? undefined` across my components.
+
+2. Merged the logout function PR to `main`! Excited to have this implemented as that helps with trying out features with and without user session without having to manually clearing `localStorage` in the Chrome console. This feature was pretty small to implement so there isn't much to reflect on. However, something that bleeds over from the previous retrospective was how to handle merge conflicts after merging a big PR to `main`. The logout function was started before I merged the user session PR, so once I went back to working on the feature, I needed to do `git merge origin main` to update the branch. Luckily, the merge conflicts were easy to resolve since I wanted to accept almost all the incoming changes, where the only hard part was finding all the merge conflicts (VS Code's UI helped with most of this process though). If I was further along in the logout feature branch, then there might be some merge conflicts that would have been harder to resolve. Overall, this experience showed the importance of breaking things down and to keep the goal in mind so one doesn't constantly expand a feature to the point where it becomes too complex too soon.
+
+### Paper Trader
+
+1. Worked on the login loading spinner feature today, keeping the PR small so there was only about ~10 net line changes. Should be a simple PR to merge to main, so I won't need a retrospective for that feature.
+
+### Learnings
+
+1. Nullish operator (`??`) vs Or operator (`||`)
+    - I'm not too familiar with the use of `??` that my friend was suggesting in the code reviews so I took a deeper look about when and why one should use them.
+    - Some resources I saw were this [SO discussion](https://stackoverflow.com/questions/61480993/when-should-i-use-nullish-coalescing-vs-logical-or) and the [official proposal to add the feature to Javascript](https://stackoverflow.com/questions/61480993/when-should-i-use-nullish-coalescing-vs-logical-or)
+    - Some key points are:
+        1. `||` can return potentially unwanted results due to `falsey` values being on the left side, such as `0` or `""`.
+        2. `??` differentiates between `falsey` and `nullish` values, so the operator only returns values on the right side if the left side was `null` or `undefined`
+        3. A quick reminder/explanation is that `||` returns the last `truthy` value, while `??` returns the first defined value.
+    - At the moment, a lot of the situations where I'm using `||` should actually be replaced with `??` as I'm supplying a default value if the variable would otherwise be `undefined`.
+
+
+### Next Steps
+1. Merge this PR and start on making Error classes!
