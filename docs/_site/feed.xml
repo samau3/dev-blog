@@ -1,4 +1,129 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-15T00:11:17-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">27/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/14/day27.html" rel="alternate" type="text/html" title="27/100 Days of Code" /><published>2022-09-14T15:30:23-07:00</published><updated>2022-09-14T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/14/day27</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/14/day27.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-16T00:51:09-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">27/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/14/day28.html" rel="alternate" type="text/html" title="27/100 Days of Code" /><published>2022-09-14T15:30:23-07:00</published><updated>2022-09-14T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/14/day28</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/14/day28.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Started adding error classes and error routes, which is leading up to a need for refactoring soon.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I made some custom error classes, which extended from an extention of Express’ &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error&lt;/code&gt; class.
+    &lt;ul&gt;
+      &lt;li&gt;However, when I tried to create a new property for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;status&lt;/code&gt;, I found that led to type errors that stated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Property &apos;status&apos; does not exist on type &apos;ExpressError&apos;.&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Searching up “adding status to express errors typescript” online led to different solutions that didn’t quite match what I was doing. Luckily, the solution was just adding that as a property before the constructor:
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export class ExpressError extends Error {
+  status: number; // add this line so I can use this.status in the constructor
+
+  constructor(message: string, status: number) {
+      super();
+      this.message = message;
+      this.status = status;
+  }
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;While trying to add error handling routes, I found that requests being made to the Discord API already had their own error status and messages. So rather than overriding them, I figured I should just extract those properties from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;response&lt;/code&gt; object.
+    &lt;ul&gt;
+      &lt;li&gt;Previously, I used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios.post(url[, data[, config]])&lt;/code&gt; to makes requests to the Discord OAuth token route instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; as I couldn’t properly send the URL parameters with the latter approach. However, I used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; to make a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request to the Discord Users route.&lt;/li&gt;
+      &lt;li&gt;The problem with this mixing of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request format meant that the error &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;response&lt;/code&gt; object was different between them, so I couldn’t use the same error handler to process them. Even if I were to change my Discord Users route &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios.get(url[, config])&lt;/code&gt;, the response object would still be different between the two requests.&lt;/li&gt;
+      &lt;li&gt;To try to get both error objects to be sent to the error handler with all the properties I need having defined values, I wrapped the requests in a nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; block, so each request will have it’s own &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; that is cleaned up to send to the error handler
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; try {
+  axios.post() to token route
+
+  try {
+      axios.get() to user route
+  } catch (e) {
+      // clean up e
+      next(e)
+  }
+ } catch (e) {
+  // clean up e
+  next(e)
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Despite this working, I felt that there had to be a way to make it so I didn’t have deal with two separate response error objects since this was very messy.
+    &lt;ul&gt;
+      &lt;li&gt;With some more digging and trial and error, I finally managed to change my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios.post(url[, data[, config]])&lt;/code&gt; to an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; format!&lt;/li&gt;
+      &lt;li&gt;I’m pretty sure I tried this before when first working with the Discord OAuth API, but maybe I was using the wrong key in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config&lt;/code&gt; body. Anyways, the solution was to append the key value pairs as a single query parameter:
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; try {
+  const params = new URLSearchParams();
+  params.append(&apos;client_id&apos;, clientId);
+  // ... other params that need to be appended
+
+  tokenResponseData = await axios({
+  method: &apos;POST&apos;,
+  url: &apos;https://discord.com/api/oauth2/token&apos;,
+  data: params,
+  headers: {
+      &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded&apos;
+  },
+  });
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Once I confirmed this worked, I changed my request to the Discord Users route back into the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; format. By doing it this way, I no longer needed to have a nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; block that modified different error objects and could just have one &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; block that had the same error object to modify (specifically, to extract the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error.data.error_description&lt;/code&gt; value and store it as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error.message&lt;/code&gt;).
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; try {
+  // params constructing
+  axios(POST_TO_TOKEN)
+        
+  // manipulating returned token response object
+
+  axios(GET_USER_WITH_TOKEN)
+
+  // return json to React FE
+ } catch (e) {
+  // store error message in error object
+  next(e)
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;extends&lt;/code&gt; vs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implements&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;While looking into how to add the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;status&lt;/code&gt; property to my custom error class, I encountered this &lt;a href=&quot;https://stackoverflow.com/questions/38834625/whats-the-difference-between-extends-and-implements-in-typescript&quot;&gt;discussion&lt;/a&gt; as I saw some approaches related to my issue using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implements&lt;/code&gt;.&lt;/li&gt;
+      &lt;li&gt;A very thorough explanation about the two, but just for quick reference:
+        &lt;ul&gt;
+          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;extends&lt;/code&gt; is the concept of inheritance in OOP&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implements&lt;/code&gt; is the concept of polymorphism in OOP&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static&lt;/code&gt; vs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Also from my search in how to add the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;status&lt;/code&gt; property to my custom error class, I encounted some discussions that used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt; in their classes. I’ve only ever used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static&lt;/code&gt; so I was surprised what &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt; would be for&lt;/li&gt;
+      &lt;li&gt;Taking a look into this &lt;a href=&quot;https://www.tutorialsteacher.com/typescript/data-modifiers&quot;&gt;resource&lt;/a&gt;, Typescript by default has variables in classes be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt; so I don’t have to declare that in my class.&lt;/li&gt;
+      &lt;li&gt;In my custom error class, I originally tried to do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static status: number&lt;/code&gt; but had to change that to just &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;status: number&lt;/code&gt; in order to resolve the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Property &apos;status&apos; does not exist on type &apos;ExpressError&apos;.&lt;/code&gt; error I encountered. After checking the difference between &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt; that makes sense why I doing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this.status&lt;/code&gt; in my constructor led to that “does not exist” error since it couldn’t be accessed.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Nested try catch blocks or separate?
+    &lt;ul&gt;
+      &lt;li&gt;After changing my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; requests to use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; format, I started to wonder if the nested try catch was really necessary. Although the two requests would be returning different errors, I’d need the user to generate a new token anyways and restart the OAuth process.&lt;/li&gt;
+      &lt;li&gt;This led me to two discussions, one specifically in &lt;a href=&quot;https://stackoverflow.com/a/59944868&quot;&gt;NodeJS&lt;/a&gt; and another in &lt;a href=&quot;https://stackoverflow.com/questions/25973515/to-separate-or-not-to-separate-try-catch-blocks-best-practice&quot;&gt;PhP&lt;/a&gt;.&lt;/li&gt;
+      &lt;li&gt;The key take away is if I needed to process the error responses uniquely and if I wanted the operations to be tied together - then I should use a single &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; block. Given my use case, I got rid of the nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; in favor of a single &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Open up a PR for code review&lt;/li&gt;
+  &lt;li&gt;Start on the error handling for the React side of things&lt;/li&gt;
+  &lt;li&gt;Current running list of PRs to work on:
+    &lt;ol&gt;
+      &lt;li&gt;React Error handling&lt;/li&gt;
+      &lt;li&gt;Reformat all files to have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;2&lt;/code&gt; tab spacing&lt;/li&gt;
+      &lt;li&gt;Refactor Express routes so it’s not in one giant file&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">27/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/14/day27.html" rel="alternate" type="text/html" title="27/100 Days of Code" /><published>2022-09-14T15:30:23-07:00</published><updated>2022-09-14T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/14/day27</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/14/day27.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
 
 &lt;ol&gt;
   &lt;li&gt;While working on the logout PR and recently the login spinner PR, I noticed there is inconsistent deployment behavior.
@@ -355,45 +480,4 @@
       &lt;li&gt;I excluded it from this recent PR as it was already getting to big with about 15 file changes, 80 commits, and almost 500 lines of code added&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Refactoring</summary></entry><entry><title type="html">18/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/05/day18.html" rel="alternate" type="text/html" title="18/100 Days of Code" /><published>2022-09-05T15:30:23-07:00</published><updated>2022-09-05T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/05/day18</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/05/day18.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;User Session&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Continued on with the refactoring to clean up the user session implementation!&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The first big change was deleting the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; component.
-    &lt;ul&gt;
-      &lt;li&gt;This was always a temporary component to make sure the Discord OAuth flow redirect worked, but it was also supposed to act as a buffer page that would redirect the user again to hide the extra URL parameters that come from Discord (i.e. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;code&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt;).&lt;/li&gt;
-      &lt;li&gt;However, with React Router, I can simply add the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replace&lt;/code&gt; prop when using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; component to redirect the user. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replace&lt;/code&gt; prop removes the previous location from the user’s history so they can’t hit the back button to access the route they were redirected away from.&lt;/li&gt;
-      &lt;li&gt;This means that if I redirect back to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; component from Discord and utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replace&lt;/code&gt; prop to redirect the user to where I actually want them to go, say &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Profile&lt;/code&gt;, this solves the original purpose of having the DiscordRedirect component. Therefore, I came to the obvious decicion to delete the unnecessary component.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Fortunately, not all the code from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt; went to waste as some of it lives on in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Profile&lt;/code&gt; component and others moved up into the parent &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; component.
-    &lt;ul&gt;
-      &lt;li&gt;This restructuring also helped resolve my issue on implementing user session redirecting that I had trouble with yesterday.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Overall, a majority of today was just refactoring without much new code being written. Some other changes that had to be made were:
-    &lt;ol&gt;
-      &lt;li&gt;Updating the redirect URIs for Discord OAuth now that I’m no longer using the buffer route/component &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DiscordRedirect&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;Updating docstrings after the component shuffling&lt;/li&gt;
-      &lt;li&gt;Adding a conditional that redirects the user if they’re already logged in&lt;/li&gt;
-      &lt;li&gt;Updating &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hooks (see next section)&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;While adding my conditional statement to see if a user existed in Context, I placed it near the top of my components, above the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hooks. However, this created an error: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;React Hook &quot;useEffect&quot; is called conditionally. React Hooks must be called in the exact same order in every component render.&lt;/code&gt; Luckily, a quick solution once again by following this &lt;a href=&quot;https://stackoverflow.com/a/57621246&quot;&gt;Stack Overflow discussion&lt;/a&gt;.
-    &lt;ul&gt;
-      &lt;li&gt;The error makes sense as React needs to always be in control over what is rendered on the DOM. If a conditional blocked the rendering of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hook, it loses track of what has been called from previous renders. In addition, this is defined as the first &lt;a href=&quot;https://reactjs.org/docs/hooks-rules.html&quot;&gt;Rule of Hooks&lt;/a&gt; from the official React documention.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Try to add a logout function. This will require major reworking of the existing navigation bar, so that may have to be saved for a new PR.&lt;/li&gt;
-  &lt;li&gt;Start a PR and get a code review!&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Refactoring</summary></entry></feed>

@@ -1,0 +1,108 @@
+---
+layout: post
+title:  "27/100 Days of Code"
+date:   2022-09-14 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Started adding error classes and error routes, which is leading up to a need for refactoring soon.
+
+1. I made some custom error classes, which extended from an extention of Express' `Error` class. 
+    - However, when I tried to create a new property for `status`, I found that led to type errors that stated `Property 'status' does not exist on type 'ExpressError'.`
+    - Searching up "adding status to express errors typescript" online led to different solutions that didn't quite match what I was doing. Luckily, the solution was just adding that as a property before the constructor:
+    ~~~
+    export class ExpressError extends Error {
+        status: number; // add this line so I can use this.status in the constructor
+
+        constructor(message: string, status: number) {
+            super();
+            this.message = message;
+            this.status = status;
+        }
+    }
+    ~~~
+
+2. While trying to add error handling routes, I found that requests being made to the Discord API already had their own error status and messages. So rather than overriding them, I figured I should just extract those properties from the `response` object.
+    - Previously, I used `axios.post(url[, data[, config]])` to makes requests to the Discord OAuth token route instead of `axios(config)` as I couldn't properly send the URL parameters with the latter approach. However, I used `axios(config)` to make a `GET` request to the Discord Users route.
+    - The problem with this mixing of `axios` request format meant that the error `response` object was different between them, so I couldn't use the same error handler to process them. Even if I were to change my Discord Users route `axios` request to be `axios.get(url[, config])`, the response object would still be different between the two requests.
+    - To try to get both error objects to be sent to the error handler with all the properties I need having defined values, I wrapped the requests in a nested `try catch` block, so each request will have it's own `catch` that is cleaned up to send to the error handler
+    ~~~
+    try {
+        axios.post() to token route
+
+        try {
+            axios.get() to user route
+        } catch (e) {
+            // clean up e
+            next(e)
+        }
+    } catch (e) {
+        // clean up e
+        next(e)
+    }
+    ~~~
+3. Despite this working, I felt that there had to be a way to make it so I didn't have deal with two separate response error objects since this was very messy.
+    - With some more digging and trial and error, I finally managed to change my `axios.post(url[, data[, config]])` to an `axios(config)` format!
+    - I'm pretty sure I tried this before when first working with the Discord OAuth API, but maybe I was using the wrong key in the `config` body. Anyways, the solution was to append the key value pairs as a single query parameter: 
+    ~~~
+    try {
+        const params = new URLSearchParams();
+        params.append('client_id', clientId);
+        // ... other params that need to be appended
+
+        tokenResponseData = await axios({
+        method: 'POST',
+        url: 'https://discord.com/api/oauth2/token',
+        data: params,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        });
+    }
+    ~~~
+    - Once I confirmed this worked, I changed my request to the Discord Users route back into the `axios(config)` format. By doing it this way, I no longer needed to have a nested `try catch` block that modified different error objects and could just have one `catch` block that had the same error object to modify (specifically, to extract the `error.data.error_description` value and store it as `error.message`).
+    ~~~
+    try {
+        // params constructing
+        axios(POST_TO_TOKEN)
+        
+        // manipulating returned token response object
+
+        axios(GET_USER_WITH_TOKEN)
+
+        // return json to React FE
+    } catch (e) {
+        // store error message in error object
+        next(e)
+    }
+    ~~~
+
+
+### Learnings
+
+1. `extends` vs `implements`
+    - While looking into how to add the `status` property to my custom error class, I encountered this [discussion](https://stackoverflow.com/questions/38834625/whats-the-difference-between-extends-and-implements-in-typescript) as I saw some approaches related to my issue using `implements`.
+    - A very thorough explanation about the two, but just for quick reference:
+        - `extends` is the concept of inheritance in OOP
+        - `implements` is the concept of polymorphism in OOP
+
+2. `static` vs `public`
+    - Also from my search in how to add the `status` property to my custom error class, I encounted some discussions that used `public` in their classes. I've only ever used `static` so I was surprised what `public` would be for
+    - Taking a look into this [resource](https://www.tutorialsteacher.com/typescript/data-modifiers), Typescript by default has variables in classes be `public` so I don't have to declare that in my class.
+    - In my custom error class, I originally tried to do `static status: number` but had to change that to just `status: number` in order to resolve the `Property 'status' does not exist on type 'ExpressError'.` error I encountered. After checking the difference between `static` and `public` that makes sense why I doing `this.status` in my constructor led to that "does not exist" error since it couldn't be accessed.
+
+3. Nested try catch blocks or separate?
+    - After changing my `axios` requests to use the `axios(config)` format, I started to wonder if the nested try catch was really necessary. Although the two requests would be returning different errors, I'd need the user to generate a new token anyways and restart the OAuth process.
+    - This led me to two discussions, one specifically in [NodeJS](https://stackoverflow.com/a/59944868) and another in [PhP](https://stackoverflow.com/questions/25973515/to-separate-or-not-to-separate-try-catch-blocks-best-practice).
+    - The key take away is if I needed to process the error responses uniquely and if I wanted the operations to be tied together - then I should use a single `try catch` block. Given my use case, I got rid of the nested `try catch` in favor of a single `try catch`.
+
+### Next Steps
+1. Open up a PR for code review
+2. Start on the error handling for the React side of things
+3. Current running list of PRs to work on:
+    1. React Error handling
+    2. Reformat all files to have `2` tab spacing
+    3. Refactor Express routes so it's not in one giant file 
