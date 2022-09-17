@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "27/100 Days of Code"
-date:   2022-09-14 15:30:23 -0700
+title:  "28/100 Days of Code"
+date:   2022-09-15 15:30:23 -0700
 categories: 100Days
 comments: true
 ---

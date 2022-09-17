@@ -1,0 +1,30 @@
+---
+layout: post
+title:  "29/100 Days of Code"
+date:   2022-09-16 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Most of today was spent looking into how to handle errors in React properly. So most of today's entry will be in the **Learning** sessions
+
+1. Opened a PR for the Express Error changes, and one small change so far was having a generic message if there's a `500` error (see learnings).
+
+
+### Learnings
+
+1. What message to provide for `500` Errors?
+    - Originally I had my error handling route with `const message = err.message`, but this runs into the risk of showing too much information from the server.
+    - Based on this [SO discussion](https://stackoverflow.com/questions/72208536/whats-the-best-practice-for-returning-an-http-500-error-description), the best thing to do is just have a generic message shown to the client.
+
+2. React Error Handling
+    - In the past, I handled error information by utilizing a Bootstrap Alert, which Evergreen UI also has a [component](https://evergreen.segment.com/components/alert) for.
+    - However, looking into best practices, there are [Error Boundaries](https://reactjs.org/docs/error-boundaries.html) in React that allows the use of a fallback component to load if there was an error with a component.
+        - For my login function not working, such as when the server responds with an error, this may be what I need to use to show that the user needs to try logging in again.
+    - Another potential solution is utilizing a `try catch` block, but that may be messier than [using Error Boundaries](https://reactjs.org/docs/error-boundaries.html).
+
+### Next Steps
+1. Work through the code review comments
+2. Start adding React error handling

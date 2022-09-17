@@ -1,4 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-16T00:51:09-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">27/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/14/day28.html" rel="alternate" type="text/html" title="27/100 Days of Code" /><published>2022-09-14T15:30:23-07:00</published><updated>2022-09-14T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/14/day28</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/14/day28.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-17T01:09:00-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">29/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/16/day29.html" rel="alternate" type="text/html" title="29/100 Days of Code" /><published>2022-09-16T15:30:23-07:00</published><updated>2022-09-16T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/16/day29</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/16/day29.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Most of today was spent looking into how to handle errors in React properly. So most of today’s entry will be in the &lt;strong&gt;Learning&lt;/strong&gt; sessions&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Opened a PR for the Express Error changes, and one small change so far was having a generic message if there’s a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;500&lt;/code&gt; error (see learnings).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;What message to provide for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;500&lt;/code&gt; Errors?
+    &lt;ul&gt;
+      &lt;li&gt;Originally I had my error handling route with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const message = err.message&lt;/code&gt;, but this runs into the risk of showing too much information from the server.&lt;/li&gt;
+      &lt;li&gt;Based on this &lt;a href=&quot;https://stackoverflow.com/questions/72208536/whats-the-best-practice-for-returning-an-http-500-error-description&quot;&gt;SO discussion&lt;/a&gt;, the best thing to do is just have a generic message shown to the client.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;React Error Handling
+    &lt;ul&gt;
+      &lt;li&gt;In the past, I handled error information by utilizing a Bootstrap Alert, which Evergreen UI also has a &lt;a href=&quot;https://evergreen.segment.com/components/alert&quot;&gt;component&lt;/a&gt; for.&lt;/li&gt;
+      &lt;li&gt;However, looking into best practices, there are &lt;a href=&quot;https://reactjs.org/docs/error-boundaries.html&quot;&gt;Error Boundaries&lt;/a&gt; in React that allows the use of a fallback component to load if there was an error with a component.
+        &lt;ul&gt;
+          &lt;li&gt;For my login function not working, such as when the server responds with an error, this may be what I need to use to show that the user needs to try logging in again.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Another potential solution is utilizing a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; block, but that may be messier than &lt;a href=&quot;https://reactjs.org/docs/error-boundaries.html&quot;&gt;using Error Boundaries&lt;/a&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Work through the code review comments&lt;/li&gt;
+  &lt;li&gt;Start adding React error handling&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">28/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/15/day28.html" rel="alternate" type="text/html" title="28/100 Days of Code" /><published>2022-09-15T15:30:23-07:00</published><updated>2022-09-15T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/15/day28</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/15/day28.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Started adding error classes and error routes, which is leading up to a need for refactoring soon.&lt;/p&gt;
 
@@ -422,62 +456,5 @@
       &lt;li&gt;Add Error classes and routes.&lt;/li&gt;
       &lt;li&gt;The logout function is will have to be delayed as the above PRs will likely take precendent so I can minimize merge conflicts as much as possible.&lt;/li&gt;
     &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Refactoring</summary></entry><entry><title type="html">19/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/06/day19.html" rel="alternate" type="text/html" title="19/100 Days of Code" /><published>2022-09-06T15:30:23-07:00</published><updated>2022-09-06T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/06/day19</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/06/day19.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;User Session Refactoring&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Had the first review of my PR for adding User Session!&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Some more major refactoring needs to be done
-    &lt;ol&gt;
-      &lt;li&gt;A lot of my functions that handle user session were written in the App component, but my friend suggested moving those out into a separate file too
-        &lt;ul&gt;
-          &lt;li&gt;Hopefully this will be a frictionless change but I imagine there might be some errors related to the function types and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; dependencies&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;My &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getCurrentUser&lt;/code&gt; function which just checks if there’s a user that has been previously logged in by looking for a JWT in the localStorage could be streamlined better
-        &lt;ul&gt;
-          &lt;li&gt;Specifically, decoding the JWT for the username to send back to the server, which still decodes the JWT anyway to extract the username.&lt;/li&gt;
-          &lt;li&gt;Making this change would also mean changing the way the route handles getting the user’s information from the eventual PostgreSQL database.&lt;/li&gt;
-          &lt;li&gt;Current plans to make the changes would be having a simple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/profile&lt;/code&gt; route and when a request is made to the route, the JWT is decoded for the username and is used to query the database for that user’s information.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;I can also move my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Routes&lt;/code&gt; components into a different file so simplify my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component further&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Logout Function&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Also started implementing a logout function to end the user session.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The function itself wasn’t too complicated.
-    &lt;ul&gt;
-      &lt;li&gt;Set the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;token&lt;/code&gt; states to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;Clear the localStorage of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;userToken&lt;/code&gt; JWT&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;However, the tricky part came with how to display the Logout option in the navbar.
-    &lt;ul&gt;
-      &lt;li&gt;The way I had it set up was using a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.map&lt;/code&gt; method on an array of strings that represented my navbar tabs. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[&apos;Home&apos;, &apos;Profile&apos;, &apos;Login&apos;]&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;However, if a user exists, I wanted to replace the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; tab with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Logout&lt;/code&gt; with an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;onClick&lt;/code&gt; function that calls my logout function.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;I’ll need to do more tinkering around to see how to utilize the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;map&lt;/code&gt; method, where the last element &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Logout&lt;/code&gt; will receive a different component
-    &lt;ul&gt;
-      &lt;li&gt;At the moment, I switched to hard coded navbar tabs. This may be the permanent solution if I can’t get the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;map&lt;/code&gt; method to work without errors. However, the Evergreen UI documentation use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;map&lt;/code&gt; for their navbars so I want to follow that as much as possible.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Wrap up the refactoring as I approach the end of this feature so I can start working on my retrospective&lt;/li&gt;
-  &lt;li&gt;Wrap up the logout feature soon too as it’s closely tied to user sessions
-    &lt;ul&gt;
-      &lt;li&gt;I excluded it from this recent PR as it was already getting to big with about 15 file changes, 80 commits, and almost 500 lines of code added&lt;/li&gt;
-    &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Refactoring</summary></entry></feed>
