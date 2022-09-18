@@ -1,4 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-17T01:09:00-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">29/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/16/day29.html" rel="alternate" type="text/html" title="29/100 Days of Code" /><published>2022-09-16T15:30:23-07:00</published><updated>2022-09-16T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/16/day29</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/16/day29.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-18T00:05:27-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">30/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/17/day30.html" rel="alternate" type="text/html" title="30/100 Days of Code" /><published>2022-09-17T15:30:23-07:00</published><updated>2022-09-17T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/17/day30</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/17/day30.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Received a comment on my error handler in Express about &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.error(error)&lt;/code&gt; that led to more researching than actual coding, so once again &lt;strong&gt;Learnings&lt;/strong&gt; section will be the main focus.&lt;/p&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Should you &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.error&lt;/code&gt; errors?
+    &lt;ol&gt;
+      &lt;li&gt;The benefit of logging errors, is that you can see what went wrong during the request response cycle so you can debug with more clues about the issue.&lt;/li&gt;
+      &lt;li&gt;However, what information should be shown? And at what level should that be shown (development, production, test)? In addition, if you log every error, will you sift through every error that is encountered?&lt;/li&gt;
+      &lt;li&gt;Still in the process of deciding how best to update my error handler to log the right information when necessary, but some good resources for error logging best practices:
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;https://www.toptal.com/nodejs/node-js-error-handling&quot;&gt;NodeJS Error Handling&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://www.toptal.com/express-js/routes-js-promises-error-handling&quot;&gt;Express Error Handling&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Based on what I’ve read so far among various sources, I may have to specifiy when and what to log, rather than all errors
+        &lt;ul&gt;
+          &lt;li&gt;Currently, I have confidential information that gets logged once an error is encountered in my axios requests. While not the end of the world since it can only be accessed from those who can view the deployed app on fly.io, there is still a risk of logging the entire error object.&lt;/li&gt;
+          &lt;li&gt;Perhaps setting the logging to only occur during &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV === &apos;test&apos;&lt;/code&gt; or only &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error.response.headers&lt;/code&gt;? Things to consider during more discussions with my friend.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Work through the code review comment!&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">29/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/16/day29.html" rel="alternate" type="text/html" title="29/100 Days of Code" /><published>2022-09-16T15:30:23-07:00</published><updated>2022-09-16T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/16/day29</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/16/day29.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Most of today was spent looking into how to handle errors in React properly. So most of today’s entry will be in the &lt;strong&gt;Learning&lt;/strong&gt; sessions&lt;/p&gt;
 
@@ -417,44 +447,4 @@
       &lt;li&gt;Having a Loading screen/spinner after Discord redirect so the user can tell their being logged in.&lt;/li&gt;
     &lt;/ol&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Refactoring Again</summary></entry><entry><title type="html">20/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/07/day20.html" rel="alternate" type="text/html" title="20/100 Days of Code" /><published>2022-09-07T15:30:23-07:00</published><updated>2022-09-07T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/07/day20</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/07/day20.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;User Session Refactoring&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;I was unsure what some of the comments I received on the PR, so I had a short discussion with my friend about how to approach some changes:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;More consistent error handling. At the moment my error handling is pretty much just placeholder statements to come back to once I flesh out Error cases. However, there is a danger that this gets buried as a todo that is never revisited. As such, I’ll bump up the priority for having error classes started. Some quick notes from the discussion with my friend just so I have a record of it too:
-    &lt;ul&gt;
-      &lt;li&gt;It’s important to consider how a user could end up in a specific case that triggers an error&lt;/li&gt;
-      &lt;li&gt;in those situations one should consider reasonable ways to handle the error, eg. redirecting them back to the login page&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;I didn’t realize I could &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;export&lt;/code&gt; variables individually. Not a big change but will help in the future if I add more &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const&lt;/code&gt; variables that need to be exported so I don’t have to remember to change the last line of the file to include it.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;    &lt;span class=&quot;c1&quot;&gt;// doing this&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;KEY1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;some string 1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;KEY2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;some string 2&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    
-    &lt;span class=&quot;c1&quot;&gt;// instead of this&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;KEY1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;some string 1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;KEY2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;some string 2&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;KEY1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;KEY2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// will need to update this everytime to export new variables&lt;/span&gt;
-    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ol start=&quot;3&quot;&gt;
-  &lt;li&gt;Originally my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component acted as just my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Routes&lt;/code&gt; file, but as more functions were added, that was no longer the case. This makes pulling them my new functions and routes into different files necessary.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Implement the changes to the PR and hopefully merge them into the main branch soon! (After another round of code review)&lt;/li&gt;
-  &lt;li&gt;The next few PRs should be popping up soon:
-    &lt;ol&gt;
-      &lt;li&gt;Reformat all the files and exclude it from the commit history so &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git blame&lt;/code&gt; doesn’t get overriden.&lt;/li&gt;
-      &lt;li&gt;Add Error classes and routes.&lt;/li&gt;
-      &lt;li&gt;The logout function is will have to be delayed as the above PRs will likely take precendent so I can minimize merge conflicts as much as possible.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Refactoring</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Refactoring Again</summary></entry></feed>

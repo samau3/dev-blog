@@ -1,0 +1,27 @@
+---
+layout: post
+title:  "30/100 Days of Code"
+date:   2022-09-17 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Received a comment on my error handler in Express about `console.error(error)` that led to more researching than actual coding, so once again **Learnings** section will be the main focus.
+
+
+### Learnings
+
+1. Should you `console.error` errors?
+    1. The benefit of logging errors, is that you can see what went wrong during the request response cycle so you can debug with more clues about the issue.
+    2. However, what information should be shown? And at what level should that be shown (development, production, test)? In addition, if you log every error, will you sift through every error that is encountered? 
+    3. Still in the process of deciding how best to update my error handler to log the right information when necessary, but some good resources for error logging best practices:
+        - [NodeJS Error Handling](https://www.toptal.com/nodejs/node-js-error-handling)
+        - [Express Error Handling](https://www.toptal.com/express-js/routes-js-promises-error-handling)
+    4. Based on what I've read so far among various sources, I may have to specifiy when and what to log, rather than all errors
+        - Currently, I have confidential information that gets logged once an error is encountered in my axios requests. While not the end of the world since it can only be accessed from those who can view the deployed app on fly.io, there is still a risk of logging the entire error object. 
+        - Perhaps setting the logging to only occur during `NODE_ENV === 'test'` or only `error.response.headers`? Things to consider during more discussions with my friend.
+
+### Next Steps
+1. Work through the code review comment!
