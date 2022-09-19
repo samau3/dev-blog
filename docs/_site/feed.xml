@@ -1,4 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-18T00:05:27-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">30/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/17/day30.html" rel="alternate" type="text/html" title="30/100 Days of Code" /><published>2022-09-17T15:30:23-07:00</published><updated>2022-09-17T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/17/day30</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/17/day30.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-18T23:10:36-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">31/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/18/day31.html" rel="alternate" type="text/html" title="31/100 Days of Code" /><published>2022-09-18T15:30:23-07:00</published><updated>2022-09-18T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/18/day31</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/18/day31.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Following up on my research into how to log errors, I was on the right track!&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Logging errors is very much necessary, but there are layers for how much should be logged.
+    &lt;ul&gt;
+      &lt;li&gt;In regards to my line of code &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if(NODE_ENV !== test) console.error(err)&lt;/code&gt; this meant when running tests, we won’t be able to see what went wrong. Although, a test might be aiming to specifically cause an error so the logs may bury other information that is needed. Nonetheless, starting with the full logs and then iteratively cleaning up the logs will be preferable (like what will need to be done to the production level logging)&lt;/li&gt;
+      &lt;li&gt;Previously, my error logs revealed sensitive information once an error was encountered in production. This was due to just having &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.error(err)&lt;/code&gt;, which logged the entire error object. While it was helpful to just get things started, this is not best practice as it’s never a good idea to reveal sensitive information in production. Applying what I saw from my online searching and discussion with my friend, it’s much better to clean up the error object and then log that.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The approach I’ll be aiming for to log my errors:
+    &lt;ul&gt;
+      &lt;li&gt;Have a conditional statement to see if &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV === production&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Build up an object inside the conditional that extracts the relevant properties from the error object
+        &lt;ul&gt;
+          &lt;li&gt;Headers, the data (minus sensitive information), the path, etc.&lt;/li&gt;
+          &lt;li&gt;Also possiblly include the request object to see what’s being sent each time to compare between errors if needed&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Log this cleaned up error object&lt;/li&gt;
+      &lt;li&gt;Ultimately move this function out to a separate folder in order to keep the routes separate from data clean up logic&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Some potential difficulties that I may encounter:
+    &lt;ul&gt;
+      &lt;li&gt;I’ll need to extract the data string and then redact pieces, leading to messy/inefficient code the first attempt&lt;/li&gt;
+      &lt;li&gt;There is a reliance on the error object always being the same structure. With &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt;, this seems like it’ll be consistent as long as I use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; format, but any deviations from this could led to unexpected behavior&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Start implementing better error logging!&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">30/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/17/day30.html" rel="alternate" type="text/html" title="30/100 Days of Code" /><published>2022-09-17T15:30:23-07:00</published><updated>2022-09-17T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/17/day30</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/17/day30.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Received a comment on my error handler in Express about &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.error(error)&lt;/code&gt; that led to more researching than actual coding, so once again &lt;strong&gt;Learnings&lt;/strong&gt; section will be the main focus.&lt;/p&gt;
 
@@ -393,58 +428,4 @@
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;A restrospective?&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Final User Session Refactoring?</summary></entry><entry><title type="html">21/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/08/day21.html" rel="alternate" type="text/html" title="21/100 Days of Code" /><published>2022-09-08T15:30:23-07:00</published><updated>2022-09-08T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/08/day21</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/08/day21.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;User Session Refactoring Again&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;A somewhat straightforward day of just implementing the changes planned out yesterday. However, with refactoring comes the breaking of previously functional parts.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Moved all my login/user session related functions that were previously defined in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component and used in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; to a separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserSession.ts&lt;/code&gt; file. These functions were then defined as class methods to better organize the functions.
-    &lt;ul&gt;
-      &lt;li&gt;I orginially thought I would have to wrap these functions in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useCallback&lt;/code&gt; hook when defining them in the UserSession class, and list them as a dependency in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; that calls them&lt;/li&gt;
-      &lt;li&gt;However, this would break the &lt;a href=&quot;https://reactjs.org/docs/hooks-rules.html&quot;&gt;Rule of Hooks&lt;/a&gt;, where they can only be used inside React functions. In addition, the were no compliation errors or linter warnings from not including these functions as in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; dependency array.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;I changed my previous &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/users/:username&lt;/code&gt; route to just be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/profile&lt;/code&gt;, where the JWT is decoded in the backend to determine what username to query the future database for.
-    &lt;ul&gt;
-      &lt;li&gt;However in doing so, I also had to change what was being stored in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;res.locals.user&lt;/code&gt; after the JWT is verified by my middleware.&lt;/li&gt;
-      &lt;li&gt;Previously I would just store the entire JWT in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;res.locals.user&lt;/code&gt; and after all my middleware, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/users/:username&lt;/code&gt; route would determine the username from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;req.params.username&lt;/code&gt;. However since I’m no longer sending a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt; parameter, I needed to access just the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt; property of the JWT being stored to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;res.locals.user&lt;/code&gt;.&lt;/li&gt;
-      &lt;li&gt;The solution was to extract the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt; property only if the verified JWT returned an object. This way I didn’t have to change the other parts of my app that relied on the returned JSON from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/profile&lt;/code&gt; having a different structure.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;verifiedUser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jwt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;verify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;JWT_SECRET_KEY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typeof&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;verifiedUser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;verifiedUser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ol start=&quot;3&quot;&gt;
-  &lt;li&gt;Along with moving code to different files, I also started to organize them into different directories. Luckily VS Code prompted to automatically update the pathing for files that imported from these reorganized files. Unluckily, this not all files updated so there was some disgruntled &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Shift&lt;/code&gt; +&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt; Ctrl&lt;/code&gt; + &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+&lt;/code&gt; and checking error messages to find the files that needed updating.
-    &lt;ul&gt;
-      &lt;li&gt;There was also an error with VS Code not properly finding a file after it was renamed from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;userSession.ts&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserSession.ts&lt;/code&gt;. I had to quit and reopen VS Code to resolve the issue.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;I noticed that there can be a long delay between redirecting the user to the Profile page after being redirected from Discord’s OAuth flow.
-    &lt;ul&gt;
-      &lt;li&gt;A quick fix that I tried was to add an additional conditional statement to see if there is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;code&lt;/code&gt; parameter in the URL. If there is, then the component will load a spinner. Then if there is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user&lt;/code&gt; in the App context, upon remounting of the component it will redirect to the Profile page before it hits the spinner condition.&lt;/li&gt;
-      &lt;li&gt;I’ll have to dig deeper to make the spinner appear properly, but good to know that this is a possible solution that can be fleshed out.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Based on this, a (growing) list of PRs to make just for fixing issues and improving the user experience:
-    &lt;ol&gt;
-      &lt;li&gt;Change the formatting for all the files.&lt;/li&gt;
-      &lt;li&gt;Resolve navbar highlighting not being accurate after Discord Redirect.
-        &lt;ul&gt;
-          &lt;li&gt;Though I may have to scrap this feature altogether as my navbar is being redone for the logout function.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Having a Loading screen/spinner after Discord redirect so the user can tell their being logged in.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Refactoring Again</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Final User Session Refactoring?</summary></entry></feed>

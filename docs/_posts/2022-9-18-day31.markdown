@@ -1,0 +1,30 @@
+---
+layout: post
+title:  "31/100 Days of Code"
+date:   2022-09-18 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Following up on my research into how to log errors, I was on the right track! 
+
+1. Logging errors is very much necessary, but there are layers for how much should be logged. 
+    - In regards to my line of code `if(NODE_ENV !== test) console.error(err)` this meant when running tests, we won't be able to see what went wrong. Although, a test might be aiming to specifically cause an error so the logs may bury other information that is needed. Nonetheless, starting with the full logs and then iteratively cleaning up the logs will be preferable (like what will need to be done to the production level logging)
+    - Previously, my error logs revealed sensitive information once an error was encountered in production. This was due to just having `console.error(err)`, which logged the entire error object. While it was helpful to just get things started, this is not best practice as it's never a good idea to reveal sensitive information in production. Applying what I saw from my online searching and discussion with my friend, it's much better to clean up the error object and then log that.
+
+2. The approach I'll be aiming for to log my errors:
+    - Have a conditional statement to see if `NODE_ENV === production`
+    - Build up an object inside the conditional that extracts the relevant properties from the error object
+        - Headers, the data (minus sensitive information), the path, etc.
+        - Also possiblly include the request object to see what's being sent each time to compare between errors if needed
+    - Log this cleaned up error object
+    - Ultimately move this function out to a separate folder in order to keep the routes separate from data clean up logic
+
+3. Some potential difficulties that I may encounter:
+    - I'll need to extract the data string and then redact pieces, leading to messy/inefficient code the first attempt
+    - There is a reliance on the error object always being the same structure. With `axios`, this seems like it'll be consistent as long as I use the `axios(config)` format, but any deviations from this could led to unexpected behavior
+
+### Next Steps
+1. Start implementing better error logging!
