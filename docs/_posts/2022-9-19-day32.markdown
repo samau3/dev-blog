@@ -1,0 +1,25 @@
+---
+layout: post
+title:  "32/100 Days of Code"
+date:   2022-09-19 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Started trying to clean up the error object before logging, but realized it wasn't as simple as intially thought.
+
+1. Since the error is of type `ExpressError` with only properties `status` and `message`, I couldn't access the other properties that were showing up on the error object, like `headers` and `config`.
+    - After searching around for different possible solutions on how to access these other properties, such as trying to restore the [prototype chain](https://stackoverflow.com/questions/31626231/custom-error-class-in-typescript), the solution ended up being adding a new property in the `ExpressError` class for `headers` and `config`.
+        - In addition, an interface was added to access the properties within `config`, such as `data`.
+
+2. Currently, I am now encountering an issue between the different error response objects from my existing axios requests to the Discord API.
+    - The error response for getting a token and accessing a user's information are different so I need to customize how the error object is cleaned up.
+    - Some possible solutions will be: 
+        - Having a conditional based on what error is made to clean up the error object.
+        - Reformat my route such that there is a nested try/catch so I can uniquely process the error objects.
+        - Regardless of these changes, as I introduce more routes and functionality, my error handler will encounter different error objects and will need to be updated accordingly.
+
+### Next Steps
+1. Explore the different ways to handle the error response object, possibly reaching out to my friend for suggestions

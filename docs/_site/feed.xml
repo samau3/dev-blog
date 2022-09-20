@@ -1,4 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-18T23:10:36-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">31/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/18/day31.html" rel="alternate" type="text/html" title="31/100 Days of Code" /><published>2022-09-18T15:30:23-07:00</published><updated>2022-09-18T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/18/day31</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/18/day31.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-20T01:04:17-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">32/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/19/day32.html" rel="alternate" type="text/html" title="32/100 Days of Code" /><published>2022-09-19T15:30:23-07:00</published><updated>2022-09-19T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/19/day32</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/19/day32.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Started trying to clean up the error object before logging, but realized it wasn’t as simple as intially thought.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Since the error is of type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExpressError&lt;/code&gt; with only properties &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;status&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;message&lt;/code&gt;, I couldn’t access the other properties that were showing up on the error object, like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;headers&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config&lt;/code&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;After searching around for different possible solutions on how to access these other properties, such as trying to restore the &lt;a href=&quot;https://stackoverflow.com/questions/31626231/custom-error-class-in-typescript&quot;&gt;prototype chain&lt;/a&gt;, the solution ended up being adding a new property in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExpressError&lt;/code&gt; class for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;headers&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config&lt;/code&gt;.
+        &lt;ul&gt;
+          &lt;li&gt;In addition, an interface was added to access the properties within &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config&lt;/code&gt;, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt;.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Currently, I am now encountering an issue between the different error response objects from my existing axios requests to the Discord API.
+    &lt;ul&gt;
+      &lt;li&gt;The error response for getting a token and accessing a user’s information are different so I need to customize how the error object is cleaned up.&lt;/li&gt;
+      &lt;li&gt;Some possible solutions will be:
+        &lt;ul&gt;
+          &lt;li&gt;Having a conditional based on what error is made to clean up the error object.&lt;/li&gt;
+          &lt;li&gt;Reformat my route such that there is a nested try/catch so I can uniquely process the error objects.&lt;/li&gt;
+          &lt;li&gt;Regardless of these changes, as I introduce more routes and functionality, my error handler will encounter different error objects and will need to be updated accordingly.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Explore the different ways to handle the error response object, possibly reaching out to my friend for suggestions&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">31/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/18/day31.html" rel="alternate" type="text/html" title="31/100 Days of Code" /><published>2022-09-18T15:30:23-07:00</published><updated>2022-09-18T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/18/day31</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/18/day31.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Following up on my research into how to log errors, I was on the right track!&lt;/p&gt;
 
@@ -381,51 +412,4 @@
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Time to start all those PRs! Will probably start with adding the logout function since that has already been started, though I will have to deal with merge conflicts before I continue on.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Retrospective</summary></entry><entry><title type="html">22/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/09/day22.html" rel="alternate" type="text/html" title="22/100 Days of Code" /><published>2022-09-09T15:30:23-07:00</published><updated>2022-09-09T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/09/day22</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/09/day22.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Final User Session Refactoring?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;My friend and I were discussing if the typing for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useState&lt;/code&gt; needed to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useState&amp;lt;AN_INTERFACE | null&amp;gt;(null)&lt;/code&gt; or if it could just be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useState&amp;lt;AN_INTERFACE&amp;gt;(null)&lt;/code&gt;.
-    &lt;ul&gt;
-      &lt;li&gt;I used this &lt;a href=&quot;https://stackoverflow.com/a/59126275&quot;&gt;Stack Overflow discussion&lt;/a&gt; to defend what I currently have, while my friend referred to &lt;a href=&quot;https://stackoverflow.com/a/61823158/7995306&quot;&gt;this one&lt;/a&gt;.&lt;/li&gt;
-      &lt;li&gt;After discussing the error I receive from not using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;| null&lt;/code&gt;, it came down to potentially different linters in our development environments. An interesting conclusion, but not clear which is necessarily better.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Another discussion that came out of this issue is the use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; versus &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt;.
-    &lt;ul&gt;
-      &lt;li&gt;I personally thought &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; was better since it’s more of an explicit “the value is set to nothing”, and shows that the value is not supposed to be have a value.&lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;However my friend advocated for the use of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; instead as:&lt;/p&gt;
-
-        &lt;blockquote&gt;
-          &lt;p&gt;I like to think of null as “set to nothing”, whereas undefined is more like “nothing is set”&lt;/p&gt;
-        &lt;/blockquote&gt;
-      &lt;/li&gt;
-      &lt;li&gt;This lead me to digging deeper into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; vs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; use cases. Two discussions convinced me to try using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; more often than &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt;:
-        &lt;ul&gt;
-          &lt;li&gt;A &lt;a href=&quot;https://dev.to/andreasbergqvist/typescript-undefined-vs-null-3a22&quot;&gt;Dev post by Andreas Bergqvist&lt;/a&gt;.&lt;/li&gt;
-          &lt;li&gt;And a much longer &lt;a href=&quot;https://github.com/sindresorhus/meta/discussions/7&quot;&gt;Github discussion&lt;/a&gt;.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Note, it comes down to use case as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; are used frequently in external libraries and APIs anyway (&lt;a href=&quot;https://twitter.com/sindresorhus/status/1114895254602129408?s=20&amp;amp;t=3WR93AtgXahsJuMb3VQyPA&quot;&gt;also looks like using both is a popular opinion&lt;/a&gt;). But, I’ll definitely give using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; more a shot.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Switched my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;generateRandomString&lt;/code&gt; function to just utilize &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uuid&lt;/code&gt; instead to form random strings. No need to reinvent the wheel for this one!&lt;/li&gt;
-  &lt;li&gt;Also did some minor file/function changes like renaming my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Api.ts&lt;/code&gt; file to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PaperTraderApi.ts&lt;/code&gt; to match the class being exported.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;In the process of switching my functions to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt;, I noticed I was being inconsistent with how I was accessing localStorage, sometimes using the functional interface and sometimes using direct property access.
-    &lt;ul&gt;
-      &lt;li&gt;This lead me to finding this &lt;a href=&quot;https://stackoverflow.com/questions/12632463/is-localstorage-getitemitem-better-than-localstorage-item-or-localstoragei/24904863#24904863&quot;&gt;discussion on localStorage&lt;/a&gt; best practices.&lt;/li&gt;
-      &lt;li&gt;Here, it’s mentioned that using the functional interface (e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getItem()&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[item]&lt;/code&gt;) is the preferred approach. However, the functional interface returns &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; if the item doesn’t exist whereas direct property access returns &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt;.&lt;/li&gt;
-      &lt;li&gt;So right after my decision to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; over &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt;, I already encounted an exception. Given the fact that functional interface is the preferred method for iteracting with localStorage, I decided to stick to that and be flexible in my use of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; in this web app.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;A restrospective?&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Final User Session Refactoring?</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Retrospective</summary></entry></feed>
