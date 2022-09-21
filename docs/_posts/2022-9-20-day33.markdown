@@ -1,0 +1,54 @@
+---
+layout: post
+title:  "33/100 Days of Code"
+date:   2022-09-20 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Went through many iterations on cleaning up the error object, but everything from today and yesterday may not have been necessary...
+
+1. My first major change today was adding two conditionals that would change the error object, one for Discord's `token` route and one for Discord's `user` route.
+    - In the `token` conditional, it would modify the `data` property of the error response object to hid the Discord Paper Trader application's `id` and `secret_code`
+    - In the `user` conditional, it would remove the `Bearer` token value to prevent unauthorized access to a user's information if the error logs were exposed
+    - This process involved further changes to the `ExpressError` class to account for the different properties that were being accessed
+
+2. After changing making sure the conditional statements were modifying the error objects as intended, my generic error handler started to look very messy and no longer stayed true to it's purpose of being generic.
+    - So, that led me down to try to find ways to maybe pull the conditionals out of the generic handler, possible making a new middleware error handler just to modify the Discord error response object
+        - The most useful resource was Express' [documentaion on error handlers](https://expressjs.com/en/guide/error-handling.html).
+    - Based on the documentation, it was fairly straightforward to implement this new middleware to process my Discord error object:
+        ~~~~
+        export function redactDiscordInfo(err: ExpressError, req: express.Request, res: express.Response, next: express.NextFunction) {
+            const { headers, url, data } = err.config;
+
+            if (process.env.NODE_ENV === "production") {
+                if (url === 'https://discord.com/api/oauth2/token') {
+                    const redactedData = "client_id=REDACTED&client_secret=REDACTED&" + `${data.substring(data.indexOf("grant_type"))}`;
+
+                    err.config.data = redactedData;
+                }
+                if (url === 'https://discord.com/api/users/@me') {
+                    const redactAuthToken = headers.authorization.split(" ")[0];
+
+                    err.config.headers.authorization = redactAuthToken + " REDACTED";
+                    err.request._header = "REDACTED"
+                }
+            }
+            next(err);
+        }
+        ~~~~
+
+3. However, I just created a **middleware**, albeit an error handling one.
+    - This will be interacted with every error that is being passed on from routes calling `next(error)`.
+    - The only situations that this sensitive Discord information is being included in the request response cycle is when the application interacts with the Discord API, which is only during user log in.
+
+4. Based on this limited scope of redacting the Discord information, having this redacting process be a middleware is not appropriate.
+    - Which brings me to probably what I should have done at the beginning, all the way back on Day 28, when I separated the nested `try` `catch` block. Recognizing the fact that the two `axios` requests to the two different Discord routes, I should have kept the nested `try` `catch` as the error response objects were unique. 
+    - In addition, within each of the `catch` blocks, I can modify the individual properties that have sensitive information before the error object is sent to the error handler. 
+        - This circumvents the need to have a conditional for which route the error is generated from, as the error object is being modified at the corresponding route it comes from.
+        - Also, this reduces the size of the generic error handler as it no longer needs to have logic specific to the Discord request errors, forming a better separation of concerns.
+
+### Next Steps
+1. Clean up my error object processing and wrap up the PR!

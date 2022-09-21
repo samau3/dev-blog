@@ -1,4 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-20T01:04:17-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">32/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/19/day32.html" rel="alternate" type="text/html" title="32/100 Days of Code" /><published>2022-09-19T15:30:23-07:00</published><updated>2022-09-19T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/19/day32</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/19/day32.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-20T23:01:38-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">33/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/20/day33.html" rel="alternate" type="text/html" title="33/100 Days of Code" /><published>2022-09-20T15:30:23-07:00</published><updated>2022-09-20T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/20/day33</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/20/day33.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Went through many iterations on cleaning up the error object, but everything from today and yesterday may not have been necessary…&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;My first major change today was adding two conditionals that would change the error object, one for Discord’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;token&lt;/code&gt; route and one for Discord’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user&lt;/code&gt; route.
+    &lt;ul&gt;
+      &lt;li&gt;In the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;token&lt;/code&gt; conditional, it would modify the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; property of the error response object to hid the Discord Paper Trader application’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secret_code&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;In the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user&lt;/code&gt; conditional, it would remove the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bearer&lt;/code&gt; token value to prevent unauthorized access to a user’s information if the error logs were exposed&lt;/li&gt;
+      &lt;li&gt;This process involved further changes to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExpressError&lt;/code&gt; class to account for the different properties that were being accessed&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;After changing making sure the conditional statements were modifying the error objects as intended, my generic error handler started to look very messy and no longer stayed true to it’s purpose of being generic.
+    &lt;ul&gt;
+      &lt;li&gt;So, that led me down to try to find ways to maybe pull the conditionals out of the generic handler, possible making a new middleware error handler just to modify the Discord error response object
+        &lt;ul&gt;
+          &lt;li&gt;The most useful resource was Express’ &lt;a href=&quot;https://expressjs.com/en/guide/error-handling.html&quot;&gt;documentaion on error handlers&lt;/a&gt;.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Based on the documentation, it was fairly straightforward to implement this new middleware to process my Discord error object:
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  export function redactDiscordInfo(err: ExpressError, req: express.Request, res: express.Response, next: express.NextFunction) {
+      const { headers, url, data } = err.config;
+
+      if (process.env.NODE_ENV === &quot;production&quot;) {
+          if (url === &apos;https://discord.com/api/oauth2/token&apos;) {
+              const redactedData = &quot;client_id=REDACTED&amp;amp;client_secret=REDACTED&amp;amp;&quot; + `${data.substring(data.indexOf(&quot;grant_type&quot;))}`;
+
+              err.config.data = redactedData;
+          }
+          if (url === &apos;https://discord.com/api/users/@me&apos;) {
+              const redactAuthToken = headers.authorization.split(&quot; &quot;)[0];
+
+              err.config.headers.authorization = redactAuthToken + &quot; REDACTED&quot;;
+              err.request._header = &quot;REDACTED&quot;
+          }
+      }
+      next(err);
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;However, I just created a &lt;strong&gt;middleware&lt;/strong&gt;, albeit an error handling one.
+    &lt;ul&gt;
+      &lt;li&gt;This will be interacted with every error that is being passed on from routes calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;next(error)&lt;/code&gt;.&lt;/li&gt;
+      &lt;li&gt;The only situations that this sensitive Discord information is being included in the request response cycle is when the application interacts with the Discord API, which is only during user log in.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Based on this limited scope of redacting the Discord information, having this redacting process be a middleware is not appropriate.
+    &lt;ul&gt;
+      &lt;li&gt;Which brings me to probably what I should have done at the beginning, all the way back on Day 28, when I separated the nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; block. Recognizing the fact that the two &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; requests to the two different Discord routes, I should have kept the nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; as the error response objects were unique.&lt;/li&gt;
+      &lt;li&gt;In addition, within each of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; blocks, I can modify the individual properties that have sensitive information before the error object is sent to the error handler.
+        &lt;ul&gt;
+          &lt;li&gt;This circumvents the need to have a conditional for which route the error is generated from, as the error object is being modified at the corresponding route it comes from.&lt;/li&gt;
+          &lt;li&gt;Also, this reduces the size of the generic error handler as it no longer needs to have logic specific to the Discord request errors, forming a better separation of concerns.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Clean up my error object processing and wrap up the PR!&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">32/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/19/day32.html" rel="alternate" type="text/html" title="32/100 Days of Code" /><published>2022-09-19T15:30:23-07:00</published><updated>2022-09-19T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/19/day32</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/19/day32.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Started trying to clean up the error object before logging, but realized it wasn’t as simple as intially thought.&lt;/p&gt;
 
@@ -394,22 +458,4 @@
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Try to figure out what’s going wrong with my fly.io deployments, possibly redoing the deployment process again.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Fly.io Issues</summary></entry><entry><title type="html">23/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/10/day23.html" rel="alternate" type="text/html" title="23/100 Days of Code" /><published>2022-09-10T15:30:23-07:00</published><updated>2022-09-10T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/10/day23</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/10/day23.html">&lt;h3 id=&quot;paper-trader-user-session-retrospective&quot;&gt;Paper Trader User Session Retrospective&lt;/h3&gt;
-
-&lt;p&gt;Finally can wrap up this feature implementation! One more small change needs to be checked before I can merge the branch into main, but it’s essentially good to go at this point. As such, some quick thoughts on how this feature went about:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;There were a few changes that my friend suggested that I considered doing originally, but ended up unsure if it was necessary. While it is frustrating to have to change code I wrote to what I considered originally, it’s also assuring to know that I knew what the better solution was. In terms of making that right decision more often, it comes down to having more experience and weighing the why one decision is preferrable over the other.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Although I enjoyed refactoring my code after I was comfortable that it works, there are situations where I focus on cleaning up the existing code rather than finding an alternative that could be better. A good example was cleaning up my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;randomStringGenerator&lt;/code&gt; function, when I could have just used the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;uuid&lt;/code&gt; package. I’d attribute this to being too deep in the code and needing to take time to step back and reevaluate the code objectively. However, the more exposure I have to these different problems, the better I’ll be at determining the optimal approach earlier on.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;That’s about it for the User Session retrospective. It’s been a while since the last one but that’s because I didn’t do one for the Fly.io deployment process. That process doesn’t really need a retrospective since it was more or less a straightforward process of following documentation and checking Stack Overflow discussions to resolve errors. After going through the Discord OAuth process, that experience carried over to helping me work through the Fly.io CI/CD process.&lt;/p&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Time to start all those PRs! Will probably start with adding the logout function since that has already been started, though I will have to deal with merge conflicts before I continue on.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader User Session Retrospective</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Fly.io Issues</summary></entry></feed>
