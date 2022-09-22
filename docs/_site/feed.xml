@@ -1,4 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-20T23:01:38-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">33/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/20/day33.html" rel="alternate" type="text/html" title="33/100 Days of Code" /><published>2022-09-20T15:30:23-07:00</published><updated>2022-09-20T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/20/day33</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/20/day33.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-21T22:53:41-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">34/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/21/day34.html" rel="alternate" type="text/html" title="34/100 Days of Code" /><published>2022-09-21T15:30:23-07:00</published><updated>2022-09-21T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/21/day34</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/21/day34.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Implemented the change I was considering yesterday, where the error object is modified before being sent off to the error handler. These changes have a few advantages over before:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;By modifiying the error object within the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; block that corresponds to the error, I can directly modify the error object without having to do any additional conditional logic on which error object needs to be modified a certain way.&lt;/li&gt;
+  &lt;li&gt;With this direct error message clean up, I no longer needed to use an extra middleware or conditional logic in my error handler, reducing the overall complexity of my routes.&lt;/li&gt;
+  &lt;li&gt;Now regardless of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt;, the error object has the sensitive information redacted as I removed the use of a conditional to determine when to redact the information. Since the sensitive information shouldn’t be seen easily, removing the conditional for when to redact information and just have it always redacted before being error logged is preferable. This is not necessarily a benefit specific to cleaning up the error object before being sent to the error handler, as this was a change that could have been made in the previous iterations.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Hopefully wrap up this PR!&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">33/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/20/day33.html" rel="alternate" type="text/html" title="33/100 Days of Code" /><published>2022-09-20T15:30:23-07:00</published><updated>2022-09-20T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/20/day33</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/20/day33.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Went through many iterations on cleaning up the error object, but everything from today and yesterday may not have been necessary…&lt;/p&gt;
 
@@ -437,25 +450,4 @@
       &lt;li&gt;I want to spend some more time to see if I can get active Tab highlighting to work and clean up docstrings, but other than a PR should be ready to go very soon.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Fly.io Issues</summary></entry><entry><title type="html">24/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/11/day24.html" rel="alternate" type="text/html" title="24/100 Days of Code" /><published>2022-09-11T15:30:23-07:00</published><updated>2022-09-11T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/11/day24</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/11/day24.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
-
-&lt;p&gt;Finally was able to merge my PR for User Sessions after a few more minor commits! Unfortunately, now I’m encountering fly.io issues.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;My Github action encountered deployment issues to fly.io, but when I deploy from my machine directly, there are no deployment issues despite no changes in the fly.toml (deployment configuration file) or code.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Then, it seems the newly deployed app was being cached by fly.io where my new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REDIRECT_URI&lt;/code&gt; value wasn’t being updated to go to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/login&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/login/discord-redirect&lt;/code&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Given that it seems to be cached, I tried deleting the deployed app and redoing the entire deployment process. However, now when I try to access the deployed app on fly.io, I get a connection reset message…&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;After spending so much time trying to debug this, I’ll have to try again tomorrow. Very unfortunate with how fly.io is turning out since it seemed very functional early on. Not too much to write about today since most of it has been digging through fly.io logs and trying to debug what’s going wrong.&lt;/p&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Try to figure out what’s going wrong with my fly.io deployments, possibly redoing the deployment process again.&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Fly.io Issues</summary></entry></feed>

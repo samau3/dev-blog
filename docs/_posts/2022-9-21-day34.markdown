@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "34/100 Days of Code"
+date:   2022-09-21 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Implemented the change I was considering yesterday, where the error object is modified before being sent off to the error handler. These changes have a few advantages over before:
+
+1. By modifiying the error object within the `catch` block that corresponds to the error, I can directly modify the error object without having to do any additional conditional logic on which error object needs to be modified a certain way.
+2. With this direct error message clean up, I no longer needed to use an extra middleware or conditional logic in my error handler, reducing the overall complexity of my routes.
+3. Now regardless of `NODE_ENV`, the error object has the sensitive information redacted as I removed the use of a conditional to determine when to redact the information. Since the sensitive information shouldn't be seen easily, removing the conditional for when to redact information and just have it always redacted before being error logged is preferable. This is not necessarily a benefit specific to cleaning up the error object before being sent to the error handler, as this was a change that could have been made in the previous iterations.
+
+### Next Steps
+1. Hopefully wrap up this PR!
