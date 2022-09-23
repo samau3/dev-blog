@@ -1,0 +1,23 @@
+---
+layout: post
+title:  "35/100 Days of Code"
+date:   2022-09-22 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Taking a step back and thinking ahead today for the next few features to implement for Paper Trader.
+
+1. React Error Handling will be next logical step after I wrap up the Express Error Handling.
+    - At the moment the React client doesn't do anything when an error is encountered except hang, so with proper error handling this should mount a fallback component and have a better user experience.
+2. I need to draft up a Database Schema to use for once I get ready for the database
+    - There will likely be two tables, one for users and one for transactions
+        - The user table will be very simple, such as username (as the primary key), funds, and probably last logged in
+        - The transaction table will have a sequential (as the primary key), stock ticker, stock name, price, and transaction date
+3. I will probably have to use a web scraper to get real time stock data as almost all stock APIs require a paid tier for that feature
+    - Likely will use Puppeteer to stay within the JS language, but it might not be a bad idea to pick up Selenium with Python to refresh my knowledge with Python
+
+### Next Steps
+1. Draft up a database schema? 
