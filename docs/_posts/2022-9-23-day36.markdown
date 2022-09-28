@@ -1,0 +1,38 @@
+---
+layout: post
+title:  "36/100 Days of Code"
+date:   2022-09-23 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Leetcode
+
+Leetcode 56. Merge Intervals
+
+1. First need to sort the array by the first element in each interval
+2. Then interate through the sorted intervals, building up a merged interval
+    1. If the start of the next interval is less than the end of the previous interval, they're overlapping
+        - Replace the previous interval's end number with the greater of the current and existing end value
+    2. If they're not overlapping, then no change is made and update the previous interval to be the current interval
+
+~~~
+const merge = function(intervals) {
+     intervals.sort((a, b) => a[0] - b[0])
+    // console.log(intervals)
+    
+    let prev = intervals[0];
+    let merged = [prev];
+    for (let curr of intervals) {
+        if (curr[0] <= prev[1]) {
+            prev[1] = prev[1] > curr[1] ? prev[1] : curr[1];
+        } else {
+            merged.push(curr);
+            prev = curr;
+        }
+    }
+    
+    return merged;
+};
+
+~~~

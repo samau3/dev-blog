@@ -1,4 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-22T23:46:06-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">35/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/22/day35.html" rel="alternate" type="text/html" title="35/100 Days of Code" /><published>2022-09-22T15:30:23-07:00</published><updated>2022-09-22T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/22/day35</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/22/day35.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-27T22:41:34-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">38/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/27/day38.html" rel="alternate" type="text/html" title="38/100 Days of Code" /><published>2022-09-27T15:30:23-07:00</published><updated>2022-09-27T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/27/day38</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/27/day38.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Started working on handling errors in React
+    &lt;ul&gt;
+      &lt;li&gt;Originally I thought I’d need to use React Error Boundaries, but that doesn’t seem to be necessary? Though I did see someone use it as a &lt;a href=&quot;https://stackoverflow.com/a/50220675&quot;&gt;solution&lt;/a&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;At the moment, errors are being created from my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; calls to the server for Discord OAuth.
+    &lt;ul&gt;
+      &lt;li&gt;My actual &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; calls that I stored as methods on my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserSession&lt;/code&gt; class utilize try/catch which throws an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error&lt;/code&gt; in the catch block.&lt;/li&gt;
+      &lt;li&gt;However, these throws show up in the console and doesn’t trigger my try/catch blocks in my React components.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;I’ll need to tinker around some more to figure out where to properly throw these errors, or if I have to utilize the Error Boundaries.
+    &lt;ul&gt;
+      &lt;li&gt;The problem I see with utilizing the Error Boundaries is that will likely lead to massive refactoring of my components which may not be neccessary?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Continue researching what’s the best way to handle displaying errors on the React side.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">37/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/24/day37.html" rel="alternate" type="text/html" title="37/100 Days of Code" /><published>2022-09-24T15:30:23-07:00</published><updated>2022-09-24T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/24/day37</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/24/day37.html">&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
+&lt;p&gt;Leetcode 57. Insert Interval&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;If the end of the newInterval is less than the start value of the current interval, there is no overlap
+    &lt;ul&gt;
+      &lt;li&gt;That means we add it to the result array and then add the remaining intervals after the current one&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;If the start of the new array is greater than the end of the current array, then that means there is no overlap&lt;/li&gt;
+  &lt;li&gt;If there is an overlap, update the newInterval that will be inserted with the minimum between the start values and the max between the end values&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+var insert = function (intervals, newInterval) {
+    // initialize an empty array to build up with the new intervals
+    let res = [];
+
+    // iterate through the intervals
+    for (let i = 0; i &amp;lt; intervals.length; i++) {
+        // if the end of the newInterval is less than the start value of the current interval, there is no overlap
+        // and that means we add it to the result array and then add the remaining intervals after the current one
+        // note the use of slice, as if we built an newInterval due to overlap in previous loops, we want to exclude those
+        if (newInterval[1] &amp;lt; intervals[i][0]) {
+            res.push(newInterval, ...intervals.slice(i));
+            return res;
+        }
+        // else if the start of the new array is greater than the end of the current array, then that means there is no overlap
+        // and we just add the current array to the result array and continue looping
+        else if (newInterval[0] &amp;gt; intervals[i][1]) {
+            res.push(intervals[i]);
+        }
+        // if there is an overlap, update the newInterval that will be inserted with the minimum between the start values
+        // and the max between the end values
+        else {
+            newInterval = [(Math.min(newInterval[0], intervals[i][0])), Math.max(newInterval[1], intervals[i][1])];
+        }
+    }
+
+    // note that we have not pushed the newInterval once we&apos;re out of the loop as the first if condition doesn&apos;t trigger
+    // so we need to add it back
+    res.push(newInterval);
+    return res;
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode Leetcode 57. Insert Interval</summary></entry><entry><title type="html">36/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/23/day36.html" rel="alternate" type="text/html" title="36/100 Days of Code" /><published>2022-09-23T15:30:23-07:00</published><updated>2022-09-23T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/23/day36</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/23/day36.html">&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
+
+&lt;p&gt;Leetcode 56. Merge Intervals&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First need to sort the array by the first element in each interval&lt;/li&gt;
+  &lt;li&gt;Then interate through the sorted intervals, building up a merged interval
+    &lt;ol&gt;
+      &lt;li&gt;If the start of the next interval is less than the end of the previous interval, they’re overlapping
+        &lt;ul&gt;
+          &lt;li&gt;Replace the previous interval’s end number with the greater of the current and existing end value&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;If they’re not overlapping, then no change is made and update the previous interval to be the current interval&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const merge = function(intervals) {
+     intervals.sort((a, b) =&amp;gt; a[0] - b[0])
+    // console.log(intervals)
+    
+    let prev = intervals[0];
+    let merged = [prev];
+    for (let curr of intervals) {
+        if (curr[0] &amp;lt;= prev[1]) {
+            prev[1] = prev[1] &amp;gt; curr[1] ? prev[1] : curr[1];
+        } else {
+            merged.push(curr);
+            prev = curr;
+        }
+    }
+    
+    return merged;
+};
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode</summary></entry><entry><title type="html">35/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/22/day35.html" rel="alternate" type="text/html" title="35/100 Days of Code" /><published>2022-09-22T15:30:23-07:00</published><updated>2022-09-22T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/22/day35</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/22/day35.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Taking a step back and thinking ahead today for the next few features to implement for Paper Trader.&lt;/p&gt;
 
@@ -235,219 +339,4 @@
 &lt;ol&gt;
   &lt;li&gt;Work through the code review comments&lt;/li&gt;
   &lt;li&gt;Start adding React error handling&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">28/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/15/day28.html" rel="alternate" type="text/html" title="28/100 Days of Code" /><published>2022-09-15T15:30:23-07:00</published><updated>2022-09-15T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/15/day28</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/15/day28.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Started adding error classes and error routes, which is leading up to a need for refactoring soon.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I made some custom error classes, which extended from an extention of Express’ &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error&lt;/code&gt; class.
-    &lt;ul&gt;
-      &lt;li&gt;However, when I tried to create a new property for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;status&lt;/code&gt;, I found that led to type errors that stated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Property &apos;status&apos; does not exist on type &apos;ExpressError&apos;.&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;Searching up “adding status to express errors typescript” online led to different solutions that didn’t quite match what I was doing. Luckily, the solution was just adding that as a property before the constructor:
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export class ExpressError extends Error {
-  status: number; // add this line so I can use this.status in the constructor
-
-  constructor(message: string, status: number) {
-      super();
-      this.message = message;
-      this.status = status;
-  }
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;While trying to add error handling routes, I found that requests being made to the Discord API already had their own error status and messages. So rather than overriding them, I figured I should just extract those properties from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;response&lt;/code&gt; object.
-    &lt;ul&gt;
-      &lt;li&gt;Previously, I used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios.post(url[, data[, config]])&lt;/code&gt; to makes requests to the Discord OAuth token route instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; as I couldn’t properly send the URL parameters with the latter approach. However, I used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; to make a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request to the Discord Users route.&lt;/li&gt;
-      &lt;li&gt;The problem with this mixing of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request format meant that the error &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;response&lt;/code&gt; object was different between them, so I couldn’t use the same error handler to process them. Even if I were to change my Discord Users route &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios.get(url[, config])&lt;/code&gt;, the response object would still be different between the two requests.&lt;/li&gt;
-      &lt;li&gt;To try to get both error objects to be sent to the error handler with all the properties I need having defined values, I wrapped the requests in a nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; block, so each request will have it’s own &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; that is cleaned up to send to the error handler
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; try {
-  axios.post() to token route
-
-  try {
-      axios.get() to user route
-  } catch (e) {
-      // clean up e
-      next(e)
-  }
- } catch (e) {
-  // clean up e
-  next(e)
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Despite this working, I felt that there had to be a way to make it so I didn’t have deal with two separate response error objects since this was very messy.
-    &lt;ul&gt;
-      &lt;li&gt;With some more digging and trial and error, I finally managed to change my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios.post(url[, data[, config]])&lt;/code&gt; to an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; format!&lt;/li&gt;
-      &lt;li&gt;I’m pretty sure I tried this before when first working with the Discord OAuth API, but maybe I was using the wrong key in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config&lt;/code&gt; body. Anyways, the solution was to append the key value pairs as a single query parameter:
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; try {
-  const params = new URLSearchParams();
-  params.append(&apos;client_id&apos;, clientId);
-  // ... other params that need to be appended
-
-  tokenResponseData = await axios({
-  method: &apos;POST&apos;,
-  url: &apos;https://discord.com/api/oauth2/token&apos;,
-  data: params,
-  headers: {
-      &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded&apos;
-  },
-  });
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Once I confirmed this worked, I changed my request to the Discord Users route back into the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; format. By doing it this way, I no longer needed to have a nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; block that modified different error objects and could just have one &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; block that had the same error object to modify (specifically, to extract the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error.data.error_description&lt;/code&gt; value and store it as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error.message&lt;/code&gt;).
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; try {
-  // params constructing
-  axios(POST_TO_TOKEN)
-        
-  // manipulating returned token response object
-
-  axios(GET_USER_WITH_TOKEN)
-
-  // return json to React FE
- } catch (e) {
-  // store error message in error object
-  next(e)
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;extends&lt;/code&gt; vs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implements&lt;/code&gt;
-    &lt;ul&gt;
-      &lt;li&gt;While looking into how to add the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;status&lt;/code&gt; property to my custom error class, I encountered this &lt;a href=&quot;https://stackoverflow.com/questions/38834625/whats-the-difference-between-extends-and-implements-in-typescript&quot;&gt;discussion&lt;/a&gt; as I saw some approaches related to my issue using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implements&lt;/code&gt;.&lt;/li&gt;
-      &lt;li&gt;A very thorough explanation about the two, but just for quick reference:
-        &lt;ul&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;extends&lt;/code&gt; is the concept of inheritance in OOP&lt;/li&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;implements&lt;/code&gt; is the concept of polymorphism in OOP&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static&lt;/code&gt; vs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Also from my search in how to add the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;status&lt;/code&gt; property to my custom error class, I encounted some discussions that used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt; in their classes. I’ve only ever used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static&lt;/code&gt; so I was surprised what &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt; would be for&lt;/li&gt;
-      &lt;li&gt;Taking a look into this &lt;a href=&quot;https://www.tutorialsteacher.com/typescript/data-modifiers&quot;&gt;resource&lt;/a&gt;, Typescript by default has variables in classes be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt; so I don’t have to declare that in my class.&lt;/li&gt;
-      &lt;li&gt;In my custom error class, I originally tried to do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static status: number&lt;/code&gt; but had to change that to just &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;status: number&lt;/code&gt; in order to resolve the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Property &apos;status&apos; does not exist on type &apos;ExpressError&apos;.&lt;/code&gt; error I encountered. After checking the difference between &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;static&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt; that makes sense why I doing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this.status&lt;/code&gt; in my constructor led to that “does not exist” error since it couldn’t be accessed.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Nested try catch blocks or separate?
-    &lt;ul&gt;
-      &lt;li&gt;After changing my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; requests to use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; format, I started to wonder if the nested try catch was really necessary. Although the two requests would be returning different errors, I’d need the user to generate a new token anyways and restart the OAuth process.&lt;/li&gt;
-      &lt;li&gt;This led me to two discussions, one specifically in &lt;a href=&quot;https://stackoverflow.com/a/59944868&quot;&gt;NodeJS&lt;/a&gt; and another in &lt;a href=&quot;https://stackoverflow.com/questions/25973515/to-separate-or-not-to-separate-try-catch-blocks-best-practice&quot;&gt;PhP&lt;/a&gt;.&lt;/li&gt;
-      &lt;li&gt;The key take away is if I needed to process the error responses uniquely and if I wanted the operations to be tied together - then I should use a single &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; block. Given my use case, I got rid of the nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; in favor of a single &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Open up a PR for code review&lt;/li&gt;
-  &lt;li&gt;Start on the error handling for the React side of things&lt;/li&gt;
-  &lt;li&gt;Current running list of PRs to work on:
-    &lt;ol&gt;
-      &lt;li&gt;React Error handling&lt;/li&gt;
-      &lt;li&gt;Reformat all files to have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;2&lt;/code&gt; tab spacing&lt;/li&gt;
-      &lt;li&gt;Refactor Express routes so it’s not in one giant file&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">27/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/14/day27.html" rel="alternate" type="text/html" title="27/100 Days of Code" /><published>2022-09-14T15:30:23-07:00</published><updated>2022-09-14T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/14/day27</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/14/day27.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;While working on the logout PR and recently the login spinner PR, I noticed there is inconsistent deployment behavior.
-    &lt;ol&gt;
-      &lt;li&gt;When I opened the PRs for the two features, the Github action to deploy to fly.io fail, despite working previously and having no changes to the configuration settings to deploy. However, once I make a commit to the PR and the Github action runs again, it successfully deploys. No idea what’s going on here, other than recognizing this behavior as very odd.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;paper-trader-logout-function-and-corresponding-retrospective&quot;&gt;Paper Trader Logout Function And Corresponding Retrospective&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Going back to my decision between &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt;, and how &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localStorage&lt;/code&gt;’s functional interface returns &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt;, I figured I’d be using both in the app. However, my friend suggested just setting the values for the variables and functions that rely on the result from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localStorage&lt;/code&gt;’s functional interface to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt;, which would resolve issues deciding between if I should be checking a value is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt;. So I made a few changes from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localStorage.getItem()&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localStorage.getItem() ?? undefined&lt;/code&gt; across my components.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Merged the logout function PR to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt;! Excited to have this implemented as that helps with trying out features with and without user session without having to manually clearing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localStorage&lt;/code&gt; in the Chrome console. This feature was pretty small to implement so there isn’t much to reflect on. However, something that bleeds over from the previous retrospective was how to handle merge conflicts after merging a big PR to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt;. The logout function was started before I merged the user session PR, so once I went back to working on the feature, I needed to do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git merge origin main&lt;/code&gt; to update the branch. Luckily, the merge conflicts were easy to resolve since I wanted to accept almost all the incoming changes, where the only hard part was finding all the merge conflicts (VS Code’s UI helped with most of this process though). If I was further along in the logout feature branch, then there might be some merge conflicts that would have been harder to resolve. Overall, this experience showed the importance of breaking things down and to keep the goal in mind so one doesn’t constantly expand a feature to the point where it becomes too complex too soon.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Worked on the login loading spinner feature today, keeping the PR small so there was only about ~10 net line changes. Should be a simple PR to merge to main, so I won’t need a retrospective for that feature.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Nullish operator (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;??&lt;/code&gt;) vs Or operator (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;||&lt;/code&gt;)
-    &lt;ul&gt;
-      &lt;li&gt;I’m not too familiar with the use of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;??&lt;/code&gt; that my friend was suggesting in the code reviews so I took a deeper look about when and why one should use them.&lt;/li&gt;
-      &lt;li&gt;Some resources I saw were this &lt;a href=&quot;https://stackoverflow.com/questions/61480993/when-should-i-use-nullish-coalescing-vs-logical-or&quot;&gt;SO discussion&lt;/a&gt; and the &lt;a href=&quot;https://stackoverflow.com/questions/61480993/when-should-i-use-nullish-coalescing-vs-logical-or&quot;&gt;official proposal to add the feature to Javascript&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;Some key points are:
-        &lt;ol&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;||&lt;/code&gt; can return potentially unwanted results due to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;falsey&lt;/code&gt; values being on the left side, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;&quot;&lt;/code&gt;.&lt;/li&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;??&lt;/code&gt; differentiates between &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;falsey&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nullish&lt;/code&gt; values, so the operator only returns values on the right side if the left side was &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt;&lt;/li&gt;
-          &lt;li&gt;A quick reminder/explanation is that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;||&lt;/code&gt; returns the last &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;truthy&lt;/code&gt; value, while &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;??&lt;/code&gt; returns the first defined value.&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;At the moment, a lot of the situations where I’m using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;||&lt;/code&gt; should actually be replaced with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;??&lt;/code&gt; as I’m supplying a default value if the variable would otherwise be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Merge this PR and start on making Error classes!&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Fly.io Issues</summary></entry><entry><title type="html">26/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/13/day26.html" rel="alternate" type="text/html" title="26/100 Days of Code" /><published>2022-09-13T15:30:23-07:00</published><updated>2022-09-13T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/13/day26</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/13/day26.html">&lt;h3 id=&quot;flyio-issues&quot;&gt;Fly.io Issues&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Might have to abandon debugging the deployment issues as I’m not really making much progress on solving the issue.
-    &lt;ol&gt;
-      &lt;li&gt;My current assumption is there’s caching of the deployment files so when I deploy, it’s not applying any changes. I tried running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm run build&lt;/code&gt; in case deploying somehow uses my local build files, but that didn’t have any changes on the deployment either.&lt;/li&gt;
-      &lt;li&gt;Another assumption that I’ll have to look into in the future is potentially an error with the build command not running. Some brief searching online for the error I receive in my Github action showed that this could be related to build.
-        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;https://community.fly.io/t/nodejs-failed-due-to-unhealthy-allocations/5013/2&quot;&gt;A fly.io community post about a similar issue&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/70495483/node-js-only-resolving-dist-index-js-other-files-in-module-are-not-found&quot;&gt;A more generic SO discussion about the Error message I see in the Github action logs&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Opened my PR for the logout function!
-    &lt;ul&gt;
-      &lt;li&gt;Not too many changes from yesterday, but I did manage to find out how to set the active &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tab&lt;/code&gt; to be highlighted.
-        &lt;ul&gt;
-          &lt;li&gt;With Evergreen UI, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tab&lt;/code&gt; component has a property &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;isSelected&lt;/code&gt; that is a boolean which determines if it’s active and should be highlighted.&lt;/li&gt;
-          &lt;li&gt;Pair that with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;react-router-dom&lt;/code&gt;’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useLocation&lt;/code&gt; hook, I just need to compare if the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pathname&lt;/code&gt; property from the returned object of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useLocation&lt;/code&gt; matches the path corresponding to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tab&lt;/code&gt;.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;There may be a way to apply these changes more dynamically as everything is hard coded, but for now since the file is small this is tolerable.
-        &lt;ul&gt;
-          &lt;li&gt;I may revisit the use of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Array.map&lt;/code&gt; to have the tabs be dynamically set, but the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Logout&lt;/code&gt; tab would have to be excluded from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;map&lt;/code&gt; callback as it won’t have the same properties as the other tabs.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Apply changes that may come in from the code review of my PR.&lt;/li&gt;
-  &lt;li&gt;A retrospective, which will likely be pretty brief.&lt;/li&gt;
-  &lt;li&gt;Start working on the login redirect spinner.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Fly.io Issues</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>

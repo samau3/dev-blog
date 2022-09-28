@@ -1,0 +1,49 @@
+---
+layout: post
+title:  "37/100 Days of Code"
+date:   2022-09-24 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Leetcode
+Leetcode 57. Insert Interval
+
+1. If the end of the newInterval is less than the start value of the current interval, there is no overlap
+    - That means we add it to the result array and then add the remaining intervals after the current one
+2. If the start of the new array is greater than the end of the current array, then that means there is no overlap
+3. If there is an overlap, update the newInterval that will be inserted with the minimum between the start values and the max between the end values
+
+~~~
+
+var insert = function (intervals, newInterval) {
+    // initialize an empty array to build up with the new intervals
+    let res = [];
+
+    // iterate through the intervals
+    for (let i = 0; i < intervals.length; i++) {
+        // if the end of the newInterval is less than the start value of the current interval, there is no overlap
+        // and that means we add it to the result array and then add the remaining intervals after the current one
+        // note the use of slice, as if we built an newInterval due to overlap in previous loops, we want to exclude those
+        if (newInterval[1] < intervals[i][0]) {
+            res.push(newInterval, ...intervals.slice(i));
+            return res;
+        }
+        // else if the start of the new array is greater than the end of the current array, then that means there is no overlap
+        // and we just add the current array to the result array and continue looping
+        else if (newInterval[0] > intervals[i][1]) {
+            res.push(intervals[i]);
+        }
+        // if there is an overlap, update the newInterval that will be inserted with the minimum between the start values
+        // and the max between the end values
+        else {
+            newInterval = [(Math.min(newInterval[0], intervals[i][0])), Math.max(newInterval[1], intervals[i][1])];
+        }
+    }
+
+    // note that we have not pushed the newInterval once we're out of the loop as the first if condition doesn't trigger
+    // so we need to add it back
+    res.push(newInterval);
+    return res;
+};
+~~~

@@ -1,0 +1,20 @@
+---
+layout: post
+title:  "38/100 Days of Code"
+date:   2022-09-27 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+1. Started working on handling errors in React
+    - Originally I thought I'd need to use React Error Boundaries, but that doesn't seem to be necessary? Though I did see someone use it as a [solution](https://stackoverflow.com/a/50220675).
+2. At the moment, errors are being created from my `axios` calls to the server for Discord OAuth.
+    - My actual `axios` calls that I stored as methods on my `UserSession` class utilize try/catch which throws an `Error` in the catch block.
+    - However, these throws show up in the console and doesn't trigger my try/catch blocks in my React components.
+3. I'll need to tinker around some more to figure out where to properly throw these errors, or if I have to utilize the Error Boundaries.
+    - The problem I see with utilizing the Error Boundaries is that will likely lead to massive refactoring of my components which may not be neccessary?
+
+### Next Steps
+1. Continue researching what's the best way to handle displaying errors on the React side.
