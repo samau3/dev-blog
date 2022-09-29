@@ -1,0 +1,31 @@
+---
+layout: post
+title:  "39/100 Days of Code"
+date:   2022-09-28 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Recieved some feedback on my previously opened PR, luckily mostly minor changes!
+
+1. Added typing to the variables that store the `axios` response values.
+    - In this process, realized that I haven't been storing the `response.data` and was doing this step separately.
+        - `const var1 = await axios()` `const var2 = var1.data` changed to `const var1 = (await axios()).data`
+    - Made some minor refactoring to reduce the unnecessary variables.
+2. Changed my login request route to fail fast by checking if the parameter is missing rather than checking if it exists.
+    - Used to be `if (code)` but is not `if (!code) return next(new BadRequestError())`.
+
+Also worked on the React error side of things and got a better understanding of where errors should be thrown
+
+1. Previously, my class methods that made the requests to my server had `try catch` blocks that threw errors.
+2. Made the change such that the React hook that makes that calls the methods to be wrapped in a `try catch`.
+3. At the moment, this method is called at the parent `App` component, but I wanted the errors to be within the `Login` component.
+    - Doesn't seem like passing the errors down to the `Login` component is the correct approach as it lifts the error state too high in my opinion.
+    - Will need to keep exploring to see if there's a better approach.
+
+### Next Steps
+1. Try to see if having separate `try catch` blocks is a possible alternative to the nested `try catch` blocks
+    - Previously, the first `try catch` failing still allowed the second `try catch` to be ran
+        - `/token` request fails, but a request is still made to `/users` without an access token

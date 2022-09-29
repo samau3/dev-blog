@@ -1,4 +1,50 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-27T22:41:34-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">38/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/27/day38.html" rel="alternate" type="text/html" title="38/100 Days of Code" /><published>2022-09-27T15:30:23-07:00</published><updated>2022-09-27T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/27/day38</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/27/day38.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-28T23:48:48-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">39/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/28/day39.html" rel="alternate" type="text/html" title="39/100 Days of Code" /><published>2022-09-28T15:30:23-07:00</published><updated>2022-09-28T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/28/day39</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/28/day39.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Recieved some feedback on my previously opened PR, luckily mostly minor changes!&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Added typing to the variables that store the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; response values.
+    &lt;ul&gt;
+      &lt;li&gt;In this process, realized that I haven’t been storing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;response.data&lt;/code&gt; and was doing this step separately.
+        &lt;ul&gt;
+          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const var1 = await axios()&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const var2 = var1.data&lt;/code&gt; changed to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const var1 = (await axios()).data&lt;/code&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Made some minor refactoring to reduce the unnecessary variables.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Changed my login request route to fail fast by checking if the parameter is missing rather than checking if it exists.
+    &lt;ul&gt;
+      &lt;li&gt;Used to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if (code)&lt;/code&gt; but is not &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if (!code) return next(new BadRequestError())&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Also worked on the React error side of things and got a better understanding of where errors should be thrown&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Previously, my class methods that made the requests to my server had &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; blocks that threw errors.&lt;/li&gt;
+  &lt;li&gt;Made the change such that the React hook that makes that calls the methods to be wrapped in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;At the moment, this method is called at the parent &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component, but I wanted the errors to be within the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; component.
+    &lt;ul&gt;
+      &lt;li&gt;Doesn’t seem like passing the errors down to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; component is the correct approach as it lifts the error state too high in my opinion.&lt;/li&gt;
+      &lt;li&gt;Will need to keep exploring to see if there’s a better approach.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Try to see if having separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; blocks is a possible alternative to the nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; blocks
+    &lt;ul&gt;
+      &lt;li&gt;Previously, the first &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; failing still allowed the second &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; to be ran
+        &lt;ul&gt;
+          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/token&lt;/code&gt; request fails, but a request is still made to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/users&lt;/code&gt; without an access token&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">38/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/27/day38.html" rel="alternate" type="text/html" title="38/100 Days of Code" /><published>2022-09-27T15:30:23-07:00</published><updated>2022-09-27T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/27/day38</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/27/day38.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;ol&gt;
   &lt;li&gt;Started working on handling errors in React
@@ -305,38 +351,4 @@ var insert = function (intervals, newInterval) {
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Work through the code review comment!&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">29/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/16/day29.html" rel="alternate" type="text/html" title="29/100 Days of Code" /><published>2022-09-16T15:30:23-07:00</published><updated>2022-09-16T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/16/day29</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/16/day29.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Most of today was spent looking into how to handle errors in React properly. So most of today’s entry will be in the &lt;strong&gt;Learning&lt;/strong&gt; sessions&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Opened a PR for the Express Error changes, and one small change so far was having a generic message if there’s a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;500&lt;/code&gt; error (see learnings).&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;What message to provide for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;500&lt;/code&gt; Errors?
-    &lt;ul&gt;
-      &lt;li&gt;Originally I had my error handling route with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;const message = err.message&lt;/code&gt;, but this runs into the risk of showing too much information from the server.&lt;/li&gt;
-      &lt;li&gt;Based on this &lt;a href=&quot;https://stackoverflow.com/questions/72208536/whats-the-best-practice-for-returning-an-http-500-error-description&quot;&gt;SO discussion&lt;/a&gt;, the best thing to do is just have a generic message shown to the client.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;React Error Handling
-    &lt;ul&gt;
-      &lt;li&gt;In the past, I handled error information by utilizing a Bootstrap Alert, which Evergreen UI also has a &lt;a href=&quot;https://evergreen.segment.com/components/alert&quot;&gt;component&lt;/a&gt; for.&lt;/li&gt;
-      &lt;li&gt;However, looking into best practices, there are &lt;a href=&quot;https://reactjs.org/docs/error-boundaries.html&quot;&gt;Error Boundaries&lt;/a&gt; in React that allows the use of a fallback component to load if there was an error with a component.
-        &lt;ul&gt;
-          &lt;li&gt;For my login function not working, such as when the server responds with an error, this may be what I need to use to show that the user needs to try logging in again.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Another potential solution is utilizing a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; block, but that may be messier than &lt;a href=&quot;https://reactjs.org/docs/error-boundaries.html&quot;&gt;using Error Boundaries&lt;/a&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Work through the code review comments&lt;/li&gt;
-  &lt;li&gt;Start adding React error handling&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
