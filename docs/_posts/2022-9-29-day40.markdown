@@ -1,0 +1,60 @@
+---
+layout: post
+title:  "40/100 Days of Code"
+date:   2022-09-29 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Finished the Express Error Handling PR and merged to main!
+
+1. Managed to figure out how to have the two `axios` requests to the Discord API be two separate `try catch` blocks.
+    - My previous attempts would just have `next()` in the catch block, where if the first request to Discord `/token` fails a request is still made to Discord `/users` when it should have even be attempted.
+    - The solution was to use `return next()`, which is explained very well in this [discussion](https://stackoverflow.com/questions/16810449/when-to-use-next-and-return-next-in-node-js) here as to why this is necessary.
+
+Now that the backend API has errors, time to start implementing some of that error handling in the frontend React client too.
+
+1. I opted to not use React boundaries as that's more for components encountering errors, rather than API requests or server requests causing errors.
+2. The first challenge was trying to get the errors to be caught in the right component for logging in.
+    - First, I had to remove the try catch blocks in my class methods that make requests to my backend.
+    - Then in my `Login` component, I wrapped the function call in a `try catch` block.
+        - Note, `handleLogin` is passed down from the parent `App` component and is a promise (due to being returned from `useCallback`). Before, I didn't await `handleLogin` which caused my catch block to never trigger as there was no error to catch yet.
+3. However, there are two points of failure during the login process, one being a CSRF attack/clickjacking and another being issues with requests from Discord's OAuth API.
+    - This meant having to use conditionals to display a relevant message for the issue. 
+        - If it's a CSRF issue, they should just try to login again as the state string is reset.
+        - If it's a Discord API issue, then they should try logging in later.
+    - Also note that the search parameters are reset if an error occurred. This is to clean the URL so the old `state` parameter isn't reused and so refreshing the page doesn't call `handleLogin` again (which is called if there is a `code` parameter).
+
+    ~~~
+    useEffect(() => {
+        async function loadUser() {
+            if (authCode !== undefined) {
+                try {
+                await handleLogin();
+                } catch (error) {
+                    if (error instanceof StateError) {
+                        localStorage.removeItem('csrfStateString');
+                        UserSession.storeCsrfStateString();
+                        setErrors("There was an issue with your request. Please try again.");
+                    }
+                    if (error instanceof AxiosError) {
+                        setErrors("There's an issue with getting your profile information. Please try again later.");
+                    }
+                    setSearchParams("");
+                }
+            }
+        }
+        loadUser()
+    }, [handleLogin, authCode, setSearchParams]);
+    ~~~
+
+4. To display the information, I used conditional values and Evergreen UI's `Alert` component. 
+    - A small tricky part was figuring out the conditionals to properly show the appropriate components, when there is an error and have been redirected, when there is no error and hasn't been redirected, etc.
+
+![Login Error Message](../../../../images/20220929/loginErrorMessage.gif)
+
+### Next Steps
+1. Write up a retrospective on the Express Errors? Might combine it with the React errors if it's not that big.
+2. Open the React errors PR.

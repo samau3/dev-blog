@@ -1,4 +1,77 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-28T23:48:48-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">39/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/28/day39.html" rel="alternate" type="text/html" title="39/100 Days of Code" /><published>2022-09-28T15:30:23-07:00</published><updated>2022-09-28T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/28/day39</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/28/day39.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-30T00:25:51-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">40/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/29/day40.html" rel="alternate" type="text/html" title="40/100 Days of Code" /><published>2022-09-29T15:30:23-07:00</published><updated>2022-09-29T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/29/day40</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/29/day40.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Finished the Express Error Handling PR and merged to main!&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Managed to figure out how to have the two &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; requests to the Discord API be two separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; blocks.
+    &lt;ul&gt;
+      &lt;li&gt;My previous attempts would just have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;next()&lt;/code&gt; in the catch block, where if the first request to Discord &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/token&lt;/code&gt; fails a request is still made to Discord &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/users&lt;/code&gt; when it should have even be attempted.&lt;/li&gt;
+      &lt;li&gt;The solution was to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return next()&lt;/code&gt;, which is explained very well in this &lt;a href=&quot;https://stackoverflow.com/questions/16810449/when-to-use-next-and-return-next-in-node-js&quot;&gt;discussion&lt;/a&gt; here as to why this is necessary.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now that the backend API has errors, time to start implementing some of that error handling in the frontend React client too.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I opted to not use React boundaries as that’s more for components encountering errors, rather than API requests or server requests causing errors.&lt;/li&gt;
+  &lt;li&gt;The first challenge was trying to get the errors to be caught in the right component for logging in.
+    &lt;ul&gt;
+      &lt;li&gt;First, I had to remove the try catch blocks in my class methods that make requests to my backend.&lt;/li&gt;
+      &lt;li&gt;Then in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; component, I wrapped the function call in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; block.
+        &lt;ul&gt;
+          &lt;li&gt;Note, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;handleLogin&lt;/code&gt; is passed down from the parent &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component and is a promise (due to being returned from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useCallback&lt;/code&gt;). Before, I didn’t await &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;handleLogin&lt;/code&gt; which caused my catch block to never trigger as there was no error to catch yet.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;However, there are two points of failure during the login process, one being a CSRF attack/clickjacking and another being issues with requests from Discord’s OAuth API.
+    &lt;ul&gt;
+      &lt;li&gt;This meant having to use conditionals to display a relevant message for the issue.
+        &lt;ul&gt;
+          &lt;li&gt;If it’s a CSRF issue, they should just try to login again as the state string is reset.&lt;/li&gt;
+          &lt;li&gt;If it’s a Discord API issue, then they should try logging in later.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Also note that the search parameters are reset if an error occurred. This is to clean the URL so the old &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter isn’t reused and so refreshing the page doesn’t call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;handleLogin&lt;/code&gt; again (which is called if there is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;code&lt;/code&gt; parameter).&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; useEffect(() =&amp;gt; {
+     async function loadUser() {
+         if (authCode !== undefined) {
+             try {
+             await handleLogin();
+             } catch (error) {
+                 if (error instanceof StateError) {
+                     localStorage.removeItem(&apos;csrfStateString&apos;);
+                     UserSession.storeCsrfStateString();
+                     setErrors(&quot;There was an issue with your request. Please try again.&quot;);
+                 }
+                 if (error instanceof AxiosError) {
+                     setErrors(&quot;There&apos;s an issue with getting your profile information. Please try again later.&quot;);
+                 }
+                 setSearchParams(&quot;&quot;);
+             }
+         }
+     }
+     loadUser()
+ }, [handleLogin, authCode, setSearchParams]);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;To display the information, I used conditional values and Evergreen UI’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Alert&lt;/code&gt; component.
+    &lt;ul&gt;
+      &lt;li&gt;A small tricky part was figuring out the conditionals to properly show the appropriate components, when there is an error and have been redirected, when there is no error and hasn’t been redirected, etc.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;../../../../images/20220929/loginErrorMessage.gif&quot; alt=&quot;Login Error Message&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Write up a retrospective on the Express Errors? Might combine it with the React errors if it’s not that big.&lt;/li&gt;
+  &lt;li&gt;Open the React errors PR.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">39/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/28/day39.html" rel="alternate" type="text/html" title="39/100 Days of Code" /><published>2022-09-28T15:30:23-07:00</published><updated>2022-09-28T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/28/day39</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/28/day39.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Recieved some feedback on my previously opened PR, luckily mostly minor changes!&lt;/p&gt;
 
@@ -321,34 +394,4 @@ var insert = function (intervals, newInterval) {
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Start implementing better error logging!&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">30/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/17/day30.html" rel="alternate" type="text/html" title="30/100 Days of Code" /><published>2022-09-17T15:30:23-07:00</published><updated>2022-09-17T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/17/day30</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/17/day30.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Received a comment on my error handler in Express about &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.error(error)&lt;/code&gt; that led to more researching than actual coding, so once again &lt;strong&gt;Learnings&lt;/strong&gt; section will be the main focus.&lt;/p&gt;
-
-&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Should you &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.error&lt;/code&gt; errors?
-    &lt;ol&gt;
-      &lt;li&gt;The benefit of logging errors, is that you can see what went wrong during the request response cycle so you can debug with more clues about the issue.&lt;/li&gt;
-      &lt;li&gt;However, what information should be shown? And at what level should that be shown (development, production, test)? In addition, if you log every error, will you sift through every error that is encountered?&lt;/li&gt;
-      &lt;li&gt;Still in the process of deciding how best to update my error handler to log the right information when necessary, but some good resources for error logging best practices:
-        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;https://www.toptal.com/nodejs/node-js-error-handling&quot;&gt;NodeJS Error Handling&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;https://www.toptal.com/express-js/routes-js-promises-error-handling&quot;&gt;Express Error Handling&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Based on what I’ve read so far among various sources, I may have to specifiy when and what to log, rather than all errors
-        &lt;ul&gt;
-          &lt;li&gt;Currently, I have confidential information that gets logged once an error is encountered in my axios requests. While not the end of the world since it can only be accessed from those who can view the deployed app on fly.io, there is still a risk of logging the entire error object.&lt;/li&gt;
-          &lt;li&gt;Perhaps setting the logging to only occur during &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV === &apos;test&apos;&lt;/code&gt; or only &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error.response.headers&lt;/code&gt;? Things to consider during more discussions with my friend.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Work through the code review comment!&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
