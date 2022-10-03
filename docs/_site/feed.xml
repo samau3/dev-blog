@@ -1,4 +1,89 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-09-30T00:25:51-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">40/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/29/day40.html" rel="alternate" type="text/html" title="40/100 Days of Code" /><published>2022-09-29T15:30:23-07:00</published><updated>2022-09-29T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/29/day40</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/29/day40.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-02T23:33:36-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">42/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/02/day42.html" rel="alternate" type="text/html" title="42/100 Days of Code" /><published>2022-10-02T15:30:23-07:00</published><updated>2022-10-02T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/02/day42</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/02/day42.html">&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
+
+&lt;p&gt;Went back through old problems I did on Grind 75.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Week 1 #1, &lt;a href=&quot;https://leetcode.com/problems/two-sum/&quot;&gt;Leetcode 1. Two Sum&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Naive solution is to do a nested for loop (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n2)&lt;/code&gt;)
+        &lt;ul&gt;
+          &lt;li&gt;Outer for loop starts at an element, then the inner for loop checks of the rest of the elements in the array sum to target&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Optimal solution would be to utilize a hashmap (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n)&lt;/code&gt;)
+        &lt;ul&gt;
+          &lt;li&gt;For each iterations, find the difference between current value and target value
+            &lt;ul&gt;
+              &lt;li&gt;Then check if the difference has been encountered before, returning the current index and stored index from previously seen value&lt;/li&gt;
+              &lt;li&gt;If the difference has not been seen before, store the index and value in a hashmap&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Week 1 #2, &lt;a href=&quot;https://leetcode.com/problems/valid-parentheses&quot;&gt;Leetcode 20. Valid Parentheses&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Utilize a stack (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n)&lt;/code&gt;)
+        &lt;ul&gt;
+          &lt;li&gt;Iterate through input string, storing the open parentheses&lt;/li&gt;
+          &lt;li&gt;If a closing parenthesis is encountered, pop the stack and see if they’re a matching pair; return false if not matching&lt;/li&gt;
+          &lt;li&gt;After iterating through the loop, check if the stack is empty incase there was no closing parenthesis to trigger the conditional check&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Week 1 #3, &lt;a href=&quot;https://leetcode.com/problems/merge-two-sorted-lists&quot;&gt;Leetcode 21. Merge Two Sorted Lists&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Iterate through the linkedLists (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n)&lt;/code&gt;)
+        &lt;ul&gt;
+          &lt;li&gt;Initialize an empty linkedlist with a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;new ListNode&lt;/code&gt; that represents merged list output, then declare a variable to manipulate as a node of the empty list&lt;/li&gt;
+          &lt;li&gt;Iterate through the two input lists as long as both lists still have values
+            &lt;ul&gt;
+              &lt;li&gt;Use conditionals to compare which node to add to the merged list&lt;/li&gt;
+              &lt;li&gt;Update lists and nodes being pointed at to properly represent next nodes to check&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;After finishing the loop, the lists may be of uneven length so need to add remaining nodes from longer list to merged list&lt;/li&gt;
+          &lt;li&gt;Need to return &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mergedList.next&lt;/code&gt; as regular &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mergedList&lt;/code&gt; represents the empty node we initialized&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode</summary></entry><entry><title type="html">41/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/30/day41.html" rel="alternate" type="text/html" title="41/100 Days of Code" /><published>2022-09-30T15:30:23-07:00</published><updated>2022-09-30T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/30/day41</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/30/day41.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Continued working on the open PR for React error handling!&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Mostly minor changes related to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.logs&lt;/code&gt; revealing potentially too much information so all &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.logs&lt;/code&gt; have been removed from components
+    &lt;ul&gt;
+      &lt;li&gt;In addition to revealing too much information, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.logs&lt;/code&gt; aren’t needed now that debug what information is present in the components is not needed at the moment.
+        &lt;ul&gt;
+          &lt;li&gt;Of course, as components or features change, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.logs&lt;/code&gt; will be added then for development/debugging.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;After I initally opened up the PR, I tried to start my local environment but encountered an error:&lt;/p&gt;
+
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; False expression: Non-string value passed to ts.resolveTypeReferenceDirective, likely by a wrapping package working with an outdated resolveTypeReferenceDirectives signature. This is probably not a problem in TS itself.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;This sudden error suprised me as there were no changes However, this added &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ts-node&lt;/code&gt; to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;package.json&lt;/code&gt; in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dependencies&lt;/code&gt; section whereas &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ts-node-dev&lt;/code&gt; was added in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;devDependencies&lt;/code&gt; section.
+        &lt;ul&gt;
+          &lt;li&gt;For consistency, moved both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ts-node&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ts-node-dev&lt;/code&gt; to be in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;devDependencies&lt;/code&gt;.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Wrap up this PR and then start on the retros for the error handling.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">40/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/29/day40.html" rel="alternate" type="text/html" title="40/100 Days of Code" /><published>2022-09-29T15:30:23-07:00</published><updated>2022-09-29T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/29/day40</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/29/day40.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Finished the Express Error Handling PR and merged to main!&lt;/p&gt;
 
@@ -328,70 +413,4 @@ var insert = function (intervals, newInterval) {
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Clean up my error object processing and wrap up the PR!&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">32/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/19/day32.html" rel="alternate" type="text/html" title="32/100 Days of Code" /><published>2022-09-19T15:30:23-07:00</published><updated>2022-09-19T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/19/day32</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/19/day32.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Started trying to clean up the error object before logging, but realized it wasn’t as simple as intially thought.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Since the error is of type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExpressError&lt;/code&gt; with only properties &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;status&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;message&lt;/code&gt;, I couldn’t access the other properties that were showing up on the error object, like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;headers&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config&lt;/code&gt;.
-    &lt;ul&gt;
-      &lt;li&gt;After searching around for different possible solutions on how to access these other properties, such as trying to restore the &lt;a href=&quot;https://stackoverflow.com/questions/31626231/custom-error-class-in-typescript&quot;&gt;prototype chain&lt;/a&gt;, the solution ended up being adding a new property in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExpressError&lt;/code&gt; class for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;headers&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config&lt;/code&gt;.
-        &lt;ul&gt;
-          &lt;li&gt;In addition, an interface was added to access the properties within &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config&lt;/code&gt;, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt;.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Currently, I am now encountering an issue between the different error response objects from my existing axios requests to the Discord API.
-    &lt;ul&gt;
-      &lt;li&gt;The error response for getting a token and accessing a user’s information are different so I need to customize how the error object is cleaned up.&lt;/li&gt;
-      &lt;li&gt;Some possible solutions will be:
-        &lt;ul&gt;
-          &lt;li&gt;Having a conditional based on what error is made to clean up the error object.&lt;/li&gt;
-          &lt;li&gt;Reformat my route such that there is a nested try/catch so I can uniquely process the error objects.&lt;/li&gt;
-          &lt;li&gt;Regardless of these changes, as I introduce more routes and functionality, my error handler will encounter different error objects and will need to be updated accordingly.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Explore the different ways to handle the error response object, possibly reaching out to my friend for suggestions&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">31/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/18/day31.html" rel="alternate" type="text/html" title="31/100 Days of Code" /><published>2022-09-18T15:30:23-07:00</published><updated>2022-09-18T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/18/day31</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/18/day31.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Following up on my research into how to log errors, I was on the right track!&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Logging errors is very much necessary, but there are layers for how much should be logged.
-    &lt;ul&gt;
-      &lt;li&gt;In regards to my line of code &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if(NODE_ENV !== test) console.error(err)&lt;/code&gt; this meant when running tests, we won’t be able to see what went wrong. Although, a test might be aiming to specifically cause an error so the logs may bury other information that is needed. Nonetheless, starting with the full logs and then iteratively cleaning up the logs will be preferable (like what will need to be done to the production level logging)&lt;/li&gt;
-      &lt;li&gt;Previously, my error logs revealed sensitive information once an error was encountered in production. This was due to just having &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.error(err)&lt;/code&gt;, which logged the entire error object. While it was helpful to just get things started, this is not best practice as it’s never a good idea to reveal sensitive information in production. Applying what I saw from my online searching and discussion with my friend, it’s much better to clean up the error object and then log that.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;The approach I’ll be aiming for to log my errors:
-    &lt;ul&gt;
-      &lt;li&gt;Have a conditional statement to see if &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV === production&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;Build up an object inside the conditional that extracts the relevant properties from the error object
-        &lt;ul&gt;
-          &lt;li&gt;Headers, the data (minus sensitive information), the path, etc.&lt;/li&gt;
-          &lt;li&gt;Also possiblly include the request object to see what’s being sent each time to compare between errors if needed&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Log this cleaned up error object&lt;/li&gt;
-      &lt;li&gt;Ultimately move this function out to a separate folder in order to keep the routes separate from data clean up logic&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Some potential difficulties that I may encounter:
-    &lt;ul&gt;
-      &lt;li&gt;I’ll need to extract the data string and then redact pieces, leading to messy/inefficient code the first attempt&lt;/li&gt;
-      &lt;li&gt;There is a reliance on the error object always being the same structure. With &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt;, this seems like it’ll be consistent as long as I use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios(config)&lt;/code&gt; format, but any deviations from this could led to unexpected behavior&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Start implementing better error logging!&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>

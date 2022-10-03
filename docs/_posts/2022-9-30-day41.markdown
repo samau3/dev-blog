@@ -1,0 +1,27 @@
+---
+layout: post
+title:  "41/100 Days of Code"
+date:   2022-09-30 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Continued working on the open PR for React error handling!
+
+1. Mostly minor changes related to `console.logs` revealing potentially too much information so all `console.logs` have been removed from components
+    - In addition to revealing too much information, the `console.logs` aren't needed now that debug what information is present in the components is not needed at the moment.
+        - Of course, as components or features change, `console.logs` will be added then for development/debugging.
+
+2. After I initally opened up the PR, I tried to start my local environment but encountered an error: 
+
+    ~~~
+    False expression: Non-string value passed to ts.resolveTypeReferenceDirective, likely by a wrapping package working with an outdated resolveTypeReferenceDirectives signature. This is probably not a problem in TS itself.
+    ~~~
+
+    - This sudden error suprised me as there were no changes However, this added `ts-node` to the `package.json` in the `dependencies` section whereas `ts-node-dev` was added in the `devDependencies` section.
+        - For consistency, moved both `ts-node` and `ts-node-dev` to be in `devDependencies`.
+
+### Next Steps
+1. Wrap up this PR and then start on the retros for the error handling.
