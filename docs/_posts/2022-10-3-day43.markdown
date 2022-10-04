@@ -1,0 +1,30 @@
+---
+layout: post
+title:  "43/100 Days of Code"
+date:   2022-10-3 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader Error Handling Retrospective
+
+Overall there isn't much to reflect on as the whole process was very iterative, where the more the features became fleshed out, the more obvious some pieces code be broken up or refactored. 
+1. For my route errors, I had an idea that some functions could be separated out or refactored to be more clean, such as not having a nested try catch or having to directly modify the error objects based on which request generated it. However, as I was working through it, I couldn't quite get it to work on the first time, so I pushed forward with what worked. As things progressed, it became clearer where things can be split and what code chunks can be simplified.
+2. For my React error handling, the biggest take away was just cleaning up where my errors are being thrown. Previously they were being thrown in my API request methods, but that was too low of a location which made the errors inaccessible in my components. Once again, as my components were more clearly defined, I was able to properly display errors in the right location by catching them where needed. However, there was a learning moment where I had to await a promise that threw my error. Without awaiting, my catch blocks never triggerred which made debugging where my errors are being processed confusing at the time.
+
+### Paper Trader
+
+Worked on refactoring my Express API Routes!
+
+1. Nothing crazy, just separating out my two routes, `/login` and `/profile`, into their own files out of `index.ts`.
+2. However, a change that probably would have saved me headache in having a cleaner URL parameter object was adding a `!` to my `process.env` variables.
+    - When trying to reuse my object structure for `new URLSearchParams({URL_QUERY_PARAMS_OBJECT})`, I encountered the same error I had the first time I tried working with `axios` and the Discord OAuth `/token` route. Specifically, the entire object was causing a type error.
+    - Looking into it, I was able to narrow down the two properties causing the type errors, `clientId` and `clientSecret`, which are my `process.env` variables. My linter shows that their type was `string | undefined` which is understandable as maybe the environmental variables aren't set. However, I know they will be set as they're necessary to have the app communicate with the Discord API.
+    - This led me to find this [SO discussion](https://stackoverflow.com/a/66040743), and by adding a `!` to the end of my `process.env` values I resolved the type error.
+        - Interestingly, I just tried again without the `!` and the type error still isn't appearing so this change may not be entirely necessary.
+
+Also, I finally found a free real-time stock price API!
+1. Looking forward to implement [Finnhub](https://finnhub.io/docs/api/quote) for my buy/sell routes.
+
+### Next Steps
+1. Continue refactoring, most likely moving my axios requests to a separate file and breaking it up into class methods again.

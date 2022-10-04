@@ -1,4 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-02T23:33:36-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">42/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/02/day42.html" rel="alternate" type="text/html" title="42/100 Days of Code" /><published>2022-10-02T15:30:23-07:00</published><updated>2022-10-02T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/02/day42</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/02/day42.html">&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-03T23:45:19-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">43/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/03/day43.html" rel="alternate" type="text/html" title="43/100 Days of Code" /><published>2022-10-03T15:30:23-07:00</published><updated>2022-10-03T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/03/day43</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/03/day43.html">&lt;h3 id=&quot;paper-trader-error-handling-retrospective&quot;&gt;Paper Trader Error Handling Retrospective&lt;/h3&gt;
+
+&lt;p&gt;Overall there isn’t much to reflect on as the whole process was very iterative, where the more the features became fleshed out, the more obvious some pieces code be broken up or refactored.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;For my route errors, I had an idea that some functions could be separated out or refactored to be more clean, such as not having a nested try catch or having to directly modify the error objects based on which request generated it. However, as I was working through it, I couldn’t quite get it to work on the first time, so I pushed forward with what worked. As things progressed, it became clearer where things can be split and what code chunks can be simplified.&lt;/li&gt;
+  &lt;li&gt;For my React error handling, the biggest take away was just cleaning up where my errors are being thrown. Previously they were being thrown in my API request methods, but that was too low of a location which made the errors inaccessible in my components. Once again, as my components were more clearly defined, I was able to properly display errors in the right location by catching them where needed. However, there was a learning moment where I had to await a promise that threw my error. Without awaiting, my catch blocks never triggerred which made debugging where my errors are being processed confusing at the time.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Worked on refactoring my Express API Routes!&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Nothing crazy, just separating out my two routes, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/login&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/profile&lt;/code&gt;, into their own files out of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;index.ts&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;However, a change that probably would have saved me headache in having a cleaner URL parameter object was adding a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;!&lt;/code&gt; to my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;process.env&lt;/code&gt; variables.
+    &lt;ul&gt;
+      &lt;li&gt;When trying to reuse my object structure for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;new URLSearchParams({URL_QUERY_PARAMS_OBJECT})&lt;/code&gt;, I encountered the same error I had the first time I tried working with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; and the Discord OAuth &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/token&lt;/code&gt; route. Specifically, the entire object was causing a type error.&lt;/li&gt;
+      &lt;li&gt;Looking into it, I was able to narrow down the two properties causing the type errors, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;clientId&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;clientSecret&lt;/code&gt;, which are my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;process.env&lt;/code&gt; variables. My linter shows that their type was &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string | undefined&lt;/code&gt; which is understandable as maybe the environmental variables aren’t set. However, I know they will be set as they’re necessary to have the app communicate with the Discord API.&lt;/li&gt;
+      &lt;li&gt;This led me to find this &lt;a href=&quot;https://stackoverflow.com/a/66040743&quot;&gt;SO discussion&lt;/a&gt;, and by adding a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;!&lt;/code&gt; to the end of my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;process.env&lt;/code&gt; values I resolved the type error.
+        &lt;ul&gt;
+          &lt;li&gt;Interestingly, I just tried again without the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;!&lt;/code&gt; and the type error still isn’t appearing so this change may not be entirely necessary.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Also, I finally found a free real-time stock price API!&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Looking forward to implement &lt;a href=&quot;https://finnhub.io/docs/api/quote&quot;&gt;Finnhub&lt;/a&gt; for my buy/sell routes.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Continue refactoring, most likely moving my axios requests to a separate file and breaking it up into class methods again.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Error Handling Retrospective</summary></entry><entry><title type="html">42/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/02/day42.html" rel="alternate" type="text/html" title="42/100 Days of Code" /><published>2022-10-02T15:30:23-07:00</published><updated>2022-10-02T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/02/day42</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/02/day42.html">&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
 
 &lt;p&gt;Went back through old problems I did on Grind 75.&lt;/p&gt;
 
@@ -349,68 +384,4 @@ var insert = function (intervals, newInterval) {
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Hopefully wrap up this PR!&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">33/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/20/day33.html" rel="alternate" type="text/html" title="33/100 Days of Code" /><published>2022-09-20T15:30:23-07:00</published><updated>2022-09-20T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/20/day33</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/20/day33.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Went through many iterations on cleaning up the error object, but everything from today and yesterday may not have been necessary…&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;My first major change today was adding two conditionals that would change the error object, one for Discord’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;token&lt;/code&gt; route and one for Discord’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user&lt;/code&gt; route.
-    &lt;ul&gt;
-      &lt;li&gt;In the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;token&lt;/code&gt; conditional, it would modify the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; property of the error response object to hid the Discord Paper Trader application’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secret_code&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;In the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user&lt;/code&gt; conditional, it would remove the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bearer&lt;/code&gt; token value to prevent unauthorized access to a user’s information if the error logs were exposed&lt;/li&gt;
-      &lt;li&gt;This process involved further changes to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExpressError&lt;/code&gt; class to account for the different properties that were being accessed&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;After changing making sure the conditional statements were modifying the error objects as intended, my generic error handler started to look very messy and no longer stayed true to it’s purpose of being generic.
-    &lt;ul&gt;
-      &lt;li&gt;So, that led me down to try to find ways to maybe pull the conditionals out of the generic handler, possible making a new middleware error handler just to modify the Discord error response object
-        &lt;ul&gt;
-          &lt;li&gt;The most useful resource was Express’ &lt;a href=&quot;https://expressjs.com/en/guide/error-handling.html&quot;&gt;documentaion on error handlers&lt;/a&gt;.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Based on the documentation, it was fairly straightforward to implement this new middleware to process my Discord error object:
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  export function redactDiscordInfo(err: ExpressError, req: express.Request, res: express.Response, next: express.NextFunction) {
-      const { headers, url, data } = err.config;
-
-      if (process.env.NODE_ENV === &quot;production&quot;) {
-          if (url === &apos;https://discord.com/api/oauth2/token&apos;) {
-              const redactedData = &quot;client_id=REDACTED&amp;amp;client_secret=REDACTED&amp;amp;&quot; + `${data.substring(data.indexOf(&quot;grant_type&quot;))}`;
-
-              err.config.data = redactedData;
-          }
-          if (url === &apos;https://discord.com/api/users/@me&apos;) {
-              const redactAuthToken = headers.authorization.split(&quot; &quot;)[0];
-
-              err.config.headers.authorization = redactAuthToken + &quot; REDACTED&quot;;
-              err.request._header = &quot;REDACTED&quot;
-          }
-      }
-      next(err);
-  }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;However, I just created a &lt;strong&gt;middleware&lt;/strong&gt;, albeit an error handling one.
-    &lt;ul&gt;
-      &lt;li&gt;This will be interacted with every error that is being passed on from routes calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;next(error)&lt;/code&gt;.&lt;/li&gt;
-      &lt;li&gt;The only situations that this sensitive Discord information is being included in the request response cycle is when the application interacts with the Discord API, which is only during user log in.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Based on this limited scope of redacting the Discord information, having this redacting process be a middleware is not appropriate.
-    &lt;ul&gt;
-      &lt;li&gt;Which brings me to probably what I should have done at the beginning, all the way back on Day 28, when I separated the nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; block. Recognizing the fact that the two &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; requests to the two different Discord routes, I should have kept the nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; as the error response objects were unique.&lt;/li&gt;
-      &lt;li&gt;In addition, within each of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; blocks, I can modify the individual properties that have sensitive information before the error object is sent to the error handler.
-        &lt;ul&gt;
-          &lt;li&gt;This circumvents the need to have a conditional for which route the error is generated from, as the error object is being modified at the corresponding route it comes from.&lt;/li&gt;
-          &lt;li&gt;Also, this reduces the size of the generic error handler as it no longer needs to have logic specific to the Discord request errors, forming a better separation of concerns.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Clean up my error object processing and wrap up the PR!&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>

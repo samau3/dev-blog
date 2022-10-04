@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>43/100 Days of Code | 100 Days of Code</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="43/100 Days of Code" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Paper Trader Error Handling Retrospective" />
+<meta property="og:description" content="Paper Trader Error Handling Retrospective" />
+<link rel="canonical" href="http://localhost:4000/dev-blog/100days/2022/10/03/day43.html" />
+<meta property="og:url" content="http://localhost:4000/dev-blog/100days/2022/10/03/day43.html" />
+<meta property="og:site_name" content="100 Days of Code" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-10-03T15:30:23-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="43/100 Days of Code" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-10-03T15:30:23-07:00","datePublished":"2022-10-03T15:30:23-07:00","description":"Paper Trader Error Handling Retrospective","headline":"43/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/dev-blog/100days/2022/10/03/day43.html"},"url":"http://localhost:4000/dev-blog/100days/2022/10/03/day43.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/dev-blog/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/dev-blog/feed.xml" title="100 Days of Code" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/dev-blog/">100 Days of Code</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/dev-blog/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">43/100 Days of Code</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-10-03T15:30:23-07:00" itemprop="datePublished">Oct 3, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h3 id="paper-trader-error-handling-retrospective">Paper Trader Error Handling Retrospective</h3>
+
+<p>Overall there isn’t much to reflect on as the whole process was very iterative, where the more the features became fleshed out, the more obvious some pieces code be broken up or refactored.</p>
+<ol>
+  <li>For my route errors, I had an idea that some functions could be separated out or refactored to be more clean, such as not having a nested try catch or having to directly modify the error objects based on which request generated it. However, as I was working through it, I couldn’t quite get it to work on the first time, so I pushed forward with what worked. As things progressed, it became clearer where things can be split and what code chunks can be simplified.</li>
+  <li>For my React error handling, the biggest take away was just cleaning up where my errors are being thrown. Previously they were being thrown in my API request methods, but that was too low of a location which made the errors inaccessible in my components. Once again, as my components were more clearly defined, I was able to properly display errors in the right location by catching them where needed. However, there was a learning moment where I had to await a promise that threw my error. Without awaiting, my catch blocks never triggerred which made debugging where my errors are being processed confusing at the time.</li>
+</ol>
+
+<h3 id="paper-trader">Paper Trader</h3>
+
+<p>Worked on refactoring my Express API Routes!</p>
+
+<ol>
+  <li>Nothing crazy, just separating out my two routes, <code class="language-plaintext highlighter-rouge">/login</code> and <code class="language-plaintext highlighter-rouge">/profile</code>, into their own files out of <code class="language-plaintext highlighter-rouge">index.ts</code>.</li>
+  <li>However, a change that probably would have saved me headache in having a cleaner URL parameter object was adding a <code class="language-plaintext highlighter-rouge">!</code> to my <code class="language-plaintext highlighter-rouge">process.env</code> variables.
+    <ul>
+      <li>When trying to reuse my object structure for <code class="language-plaintext highlighter-rouge">new URLSearchParams({URL_QUERY_PARAMS_OBJECT})</code>, I encountered the same error I had the first time I tried working with <code class="language-plaintext highlighter-rouge">axios</code> and the Discord OAuth <code class="language-plaintext highlighter-rouge">/token</code> route. Specifically, the entire object was causing a type error.</li>
+      <li>Looking into it, I was able to narrow down the two properties causing the type errors, <code class="language-plaintext highlighter-rouge">clientId</code> and <code class="language-plaintext highlighter-rouge">clientSecret</code>, which are my <code class="language-plaintext highlighter-rouge">process.env</code> variables. My linter shows that their type was <code class="language-plaintext highlighter-rouge">string | undefined</code> which is understandable as maybe the environmental variables aren’t set. However, I know they will be set as they’re necessary to have the app communicate with the Discord API.</li>
+      <li>This led me to find this <a href="https://stackoverflow.com/a/66040743">SO discussion</a>, and by adding a <code class="language-plaintext highlighter-rouge">!</code> to the end of my <code class="language-plaintext highlighter-rouge">process.env</code> values I resolved the type error.
+        <ul>
+          <li>Interestingly, I just tried again without the <code class="language-plaintext highlighter-rouge">!</code> and the type error still isn’t appearing so this change may not be entirely necessary.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>Also, I finally found a free real-time stock price API!</p>
+<ol>
+  <li>Looking forward to implement <a href="https://finnhub.io/docs/api/quote">Finnhub</a> for my buy/sell routes.</li>
+</ol>
+
+<h3 id="next-steps">Next Steps</h3>
+<ol>
+  <li>Continue refactoring, most likely moving my axios requests to a separate file and breaking it up into class methods again.</li>
+</ol>
+
+  </div>
+
+  <a class="u-url" href="/dev-blog/100days/2022/10/03/day43.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/dev-blog/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">100 Days of Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">100 Days of Code</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/samau3"><svg class="svg-icon"><use xlink:href="/dev-blog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">samau3</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Sammy Au&#39;s 100 Days of Code</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
