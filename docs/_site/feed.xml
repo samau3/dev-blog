@@ -1,4 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-03T23:45:19-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">43/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/03/day43.html" rel="alternate" type="text/html" title="43/100 Days of Code" /><published>2022-10-03T15:30:23-07:00</published><updated>2022-10-03T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/03/day43</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/03/day43.html">&lt;h3 id=&quot;paper-trader-error-handling-retrospective&quot;&gt;Paper Trader Error Handling Retrospective&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-05T00:15:53-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">44/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/04/day44.html" rel="alternate" type="text/html" title="44/100 Days of Code" /><published>2022-10-04T15:30:23-07:00</published><updated>2022-10-04T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/04/day44</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/04/day44.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Continued refactoring my Express API Routes!&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I moved my axios requests into a separate file outside of my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/login&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/profile&lt;/code&gt; routes
+    &lt;ul&gt;
+      &lt;li&gt;Once again a pretty straightforward process, until it wasn’t&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;In my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request builder, I orginally had this set up:
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; static async request(endpoint: string, headers: any, data = {}, method = &quot;GET&quot;) {
+     const url = `${BASE_DISCORD_API_URL}/${endpoint}`;
+
+     const response = (await axios({ method, url, data, headers })).data;
+     return response;
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;I thought by having the default value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; be an empty object, whenever I have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request there would be an empty object for that property in the request. Note, in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;POST&lt;/code&gt; request, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; is provided as an input argument&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;When I went to test my login flow again, I kept getting this error &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Your client has issued a malformed or illegal request&lt;/code&gt;. Luckily with my separate catch blocks indicating which request is generating the error, I found that my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request to the Discord &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/users&lt;/code&gt; route was not the correct request format.
+    &lt;ul&gt;
+      &lt;li&gt;The issue was that my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request was sending an empty object in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; property, when it should be sending &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; for the data property.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;To resolve this, my generic &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request method needed to set the data property as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; when a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request is made:
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; static async request(endpoint: string, headers: any, body = {}, method = &quot;GET&quot;) {
+     const url = `${BASE_DISCORD_API_URL}/${endpoint}`;
+     const data = (method === &quot;GET&quot;)
+     ? undefined
+     : body;
+
+     const response = (await axios({ method, url, data, headers })).data;
+     return response;
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;`&lt;/p&gt;
+    &lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Originally I was planning to just do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return await&lt;/code&gt; in my new class making axios requests. However, when I double checked if that was a good idea, I found this documentation from &lt;a href=&quot;https://eslint.org/docs/latest/rules/no-return-await&quot;&gt;ESLint&lt;/a&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;The gist is that doing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return await&lt;/code&gt; is bad practice as it leads to performance issues related to call stack Promise resolving. However, it’s allowed inside a try catch block.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Start on implementing the stock API!
+    &lt;ul&gt;
+      &lt;li&gt;This will likely start as building out the feature both in the frontend and backend, but if it gets too big I’ll split up the PR&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">43/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/03/day43.html" rel="alternate" type="text/html" title="43/100 Days of Code" /><published>2022-10-03T15:30:23-07:00</published><updated>2022-10-03T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/03/day43</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/03/day43.html">&lt;h3 id=&quot;paper-trader-error-handling-retrospective&quot;&gt;Paper Trader Error Handling Retrospective&lt;/h3&gt;
 
 &lt;p&gt;Overall there isn’t much to reflect on as the whole process was very iterative, where the more the features became fleshed out, the more obvious some pieces code be broken up or refactored.&lt;/p&gt;
 &lt;ol&gt;
@@ -371,17 +426,4 @@ var insert = function (intervals, newInterval) {
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Draft up a database schema?&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">34/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/21/day34.html" rel="alternate" type="text/html" title="34/100 Days of Code" /><published>2022-09-21T15:30:23-07:00</published><updated>2022-09-21T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/21/day34</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/21/day34.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Implemented the change I was considering yesterday, where the error object is modified before being sent off to the error handler. These changes have a few advantages over before:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;By modifiying the error object within the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; block that corresponds to the error, I can directly modify the error object without having to do any additional conditional logic on which error object needs to be modified a certain way.&lt;/li&gt;
-  &lt;li&gt;With this direct error message clean up, I no longer needed to use an extra middleware or conditional logic in my error handler, reducing the overall complexity of my routes.&lt;/li&gt;
-  &lt;li&gt;Now regardless of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NODE_ENV&lt;/code&gt;, the error object has the sensitive information redacted as I removed the use of a conditional to determine when to redact the information. Since the sensitive information shouldn’t be seen easily, removing the conditional for when to redact information and just have it always redacted before being error logged is preferable. This is not necessarily a benefit specific to cleaning up the error object before being sent to the error handler, as this was a change that could have been made in the previous iterations.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Hopefully wrap up this PR!&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
