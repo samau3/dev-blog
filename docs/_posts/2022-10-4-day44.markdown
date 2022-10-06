@@ -20,7 +20,7 @@ Continued refactoring my Express API Routes!
         const response = (await axios({ method, url, data, headers })).data;
         return response;
     }
-  ~~~
+    ~~~
     - I thought by having the default value of `data` be an empty object, whenever I have a `GET` request there would be an empty object for that property in the request. Note, in a `POST` request, `data` is provided as an input argument 
 
 3. When I went to test my login flow again, I kept getting this error `Your client has issued a malformed or illegal request`. Luckily with my separate catch blocks indicating which request is generating the error, I found that my `GET` request to the Discord `/users` route was not the correct request format.
@@ -38,7 +38,7 @@ Continued refactoring my Express API Routes!
         return response;
     }
     ~~~
-    `
+    
 ### Learnings
 1. Originally I was planning to just do `return await` in my new class making axios requests. However, when I double checked if that was a good idea, I found this documentation from [ESLint](https://eslint.org/docs/latest/rules/no-return-await).
     - The gist is that doing `return await` is bad practice as it leads to performance issues related to call stack Promise resolving. However, it's allowed inside a try catch block. 

@@ -1,4 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-05T00:15:53-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">44/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/04/day44.html" rel="alternate" type="text/html" title="44/100 Days of Code" /><published>2022-10-04T15:30:23-07:00</published><updated>2022-10-04T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/04/day44</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/04/day44.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-05T22:42:17-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">45/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/05/day45.html" rel="alternate" type="text/html" title="45/100 Days of Code" /><published>2022-10-05T15:30:23-07:00</published><updated>2022-10-05T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/05/day45</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/05/day45.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Merged my refactoring of Express API Routes so far to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; with some minor changes had to be made to yesterday:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I changed the generic &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request to have a default &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; rather than an empty object, which removes the need for the conditional I had before.
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; static async request(endpoint: string, headers: any, data: URLSearchParams = undefined, method = &quot;GET&quot;) {
+     const url = `${BASE_DISCORD_API_URL}/${endpoint}`;
+
+     const response = (await axios({ method, url, data, headers })).data;
+     return response;
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Moved my Discord OAuth API interfaces to be the return type for the Discord API requests in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;discord.ts&lt;/code&gt; file
+    &lt;ul&gt;
+      &lt;li&gt;Promotes separation of concerns as the interfaces really only pertain to the response object from the Discord API, not directly the requests in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/login&lt;/code&gt; route.&lt;/li&gt;
+      &lt;li&gt;This also enables not having to redefine the interface if any other routes need to use the Discord API requests - unlikely but just another example of good separation of concerns&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;However, after merging the above PR, I noticed my Firebase deploy Github action failed.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;This was unusual as it ran successfully yesterday and today there were no changes to the files that would be deployed to Firebase.
+    &lt;ul&gt;
+      &lt;li&gt;Comparing the Github action logs, I saw that Firebase had updated, with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;11.13&lt;/code&gt; being used yesterday, but &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;11.14&lt;/code&gt; being used today&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;After spending sometime looking into the error message &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error: Failed to list functions for paper-trader-182a4&lt;/code&gt; and going nowhere, I dug through the error logs and found a clue to my issue.&lt;/li&gt;
+  &lt;li&gt;By adding the –debug flag to my deploy command in my CLI, I found this message:
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; //...
+ HTTP Error: 403, Cloud Functions API has not been used in [PROJECT] before 
+ or it is disabled. Enable it by visiting [URL for Cloud Functions API] then retry.
+ //...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;After following the link and enabling this API, I was able to deploy locally! But trying to deploy by running my Github action presented a different type of error:
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; //...
+  &quot;message&quot;: &quot;Permission &apos;cloudfunctions.functions.list&apos; denied on &apos;[PROJECT]&apos;&quot;,
+ //...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Looking up this issue, I found the Github repository issues that discuessed this problem. Luckily the users there were able to &lt;a href=&quot;https://github.com/FirebaseExtended/action-hosting-deploy/issues/203#issuecomment-1127732956&quot;&gt;provide a solution&lt;/a&gt; that I was able to implement and fix my CI/CD issue.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Once I resolved my CI/CD issues, I went back to implementing the Finnhub API and created the beginning of my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/stock&lt;/code&gt; routes.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Nothing too different in the structure from my previous routes and setup (classic CRUD setup).
+    &lt;ul&gt;
+      &lt;li&gt;Separate file for stock routes, separate file for Finnhub api requests.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;However, one change I had to spend some time debugging was how to properly send data in a request body
+    &lt;ul&gt;
+      &lt;li&gt;Current set up for my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/buy&lt;/code&gt; route is that it accepts a ticker and quantity in the request body and then the route outputs the total cost if purchase successful (basic setup to get started).&lt;/li&gt;
+      &lt;li&gt;Since I originally lacked the middleware &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;express.json()&lt;/code&gt;, there was no body property in my request object so I kept having trouble accessing the ticker and quantity properties I was sending to the route. A quick change once I noticed there was no body property after console logging the request object.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Continue building out the stock API features
+    &lt;ul&gt;
+      &lt;li&gt;Looks like I may have to take a detour and start working on the database to make meaningful progress though&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">44/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/04/day44.html" rel="alternate" type="text/html" title="44/100 Days of Code" /><published>2022-10-04T15:30:23-07:00</published><updated>2022-10-04T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/04/day44</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/04/day44.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Continued refactoring my Express API Routes!&lt;/p&gt;
 
@@ -36,9 +106,11 @@
      return response;
  }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;`&lt;/p&gt;
-    &lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
   &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+&lt;ol&gt;
   &lt;li&gt;Originally I was planning to just do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return await&lt;/code&gt; in my new class making axios requests. However, when I double checked if that was a good idea, I found this documentation from &lt;a href=&quot;https://eslint.org/docs/latest/rules/no-return-await&quot;&gt;ESLint&lt;/a&gt;.
     &lt;ul&gt;
       &lt;li&gt;The gist is that doing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return await&lt;/code&gt; is bad practice as it leads to performance issues related to call stack Promise resolving. However, it’s allowed inside a try catch block.&lt;/li&gt;
@@ -396,34 +468,4 @@ var insert = function (intervals, newInterval) {
     return merged;
 };
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode</summary></entry><entry><title type="html">35/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/22/day35.html" rel="alternate" type="text/html" title="35/100 Days of Code" /><published>2022-09-22T15:30:23-07:00</published><updated>2022-09-22T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/22/day35</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/22/day35.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Taking a step back and thinking ahead today for the next few features to implement for Paper Trader.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;React Error Handling will be next logical step after I wrap up the Express Error Handling.
-    &lt;ul&gt;
-      &lt;li&gt;At the moment the React client doesn’t do anything when an error is encountered except hang, so with proper error handling this should mount a fallback component and have a better user experience.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;I need to draft up a Database Schema to use for once I get ready for the database
-    &lt;ul&gt;
-      &lt;li&gt;There will likely be two tables, one for users and one for transactions
-        &lt;ul&gt;
-          &lt;li&gt;The user table will be very simple, such as username (as the primary key), funds, and probably last logged in&lt;/li&gt;
-          &lt;li&gt;The transaction table will have a sequential (as the primary key), stock ticker, stock name, price, and transaction date&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;I will probably have to use a web scraper to get real time stock data as almost all stock APIs require a paid tier for that feature
-    &lt;ul&gt;
-      &lt;li&gt;Likely will use Puppeteer to stay within the JS language, but it might not be a bad idea to pick up Selenium with Python to refresh my knowledge with Python&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Draft up a database schema?&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode</summary></entry></feed>

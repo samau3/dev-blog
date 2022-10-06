@@ -85,9 +85,11 @@
      return response;
  }
 </code></pre></div>    </div>
-    <p>`</p>
-    <h3 id="learnings">Learnings</h3>
   </li>
+</ol>
+
+<h3 id="learnings">Learnings</h3>
+<ol>
   <li>Originally I was planning to just do <code class="language-plaintext highlighter-rouge">return await</code> in my new class making axios requests. However, when I double checked if that was a good idea, I found this documentation from <a href="https://eslint.org/docs/latest/rules/no-return-await">ESLint</a>.
     <ul>
       <li>The gist is that doing <code class="language-plaintext highlighter-rouge">return await</code> is bad practice as it leads to performance issues related to call stack Promise resolving. However, it’s allowed inside a try catch block.</li>

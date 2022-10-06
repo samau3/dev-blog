@@ -1,0 +1,58 @@
+---
+layout: post
+title:  "45/100 Days of Code"
+date:   2022-10-5 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+**Merged my refactoring of Express API Routes so far to `main` with some minor changes had to be made to yesterday:**
+
+1. I changed the generic `axios` request to have a default `data` value of `undefined` rather than an empty object, which removes the need for the conditional I had before.
+    ~~~~
+    static async request(endpoint: string, headers: any, data: URLSearchParams = undefined, method = "GET") {
+        const url = `${BASE_DISCORD_API_URL}/${endpoint}`;
+
+        const response = (await axios({ method, url, data, headers })).data;
+        return response;
+    }
+    ~~~~
+2. Moved my Discord OAuth API interfaces to be the return type for the Discord API requests in my `discord.ts` file
+    - Promotes separation of concerns as the interfaces really only pertain to the response object from the Discord API, not directly the requests in the `/login` route.
+    - This also enables not having to redefine the interface if any other routes need to use the Discord API requests - unlikely but just another example of good separation of concerns
+
+
+**However, after merging the above PR, I noticed my Firebase deploy Github action failed.**
+
+1. This was unusual as it ran successfully yesterday and today there were no changes to the files that would be deployed to Firebase. 
+    - Comparing the Github action logs, I saw that Firebase had updated, with `11.13` being used yesterday, but `11.14` being used today
+2. After spending sometime looking into the error message `Error: Failed to list functions for paper-trader-182a4` and going nowhere, I dug through the error logs and found a clue to my issue.
+3. By adding the --debug flag to my deploy command in my CLI, I found this message:
+    ~~~
+    //...
+    HTTP Error: 403, Cloud Functions API has not been used in [PROJECT] before 
+    or it is disabled. Enable it by visiting [URL for Cloud Functions API] then retry.
+    //...
+    ~~~
+4. After following the link and enabling this API, I was able to deploy locally! But trying to deploy by running my Github action presented a different type of error:
+    ~~~
+    //...
+     "message": "Permission 'cloudfunctions.functions.list' denied on '[PROJECT]'",
+    //...
+     ~~~
+5. Looking up this issue, I found the Github repository issues that discuessed this problem. Luckily the users there were able to [provide a solution](https://github.com/FirebaseExtended/action-hosting-deploy/issues/203#issuecomment-1127732956) that I was able to implement and fix my CI/CD issue.
+
+
+**Once I resolved my CI/CD issues, I went back to implementing the Finnhub API and created the beginning of my `/stock` routes.**
+
+1. Nothing too different in the structure from my previous routes and setup (classic CRUD setup).
+    - Separate file for stock routes, separate file for Finnhub api requests.
+2. However, one change I had to spend some time debugging was how to properly send data in a request body
+    - Current set up for my `/buy` route is that it accepts a ticker and quantity in the request body and then the route outputs the total cost if purchase successful (basic setup to get started).
+    - Since I originally lacked the middleware `express.json()`, there was no body property in my request object so I kept having trouble accessing the ticker and quantity properties I was sending to the route. A quick change once I noticed there was no body property after console logging the request object.
+
+### Next Steps
+1. Continue building out the stock API features
+    - Looks like I may have to take a detour and start working on the database to make meaningful progress though

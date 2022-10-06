@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>45/100 Days of Code | 100 Days of Code</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="45/100 Days of Code" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Paper Trader" />
+<meta property="og:description" content="Paper Trader" />
+<link rel="canonical" href="http://localhost:4000/dev-blog/100days/2022/10/05/day45.html" />
+<meta property="og:url" content="http://localhost:4000/dev-blog/100days/2022/10/05/day45.html" />
+<meta property="og:site_name" content="100 Days of Code" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-10-05T15:30:23-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="45/100 Days of Code" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-10-05T15:30:23-07:00","datePublished":"2022-10-05T15:30:23-07:00","description":"Paper Trader","headline":"45/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/dev-blog/100days/2022/10/05/day45.html"},"url":"http://localhost:4000/dev-blog/100days/2022/10/05/day45.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/dev-blog/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/dev-blog/feed.xml" title="100 Days of Code" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/dev-blog/">100 Days of Code</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/dev-blog/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">45/100 Days of Code</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2022-10-05T15:30:23-07:00" itemprop="datePublished">Oct 5, 2022
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h3 id="paper-trader">Paper Trader</h3>
+
+<p><strong>Merged my refactoring of Express API Routes so far to <code class="language-plaintext highlighter-rouge">main</code> with some minor changes had to be made to yesterday:</strong></p>
+
+<ol>
+  <li>I changed the generic <code class="language-plaintext highlighter-rouge">axios</code> request to have a default <code class="language-plaintext highlighter-rouge">data</code> value of <code class="language-plaintext highlighter-rouge">undefined</code> rather than an empty object, which removes the need for the conditional I had before.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> static async request(endpoint: string, headers: any, data: URLSearchParams = undefined, method = "GET") {
+     const url = `${BASE_DISCORD_API_URL}/${endpoint}`;
+
+     const response = (await axios({ method, url, data, headers })).data;
+     return response;
+ }
+</code></pre></div>    </div>
+  </li>
+  <li>Moved my Discord OAuth API interfaces to be the return type for the Discord API requests in my <code class="language-plaintext highlighter-rouge">discord.ts</code> file
+    <ul>
+      <li>Promotes separation of concerns as the interfaces really only pertain to the response object from the Discord API, not directly the requests in the <code class="language-plaintext highlighter-rouge">/login</code> route.</li>
+      <li>This also enables not having to redefine the interface if any other routes need to use the Discord API requests - unlikely but just another example of good separation of concerns</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>However, after merging the above PR, I noticed my Firebase deploy Github action failed.</strong></p>
+
+<ol>
+  <li>This was unusual as it ran successfully yesterday and today there were no changes to the files that would be deployed to Firebase.
+    <ul>
+      <li>Comparing the Github action logs, I saw that Firebase had updated, with <code class="language-plaintext highlighter-rouge">11.13</code> being used yesterday, but <code class="language-plaintext highlighter-rouge">11.14</code> being used today</li>
+    </ul>
+  </li>
+  <li>After spending sometime looking into the error message <code class="language-plaintext highlighter-rouge">Error: Failed to list functions for paper-trader-182a4</code> and going nowhere, I dug through the error logs and found a clue to my issue.</li>
+  <li>By adding the –debug flag to my deploy command in my CLI, I found this message:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> //...
+ HTTP Error: 403, Cloud Functions API has not been used in [PROJECT] before 
+ or it is disabled. Enable it by visiting [URL for Cloud Functions API] then retry.
+ //...
+</code></pre></div>    </div>
+  </li>
+  <li>After following the link and enabling this API, I was able to deploy locally! But trying to deploy by running my Github action presented a different type of error:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> //...
+  "message": "Permission 'cloudfunctions.functions.list' denied on '[PROJECT]'",
+ //...
+</code></pre></div>    </div>
+  </li>
+  <li>Looking up this issue, I found the Github repository issues that discuessed this problem. Luckily the users there were able to <a href="https://github.com/FirebaseExtended/action-hosting-deploy/issues/203#issuecomment-1127732956">provide a solution</a> that I was able to implement and fix my CI/CD issue.</li>
+</ol>
+
+<p><strong>Once I resolved my CI/CD issues, I went back to implementing the Finnhub API and created the beginning of my <code class="language-plaintext highlighter-rouge">/stock</code> routes.</strong></p>
+
+<ol>
+  <li>Nothing too different in the structure from my previous routes and setup (classic CRUD setup).
+    <ul>
+      <li>Separate file for stock routes, separate file for Finnhub api requests.</li>
+    </ul>
+  </li>
+  <li>However, one change I had to spend some time debugging was how to properly send data in a request body
+    <ul>
+      <li>Current set up for my <code class="language-plaintext highlighter-rouge">/buy</code> route is that it accepts a ticker and quantity in the request body and then the route outputs the total cost if purchase successful (basic setup to get started).</li>
+      <li>Since I originally lacked the middleware <code class="language-plaintext highlighter-rouge">express.json()</code>, there was no body property in my request object so I kept having trouble accessing the ticker and quantity properties I was sending to the route. A quick change once I noticed there was no body property after console logging the request object.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="next-steps">Next Steps</h3>
+<ol>
+  <li>Continue building out the stock API features
+    <ul>
+      <li>Looks like I may have to take a detour and start working on the database to make meaningful progress though</li>
+    </ul>
+  </li>
+</ol>
+
+  </div>
+
+  <a class="u-url" href="/dev-blog/100days/2022/10/05/day45.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/dev-blog/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">100 Days of Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">100 Days of Code</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/samau3"><svg class="svg-icon"><use xlink:href="/dev-blog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">samau3</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Sammy Au&#39;s 100 Days of Code</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
