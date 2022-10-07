@@ -1,0 +1,37 @@
+---
+layout: post
+title:  "46/100 Days of Code"
+date:   2022-10-6 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Started delving deeper into how my database should be set up.
+
+1. I have two tables for sure, users and transactions. However, I wanted to have a third table that would essentially be a user's holdings, calcuated from an aggregate of the transactions table.
+    - However, I encountered an issue of creating an aggregate table or creating a view for this data. After the discussions I found online, looks like I'll have tothe best option is using a materialized view.
+
+However, the biggest revelation today is realizing I've been saving my new files and directories outside of `/src` in my server directory...
+1. I decided to deploy my backend on fly.io once again, in doing so I decided to check if my `npm build` output was actually being changed in `/dist`.
+2. There, I realized the files in `/dist` weren't being updated whenever I ran `npm run build` and my fly.io deployment kept failing because the local deployment would be utilizing my local outdated `/dist`.
+3. Digging around my configuration files and changing various settings, I noticed my `tsconfig.json` has the property `"include": [ "src/**/*" ]`.
+4. After checking the directory structure... none of my files and folders since a few weeks ago have been saved inside `/src` which meant they weren't being included in the build process
+    - Not sure why this didn't trigger any other errors and just built successfully, but nonetheless I have found the issue.
+5. By moving my files to `/src` and redeploying, my application worked! 
+    - What a time sink it was to debug this a few weeks ago and how long it took to fix...
+
+### Learnings
+
+Some quick resources I used when determining between an aggregate data table or having a view. These articles I'll need to comeback to later once I start working on my database more.
+1. Aggregate Table or Views
+    - [SO Discussion](https://stackoverflow.com/questions/45382930/store-aggregate-data-in-a-table-or-a-view)
+2. Probably can't utilize views for real time
+    - One resource I saw was talking about the exact use case I wanted regarding stock information. Unfortunately, the service is not free but it would solve my issue of continuously updating an aggregate of data.
+        - [Continuous Aggregation](https://www.timescale.com/blog/how-postgresql-views-and-materialized-views-work-and-how-they-influenced-timescaledb-continuous-aggregates/)
+    - Might be able to utilize [distinct on](https://dba.stackexchange.com/questions/55945/postgres-optimizing-an-view-dependent-on-an-aggregate-function)? 
+
+### Next Steps
+1. Wrap up the PR on my starter buy/sell feature.
+2. Start moving my files and folders into `/src` and try to see if that fixes my fly.io deployment problems.

@@ -1,4 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-05T22:42:17-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">45/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/05/day45.html" rel="alternate" type="text/html" title="45/100 Days of Code" /><published>2022-10-05T15:30:23-07:00</published><updated>2022-10-05T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/05/day45</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/05/day45.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-06T23:26:48-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">46/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/06/day46.html" rel="alternate" type="text/html" title="46/100 Days of Code" /><published>2022-10-06T15:30:23-07:00</published><updated>2022-10-06T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/06/day46</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/06/day46.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Started delving deeper into how my database should be set up.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I have two tables for sure, users and transactions. However, I wanted to have a third table that would essentially be a user’s holdings, calcuated from an aggregate of the transactions table.
+    &lt;ul&gt;
+      &lt;li&gt;However, I encountered an issue of creating an aggregate table or creating a view for this data. After the discussions I found online, looks like I’ll have tothe best option is using a materialized view.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;However, the biggest revelation today is realizing I’ve been saving my new files and directories outside of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; in my server directory…&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;I decided to deploy my backend on fly.io once again, in doing so I decided to check if my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm build&lt;/code&gt; output was actually being changed in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dist&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;There, I realized the files in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dist&lt;/code&gt; weren’t being updated whenever I ran &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm run build&lt;/code&gt; and my fly.io deployment kept failing because the local deployment would be utilizing my local outdated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dist&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Digging around my configuration files and changing various settings, I noticed my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tsconfig.json&lt;/code&gt; has the property &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;include&quot;: [ &quot;src/**/*&quot; ]&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;After checking the directory structure… none of my files and folders since a few weeks ago have been saved inside &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; which meant they weren’t being included in the build process
+    &lt;ul&gt;
+      &lt;li&gt;Not sure why this didn’t trigger any other errors and just built successfully, but nonetheless I have found the issue.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;By moving my files to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; and redeploying, my application worked!
+    &lt;ul&gt;
+      &lt;li&gt;What a time sink it was to debug this a few weeks ago and how long it took to fix…&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+
+&lt;p&gt;Some quick resources I used when determining between an aggregate data table or having a view. These articles I’ll need to comeback to later once I start working on my database more.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Aggregate Table or Views
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/45382930/store-aggregate-data-in-a-table-or-a-view&quot;&gt;SO Discussion&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Probably can’t utilize views for real time
+    &lt;ul&gt;
+      &lt;li&gt;One resource I saw was talking about the exact use case I wanted regarding stock information. Unfortunately, the service is not free but it would solve my issue of continuously updating an aggregate of data.
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;https://www.timescale.com/blog/how-postgresql-views-and-materialized-views-work-and-how-they-influenced-timescaledb-continuous-aggregates/&quot;&gt;Continuous Aggregation&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Might be able to utilize &lt;a href=&quot;https://dba.stackexchange.com/questions/55945/postgres-optimizing-an-view-dependent-on-an-aggregate-function&quot;&gt;distinct on&lt;/a&gt;?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Wrap up the PR on my starter buy/sell feature.&lt;/li&gt;
+  &lt;li&gt;Start moving my files and folders into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; and try to see if that fixes my fly.io deployment problems.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">45/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/05/day45.html" rel="alternate" type="text/html" title="45/100 Days of Code" /><published>2022-10-05T15:30:23-07:00</published><updated>2022-10-05T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/05/day45</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/05/day45.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;&lt;strong&gt;Merged my refactoring of Express API Routes so far to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; with some minor changes had to be made to yesterday:&lt;/strong&gt;&lt;/p&gt;
 
@@ -432,40 +486,4 @@ var insert = function (intervals, newInterval) {
     res.push(newInterval);
     return res;
 };
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode Leetcode 57. Insert Interval</summary></entry><entry><title type="html">36/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/23/day36.html" rel="alternate" type="text/html" title="36/100 Days of Code" /><published>2022-09-23T15:30:23-07:00</published><updated>2022-09-23T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/23/day36</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/23/day36.html">&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
-
-&lt;p&gt;Leetcode 56. Merge Intervals&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;First need to sort the array by the first element in each interval&lt;/li&gt;
-  &lt;li&gt;Then interate through the sorted intervals, building up a merged interval
-    &lt;ol&gt;
-      &lt;li&gt;If the start of the next interval is less than the end of the previous interval, they’re overlapping
-        &lt;ul&gt;
-          &lt;li&gt;Replace the previous interval’s end number with the greater of the current and existing end value&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;If they’re not overlapping, then no change is made and update the previous interval to be the current interval&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const merge = function(intervals) {
-     intervals.sort((a, b) =&amp;gt; a[0] - b[0])
-    // console.log(intervals)
-    
-    let prev = intervals[0];
-    let merged = [prev];
-    for (let curr of intervals) {
-        if (curr[0] &amp;lt;= prev[1]) {
-            prev[1] = prev[1] &amp;gt; curr[1] ? prev[1] : curr[1];
-        } else {
-            merged.push(curr);
-            prev = curr;
-        }
-    }
-    
-    return merged;
-};
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode Leetcode 57. Insert Interval</summary></entry></feed>
