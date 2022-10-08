@@ -1,0 +1,38 @@
+---
+layout: post
+title:  "47/100 Days of Code"
+date:   2022-10-7 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Wrapped up my PR on buy/sell.
+
+1. However, one thing I'm not sure about is not having to use `await` for one of my `async` methods.
+    ~~~
+        async method() {
+            ...
+            const response = await(axios_request);
+        }
+
+        async method2() {
+            // before:
+            // const res = await this.method();
+            // return res;
+            
+            // after:
+            return this.method();
+        }
+    ~~~
+    - Previously, I `await`ed the `method` before returning it, but just returning `this.method()` also works without any issues. Tried to look into why that may be the case and which way was best practice, but didn't find anything. Will need to reach out to my friend about what's the best option.
+
+Moved all my server files into `/src` based on my revelation yesterday and started a new PR.
+
+1. Immediately, my previous Github action that built and deployed a temporary app on Fly.io worked on the first run.
+    - Before, the first run would fail but subsequent runs would succeed. 
+    - Given this change, sounds like my previous issues with the Github action for Fly.io deployment was due to the improper file structuring... 
+
+### Next Steps
+1. Continue working on getting a database setup.

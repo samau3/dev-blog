@@ -1,4 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-06T23:26:48-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">46/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/06/day46.html" rel="alternate" type="text/html" title="46/100 Days of Code" /><published>2022-10-06T15:30:23-07:00</published><updated>2022-10-06T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/06/day46</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/06/day46.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-08T00:24:41-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">47/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/07/day47.html" rel="alternate" type="text/html" title="47/100 Days of Code" /><published>2022-10-07T15:30:23-07:00</published><updated>2022-10-07T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/07/day47</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/07/day47.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Wrapped up my PR on buy/sell.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;However, one thing I’m not sure about is not having to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt; for one of my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;async&lt;/code&gt; methods.
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     async method() {
+         ...
+         const response = await(axios_request);
+     }
+
+     async method2() {
+         // before:
+         // const res = await this.method();
+         // return res;
+            
+         // after:
+         return this.method();
+     }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Previously, I &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt;ed the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;method&lt;/code&gt; before returning it, but just returning &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this.method()&lt;/code&gt; also works without any issues. Tried to look into why that may be the case and which way was best practice, but didn’t find anything. Will need to reach out to my friend about what’s the best option.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Moved all my server files into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; based on my revelation yesterday and started a new PR.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Immediately, my previous Github action that built and deployed a temporary app on Fly.io worked on the first run.
+    &lt;ul&gt;
+      &lt;li&gt;Before, the first run would fail but subsequent runs would succeed.&lt;/li&gt;
+      &lt;li&gt;Given this change, sounds like my previous issues with the Github action for Fly.io deployment was due to the improper file structuring…&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Continue working on getting a database setup.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">46/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/06/day46.html" rel="alternate" type="text/html" title="46/100 Days of Code" /><published>2022-10-06T15:30:23-07:00</published><updated>2022-10-06T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/06/day46</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/06/day46.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Started delving deeper into how my database should be set up.&lt;/p&gt;
 
@@ -442,48 +482,4 @@
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Continue researching what’s the best way to handle displaying errors on the React side.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">37/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/24/day37.html" rel="alternate" type="text/html" title="37/100 Days of Code" /><published>2022-09-24T15:30:23-07:00</published><updated>2022-09-24T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/24/day37</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/24/day37.html">&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
-&lt;p&gt;Leetcode 57. Insert Interval&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;If the end of the newInterval is less than the start value of the current interval, there is no overlap
-    &lt;ul&gt;
-      &lt;li&gt;That means we add it to the result array and then add the remaining intervals after the current one&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;If the start of the new array is greater than the end of the current array, then that means there is no overlap&lt;/li&gt;
-  &lt;li&gt;If there is an overlap, update the newInterval that will be inserted with the minimum between the start values and the max between the end values&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-var insert = function (intervals, newInterval) {
-    // initialize an empty array to build up with the new intervals
-    let res = [];
-
-    // iterate through the intervals
-    for (let i = 0; i &amp;lt; intervals.length; i++) {
-        // if the end of the newInterval is less than the start value of the current interval, there is no overlap
-        // and that means we add it to the result array and then add the remaining intervals after the current one
-        // note the use of slice, as if we built an newInterval due to overlap in previous loops, we want to exclude those
-        if (newInterval[1] &amp;lt; intervals[i][0]) {
-            res.push(newInterval, ...intervals.slice(i));
-            return res;
-        }
-        // else if the start of the new array is greater than the end of the current array, then that means there is no overlap
-        // and we just add the current array to the result array and continue looping
-        else if (newInterval[0] &amp;gt; intervals[i][1]) {
-            res.push(intervals[i]);
-        }
-        // if there is an overlap, update the newInterval that will be inserted with the minimum between the start values
-        // and the max between the end values
-        else {
-            newInterval = [(Math.min(newInterval[0], intervals[i][0])), Math.max(newInterval[1], intervals[i][1])];
-        }
-    }
-
-    // note that we have not pushed the newInterval once we&apos;re out of the loop as the first if condition doesn&apos;t trigger
-    // so we need to add it back
-    res.push(newInterval);
-    return res;
-};
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode Leetcode 57. Insert Interval</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
