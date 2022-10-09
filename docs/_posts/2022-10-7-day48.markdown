@@ -1,0 +1,41 @@
+---
+layout: post
+title:  "48/100 Days of Code"
+date:   2022-10-8 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Had my friend help me clarify why I may have been using too many `awaits`.
+
+1. Here's the previous setup:
+    1. The base method (`request`) I'm calling returns a response that is `await`ed.
+    2. The next method (`getStockQuote`) calls the previous method with an `await` and returns the response from that.
+        - This method only passes in inputs to `request`.
+    3. Finally, my route calls the method (`Finnhub.getStockQuote`) with an await and uses the response to do other logic.
+2. In the process above, I'm essentially doing `await (await (return await())`, while the outermost and innermost `await`s are the most important.
+    - `request` interacts with the `finnhub` API directly.
+    - `Finnhub.getStockQuote` calls the `getStockQuote` method to start making requests to the finnhub API.
+3. This means the `await` inside `getStockQuote` is not needed as it's functionally the same with or without the `await`. 
+
+Finally got to try out my CI/CD once again for Fly.io.
+1. It was promising at first as local deployment worked and my PR Github action ran with no problems.
+    - Also, since I'm no longer using Heroku, I removed my Heroku `Procfile`.
+2. Unfortunately this broke my deployment, as deployment failed with an error related to not being able to find my `tslint.json`.
+    - Searching up this issue directly did not yield any relevant results, but given the error was tied to removing my `Procfile`, I looked up Fly.io's documentation about it.
+3. After trying the [suggested changes](https://community.fly.io/t/procfile-documentation/1169) to my `fly.toml` to make up for not having a `Procfile` anymore, my deployment still failed.
+    - Based on the [discussion I saw](https://community.fly.io/t/procfile-confusion/4225/6), I'm not the only one with this issue and the solution was to just use a `Procfile` again.
+
+
+### Leetcode
+
+Continued on with the Grind 75 problems I left off on.
+
+1. Getting better at solving the Leetcode easy problems I've encountered before, but still not as smooth on Binary trees problems 
+    - [Invert Binary Tree](https://twitter.com/mxcl/status/608682016205344768?s=20&t=h1VhzcnR0MuMWhmimWGRSQ), LCA of Binary Tree, and Balanced Binary Tree were about 90% there but got stuck on some node logic
+
+### Next Steps
+1. Wrap up Grind 75 week 2.
+2. Continue with database integration for Paper Trader.

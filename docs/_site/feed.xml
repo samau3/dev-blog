@@ -1,4 +1,64 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-08T00:24:41-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">47/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/07/day47.html" rel="alternate" type="text/html" title="47/100 Days of Code" /><published>2022-10-07T15:30:23-07:00</published><updated>2022-10-07T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/07/day47</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/07/day47.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-08T23:31:48-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">48/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/08/day48.html" rel="alternate" type="text/html" title="48/100 Days of Code" /><published>2022-10-08T15:30:23-07:00</published><updated>2022-10-08T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/08/day48</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/08/day48.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Had my friend help me clarify why I may have been using too many &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;awaits&lt;/code&gt;.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Here’s the previous setup:
+    &lt;ol&gt;
+      &lt;li&gt;The base method (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;request&lt;/code&gt;) I’m calling returns a response that is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt;ed.&lt;/li&gt;
+      &lt;li&gt;The next method (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getStockQuote&lt;/code&gt;) calls the previous method with an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt; and returns the response from that.
+        &lt;ul&gt;
+          &lt;li&gt;This method only passes in inputs to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;request&lt;/code&gt;.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Finally, my route calls the method (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Finnhub.getStockQuote&lt;/code&gt;) with an await and uses the response to do other logic.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;In the process above, I’m essentially doing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await (await (return await())&lt;/code&gt;, while the outermost and innermost &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt;s are the most important.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;request&lt;/code&gt; interacts with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;finnhub&lt;/code&gt; API directly.&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Finnhub.getStockQuote&lt;/code&gt; calls the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getStockQuote&lt;/code&gt; method to start making requests to the finnhub API.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;This means the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt; inside &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getStockQuote&lt;/code&gt; is not needed as it’s functionally the same with or without the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Finally got to try out my CI/CD once again for Fly.io.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;It was promising at first as local deployment worked and my PR Github action ran with no problems.
+    &lt;ul&gt;
+      &lt;li&gt;Also, since I’m no longer using Heroku, I removed my Heroku &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Procfile&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Unfortunately this broke my deployment, as deployment failed with an error related to not being able to find my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tslint.json&lt;/code&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;Searching up this issue directly did not yield any relevant results, but given the error was tied to removing my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Procfile&lt;/code&gt;, I looked up Fly.io’s documentation about it.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;After trying the &lt;a href=&quot;https://community.fly.io/t/procfile-documentation/1169&quot;&gt;suggested changes&lt;/a&gt; to my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly.toml&lt;/code&gt; to make up for not having a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Procfile&lt;/code&gt; anymore, my deployment still failed.
+    &lt;ul&gt;
+      &lt;li&gt;Based on the &lt;a href=&quot;https://community.fly.io/t/procfile-confusion/4225/6&quot;&gt;discussion I saw&lt;/a&gt;, I’m not the only one with this issue and the solution was to just use a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Procfile&lt;/code&gt; again.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
+
+&lt;p&gt;Continued on with the Grind 75 problems I left off on.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Getting better at solving the Leetcode easy problems I’ve encountered before, but still not as smooth on Binary trees problems
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://twitter.com/mxcl/status/608682016205344768?s=20&amp;amp;t=h1VhzcnR0MuMWhmimWGRSQ&quot;&gt;Invert Binary Tree&lt;/a&gt;, LCA of Binary Tree, and Balanced Binary Tree were about 90% there but got stuck on some node logic&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Wrap up Grind 75 week 2.&lt;/li&gt;
+  &lt;li&gt;Continue with database integration for Paper Trader.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">47/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/07/day47.html" rel="alternate" type="text/html" title="47/100 Days of Code" /><published>2022-10-07T15:30:23-07:00</published><updated>2022-10-07T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/07/day47</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/07/day47.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Wrapped up my PR on buy/sell.&lt;/p&gt;
 
@@ -458,28 +518,4 @@
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">38/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/27/day38.html" rel="alternate" type="text/html" title="38/100 Days of Code" /><published>2022-09-27T15:30:23-07:00</published><updated>2022-09-27T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/27/day38</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/27/day38.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Started working on handling errors in React
-    &lt;ul&gt;
-      &lt;li&gt;Originally I thought I’d need to use React Error Boundaries, but that doesn’t seem to be necessary? Though I did see someone use it as a &lt;a href=&quot;https://stackoverflow.com/a/50220675&quot;&gt;solution&lt;/a&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;At the moment, errors are being created from my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; calls to the server for Discord OAuth.
-    &lt;ul&gt;
-      &lt;li&gt;My actual &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; calls that I stored as methods on my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UserSession&lt;/code&gt; class utilize try/catch which throws an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error&lt;/code&gt; in the catch block.&lt;/li&gt;
-      &lt;li&gt;However, these throws show up in the console and doesn’t trigger my try/catch blocks in my React components.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;I’ll need to tinker around some more to figure out where to properly throw these errors, or if I have to utilize the Error Boundaries.
-    &lt;ul&gt;
-      &lt;li&gt;The problem I see with utilizing the Error Boundaries is that will likely lead to massive refactoring of my components which may not be neccessary?&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Continue researching what’s the best way to handle displaying errors on the React side.&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
