@@ -1,0 +1,31 @@
+---
+layout: post
+title:  "49/100 Days of Code"
+date:   2022-10-9 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Started implementing the database queries to my routes!
+
+1. My backend is now connected to a PostgreSQL database!
+    - Basic functionality as I figure out the structure of how queries should be made to the database
+2. At the moment, when a user logs in their username is stored in the database so it can joined with their transactions later
+3. Current issues that need to be resolved are:
+    - A registration process
+        - Previously to get things working I just had a conditional that would query the database or insert the user's info to the database. This will need to be changed such that they're two distinct queries and requests.
+    - There needs to be some restructuring to the React client for how the user context is obtained. Previously the route that provided the user context only returned the username, but now it can return the user's information from the database.
+        - This greatly affects how the Profile component will work as it will need to make separate requests to obtain the user's other information like their holdings in the future.
+
+
+
+### Leetcode
+
+Wrapped up another set of Grind 75 problems. Also went back to work on the problems I had trouble with yesterday and solved them much faster without any issues. 
+- Besides new topics (dynamic programming, binary), getting better at working with linked lists and the idea of references. As I'm approaching the medium level problems, will need to get more comfortable with the problems I had issues with before. 
+
+### Next Steps
+1. Wrap up Grind 75 week 3.
+2. May need to open up a PR for review soon before the feature gets too big, already sitting at 9 file changes with over 100 lines of new code.
