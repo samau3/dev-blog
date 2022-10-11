@@ -1,4 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-09T23:24:52-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">49/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/09/day49.html" rel="alternate" type="text/html" title="49/100 Days of Code" /><published>2022-10-09T15:30:23-07:00</published><updated>2022-10-09T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/09/day49</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/09/day49.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-10T23:14:18-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">50/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/10/day50.html" rel="alternate" type="text/html" title="50/100 Days of Code" /><published>2022-10-10T15:30:23-07:00</published><updated>2022-10-10T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/10/day50</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/10/day50.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Now that I’m making requests to a database on top of APIs, the amount of requests I’m making per action needs to be reevaluated.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Previously my user context is setup such that Discord OAuth provides validates the user, then the client makes a request to verify a JWT and the server returns the username for React Context.&lt;/li&gt;
+  &lt;li&gt;Now that I’m adding a database to the process, where I need to verify the user exists in the database before sending them to their profile page, this changes what and how this login process works
+    &lt;ul&gt;
+      &lt;li&gt;If I were to keep changes to a minimum, I’d have a separate route that just queries for the user’s username from the user table for the user context, and a separate route which queries for the user’s balance, activity etc.
+        &lt;ul&gt;
+          &lt;li&gt;However this process leads to a somewhat unnecessary route and database query as there will be a route that just gets a user’s username&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;I’ll need to explore different ways to handle user session and what can and can’t be stored on the client side of the application to minimize the number of requests made.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Another change to how things function in the application is the fact that Discord usernames can be changed.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Luckily there is a unique and stable identify that I can still use from the Discord Oauth process.&lt;/li&gt;
+  &lt;li&gt;Unfortunately that adds to the amount of restructuring that needs to be done.
+    &lt;ol&gt;
+      &lt;li&gt;Since usernames aren’t a reliable identifier then I can’t use that as the only data in my JWT.&lt;/li&gt;
+      &lt;li&gt;There will need to be a process that maps the identifier to the username, likely a forced re-login of some sort to refresh the tokens and variable values between sessions.
+        &lt;ul&gt;
+          &lt;li&gt;This also means if I were to store the username in the database, I’d have to make an update query.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
+
+&lt;p&gt;Continued on with some more of the Grind 75 problems but also went through my old interview problems to see if I could work through them faster or could optimize them. Definitely showing signs of improvement from before.&lt;/p&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Need to explore the different ways to handle user session now that my routes and return values all have to be adjusted for the addition of the database and finding a new unique identifier.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">49/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/09/day49.html" rel="alternate" type="text/html" title="49/100 Days of Code" /><published>2022-10-09T15:30:23-07:00</published><updated>2022-10-09T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/09/day49</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/09/day49.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Started implementing the database queries to my routes!&lt;/p&gt;
 
@@ -442,77 +483,4 @@
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Wrap up this PR and then start on the retros for the error handling.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">40/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/29/day40.html" rel="alternate" type="text/html" title="40/100 Days of Code" /><published>2022-09-29T15:30:23-07:00</published><updated>2022-09-29T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/29/day40</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/29/day40.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Finished the Express Error Handling PR and merged to main!&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Managed to figure out how to have the two &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; requests to the Discord API be two separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; blocks.
-    &lt;ul&gt;
-      &lt;li&gt;My previous attempts would just have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;next()&lt;/code&gt; in the catch block, where if the first request to Discord &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/token&lt;/code&gt; fails a request is still made to Discord &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/users&lt;/code&gt; when it should have even be attempted.&lt;/li&gt;
-      &lt;li&gt;The solution was to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return next()&lt;/code&gt;, which is explained very well in this &lt;a href=&quot;https://stackoverflow.com/questions/16810449/when-to-use-next-and-return-next-in-node-js&quot;&gt;discussion&lt;/a&gt; here as to why this is necessary.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now that the backend API has errors, time to start implementing some of that error handling in the frontend React client too.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I opted to not use React boundaries as that’s more for components encountering errors, rather than API requests or server requests causing errors.&lt;/li&gt;
-  &lt;li&gt;The first challenge was trying to get the errors to be caught in the right component for logging in.
-    &lt;ul&gt;
-      &lt;li&gt;First, I had to remove the try catch blocks in my class methods that make requests to my backend.&lt;/li&gt;
-      &lt;li&gt;Then in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; component, I wrapped the function call in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try catch&lt;/code&gt; block.
-        &lt;ul&gt;
-          &lt;li&gt;Note, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;handleLogin&lt;/code&gt; is passed down from the parent &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; component and is a promise (due to being returned from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useCallback&lt;/code&gt;). Before, I didn’t await &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;handleLogin&lt;/code&gt; which caused my catch block to never trigger as there was no error to catch yet.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;However, there are two points of failure during the login process, one being a CSRF attack/clickjacking and another being issues with requests from Discord’s OAuth API.
-    &lt;ul&gt;
-      &lt;li&gt;This meant having to use conditionals to display a relevant message for the issue.
-        &lt;ul&gt;
-          &lt;li&gt;If it’s a CSRF issue, they should just try to login again as the state string is reset.&lt;/li&gt;
-          &lt;li&gt;If it’s a Discord API issue, then they should try logging in later.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Also note that the search parameters are reset if an error occurred. This is to clean the URL so the old &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter isn’t reused and so refreshing the page doesn’t call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;handleLogin&lt;/code&gt; again (which is called if there is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;code&lt;/code&gt; parameter).&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; useEffect(() =&amp;gt; {
-     async function loadUser() {
-         if (authCode !== undefined) {
-             try {
-             await handleLogin();
-             } catch (error) {
-                 if (error instanceof StateError) {
-                     localStorage.removeItem(&apos;csrfStateString&apos;);
-                     UserSession.storeCsrfStateString();
-                     setErrors(&quot;There was an issue with your request. Please try again.&quot;);
-                 }
-                 if (error instanceof AxiosError) {
-                     setErrors(&quot;There&apos;s an issue with getting your profile information. Please try again later.&quot;);
-                 }
-                 setSearchParams(&quot;&quot;);
-             }
-         }
-     }
-     loadUser()
- }, [handleLogin, authCode, setSearchParams]);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;To display the information, I used conditional values and Evergreen UI’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Alert&lt;/code&gt; component.
-    &lt;ul&gt;
-      &lt;li&gt;A small tricky part was figuring out the conditionals to properly show the appropriate components, when there is an error and have been redirected, when there is no error and hasn’t been redirected, etc.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;../../../../images/20220929/loginErrorMessage.gif&quot; alt=&quot;Login Error Message&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Write up a retrospective on the Express Errors? Might combine it with the React errors if it’s not that big.&lt;/li&gt;
-  &lt;li&gt;Open the React errors PR.&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>

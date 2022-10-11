@@ -1,0 +1,33 @@
+---
+layout: post
+title:  "50/100 Days of Code"
+date:   2022-10-10 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Now that I'm making requests to a database on top of APIs, the amount of requests I'm making per action needs to be reevaluated.
+
+1. Previously my user context is setup such that Discord OAuth provides validates the user, then the client makes a request to verify a JWT and the server returns the username for React Context.
+2. Now that I'm adding a database to the process, where I need to verify the user exists in the database before sending them to their profile page, this changes what and how this login process works
+    - If I were to keep changes to a minimum, I'd have a separate route that just queries for the user's username from the user table for the user context, and a separate route which queries for the user's balance, activity etc. 
+        - However this process leads to a somewhat unnecessary route and database query as there will be a route that just gets a user's username
+    - I'll need to explore different ways to handle user session and what can and can't be stored on the client side of the application to minimize the number of requests made.
+
+Another change to how things function in the application is the fact that Discord usernames can be changed.
+
+1. Luckily there is a unique and stable identify that I can still use from the Discord Oauth process.
+2. Unfortunately that adds to the amount of restructuring that needs to be done.
+    1. Since usernames aren't a reliable identifier then I can't use that as the only data in my JWT.
+    2. There will need to be a process that maps the identifier to the username, likely a forced re-login of some sort to refresh the tokens and variable values between sessions.
+        - This also means if I were to store the username in the database, I'd have to make an update query.
+
+
+### Leetcode
+
+Continued on with some more of the Grind 75 problems but also went through my old interview problems to see if I could work through them faster or could optimize them. Definitely showing signs of improvement from before.
+
+### Next Steps
+1. Need to explore the different ways to handle user session now that my routes and return values all have to be adjusted for the addition of the database and finding a new unique identifier.
