@@ -1,4 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-10T23:14:18-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">50/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/10/day50.html" rel="alternate" type="text/html" title="50/100 Days of Code" /><published>2022-10-10T15:30:23-07:00</published><updated>2022-10-10T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/10/day50</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/10/day50.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-12T22:33:26-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">51/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/12/day51.html" rel="alternate" type="text/html" title="51/100 Days of Code" /><published>2022-10-12T15:30:23-07:00</published><updated>2022-10-12T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/12/day51</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/12/day51.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;As expected once I started integrating my database, there was a wide set of changes that needed to be made to help reduce the requests being.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I removed the need to use a separate middleware that checks if the JWT is still valid and instead updated my JWT verification middleware to throw an error.
+    &lt;ul&gt;
+      &lt;li&gt;Note this middleware is used in all my routes, which means it affects the login route. Luckily I can just move my login route middleware to be above this authentication middleware to &lt;a href=&quot;https://stackoverflow.com/a/53011033&quot;&gt;leave it unaffected&lt;/a&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;To resolve my login vs registration, I checked other websites that utilize OAuth for their login process and found that some combine login with registration if they’re a new user. So I added an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;else&lt;/code&gt; conditional that registers a new user if they don’t already exist in the database.&lt;/li&gt;
+  &lt;li&gt;Since I changed my JWT to utilize Discord user’s unique ID instead of their username, I had to update almost all of my routes and components that relied on the JWT for authentication.
+    &lt;ul&gt;
+      &lt;li&gt;Originally I thought it was as simple as just accessing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id&lt;/code&gt; property instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username&lt;/code&gt;.&lt;/li&gt;
+      &lt;li&gt;However, since the database query returns an object that wraps the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;id&lt;/code&gt; property, none of my functions were behaving as intended initially.&lt;/li&gt;
+      &lt;li&gt;After doing some console.logs to figure out what data is being based around from the JWT, I saw that it was undefined all the way up to my authentication middleware as it wasn’t accessing the right properties in the decoded object.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
+
+&lt;p&gt;Hitting the harder/trickier leetcode medium problems. Will need to revist these to more thoroughly grasp the process to tackle them.&lt;/p&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Now that I’m not making a request to check if a JWT is valid at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;App&lt;/code&gt; mounting, I’ll need to update my Profile component to have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try/catch&lt;/code&gt; so errors are properly being handled. This change will also need to apply to my future components as I’ve removed my app-wide JWT/User Context checking to reduce repeated server requests.
+    &lt;ul&gt;
+      &lt;li&gt;I may change this back as I explore this new option for how my user sessions are setup.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">50/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/10/day50.html" rel="alternate" type="text/html" title="50/100 Days of Code" /><published>2022-10-10T15:30:23-07:00</published><updated>2022-10-10T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/10/day50</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/10/day50.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Now that I’m making requests to a database on top of APIs, the amount of requests I’m making per action needs to be reevaluated.&lt;/p&gt;
 
@@ -450,37 +481,4 @@
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode</summary></entry><entry><title type="html">41/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/09/30/day41.html" rel="alternate" type="text/html" title="41/100 Days of Code" /><published>2022-09-30T15:30:23-07:00</published><updated>2022-09-30T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/09/30/day41</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/09/30/day41.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Continued working on the open PR for React error handling!&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Mostly minor changes related to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.logs&lt;/code&gt; revealing potentially too much information so all &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.logs&lt;/code&gt; have been removed from components
-    &lt;ul&gt;
-      &lt;li&gt;In addition to revealing too much information, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.logs&lt;/code&gt; aren’t needed now that debug what information is present in the components is not needed at the moment.
-        &lt;ul&gt;
-          &lt;li&gt;Of course, as components or features change, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console.logs&lt;/code&gt; will be added then for development/debugging.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;After I initally opened up the PR, I tried to start my local environment but encountered an error:&lt;/p&gt;
-
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; False expression: Non-string value passed to ts.resolveTypeReferenceDirective, likely by a wrapping package working with an outdated resolveTypeReferenceDirectives signature. This is probably not a problem in TS itself.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;This sudden error suprised me as there were no changes However, this added &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ts-node&lt;/code&gt; to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;package.json&lt;/code&gt; in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dependencies&lt;/code&gt; section whereas &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ts-node-dev&lt;/code&gt; was added in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;devDependencies&lt;/code&gt; section.
-        &lt;ul&gt;
-          &lt;li&gt;For consistency, moved both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ts-node&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ts-node-dev&lt;/code&gt; to be in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;devDependencies&lt;/code&gt;.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Wrap up this PR and then start on the retros for the error handling.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode</summary></entry></feed>

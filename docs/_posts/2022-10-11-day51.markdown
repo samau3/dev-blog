@@ -1,0 +1,28 @@
+---
+layout: post
+title:  "51/100 Days of Code"
+date:   2022-10-12 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+As expected once I started integrating my database, there was a wide set of changes that needed to be made to help reduce the requests being.
+
+1. I removed the need to use a separate middleware that checks if the JWT is still valid and instead updated my JWT verification middleware to throw an error.
+    - Note this middleware is used in all my routes, which means it affects the login route. Luckily I can just move my login route middleware to be above this authentication middleware to [leave it unaffected](https://stackoverflow.com/a/53011033).
+2. To resolve my login vs registration, I checked other websites that utilize OAuth for their login process and found that some combine login with registration if they're a new user. So I added an `else` conditional that registers a new user if they don't already exist in the database.
+3. Since I changed my JWT to utilize Discord user's unique ID instead of their username, I had to update almost all of my routes and components that relied on the JWT for authentication.
+    - Originally I thought it was as simple as just accessing the `id` property instead of `username`. 
+    - However, since the database query returns an object that wraps the `id` property, none of my functions were behaving as intended initially. 
+    - After doing some console.logs to figure out what data is being based around from the JWT, I saw that it was undefined all the way up to my authentication middleware as it wasn't accessing the right properties in the decoded object. 
+
+
+### Leetcode
+
+Hitting the harder/trickier leetcode medium problems. Will need to revist these to more thoroughly grasp the process to tackle them.
+
+### Next Steps
+1. Now that I'm not making a request to check if a JWT is valid at `App` mounting, I'll need to update my Profile component to have a `try/catch` so errors are properly being handled. This change will also need to apply to my future components as I've removed my app-wide JWT/User Context checking to reduce repeated server requests.
+    - I may change this back as I explore this new option for how my user sessions are setup.
