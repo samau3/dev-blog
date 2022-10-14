@@ -1,4 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-12T22:33:26-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">51/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/12/day51.html" rel="alternate" type="text/html" title="51/100 Days of Code" /><published>2022-10-12T15:30:23-07:00</published><updated>2022-10-12T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/12/day51</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/12/day51.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-13T23:58:07-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">52/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/13/day52.html" rel="alternate" type="text/html" title="52/100 Days of Code" /><published>2022-10-13T15:30:23-07:00</published><updated>2022-10-13T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/13/day52</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/13/day52.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Started making changes to my React side of things after the database integration.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Small changes here and there needed to be made to adjust the JWT being a different structure.&lt;/li&gt;
+  &lt;li&gt;However the biggest change is trying to properly handle errors when accessing the Profile page.
+    &lt;ol&gt;
+      &lt;li&gt;At the moment there are two error situations:
+        &lt;ol&gt;
+          &lt;li&gt;There’s a database communication error, and they need to try again later
+            &lt;ul&gt;
+              &lt;li&gt;User doesn’t need to logout, just has to comeback later.&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;There’s a server communication error, and they need to try again later
+            &lt;ul&gt;
+              &lt;li&gt;Need to clear user context, logout user, and need to redirect user to login page&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+      &lt;li&gt;With my current setup, I need to make more changes in my server to properly send an error instance that I can use to indicate the first error situation. For my second error situation, there isn’t a way for the Profile component to update the React context, however I might be able to try to pass my logout function down to the component.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;My VSCode kept formatting my files inconsistently, some varying between indentations that were 4 spaces and 2 spaces.
+    &lt;ul&gt;
+      &lt;li&gt;Turns out some of my files were using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Spaces: 2&lt;/code&gt; and some were using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tabs: 2&lt;/code&gt; which look the same in VSCode but the raw file and on Github they appear very different.&lt;/li&gt;
+      &lt;li&gt;The solution was to change the files with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tabs&lt;/code&gt; to be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Spaces&lt;/code&gt; and also choosing to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Convert Indentations To Spaces&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;After making this mass reformating, it overrides my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git blame&lt;/code&gt; output on the affected files/lines.
+    &lt;ul&gt;
+      &lt;li&gt;To resolve this, I had to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git blame --ignore-rev &amp;lt;commit hash&amp;gt;&lt;/code&gt; and create a file to store this so I don’t have to constantly remember which commit hash to ignore.&lt;/li&gt;
+      &lt;li&gt;These blog posts were pretty helpful in explaining the steps and the purpose of having these changes:
+        &lt;ol&gt;
+          &lt;li&gt;&lt;a href=&quot;https://akrabat.com/ignoring-revisions-with-git-blame/&quot;&gt;Ignoring Revisions with git blame&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://michaelheap.com/git-ignore-rev/&quot;&gt;A better git blame&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;The official &lt;a href=&quot;https://git-scm.com/docs/git-blame&quot;&gt;git blame documentation&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;Not a blog, but a &lt;a href=&quot;https://stackoverflow.com/questions/34957237/can-i-configure-git-blame-to-always-ignore-certain-commits-want-to-fix-git-blam&quot;&gt;SO discussion on the topic&lt;/a&gt;&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Continue restructuring my React client to handle the database implementation&lt;/li&gt;
+  &lt;li&gt;A retro on part one of database integration&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">51/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/12/day51.html" rel="alternate" type="text/html" title="51/100 Days of Code" /><published>2022-10-12T15:30:23-07:00</published><updated>2022-10-12T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/12/day51</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/12/day51.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;As expected once I started integrating my database, there was a wide set of changes that needed to be made to help reduce the requests being.&lt;/p&gt;
 
@@ -429,56 +484,4 @@
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Continue refactoring, most likely moving my axios requests to a separate file and breaking it up into class methods again.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Error Handling Retrospective</summary></entry><entry><title type="html">42/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/02/day42.html" rel="alternate" type="text/html" title="42/100 Days of Code" /><published>2022-10-02T15:30:23-07:00</published><updated>2022-10-02T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/02/day42</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/02/day42.html">&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
-
-&lt;p&gt;Went back through old problems I did on Grind 75.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Week 1 #1, &lt;a href=&quot;https://leetcode.com/problems/two-sum/&quot;&gt;Leetcode 1. Two Sum&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Naive solution is to do a nested for loop (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n2)&lt;/code&gt;)
-        &lt;ul&gt;
-          &lt;li&gt;Outer for loop starts at an element, then the inner for loop checks of the rest of the elements in the array sum to target&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Optimal solution would be to utilize a hashmap (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n)&lt;/code&gt;)
-        &lt;ul&gt;
-          &lt;li&gt;For each iterations, find the difference between current value and target value
-            &lt;ul&gt;
-              &lt;li&gt;Then check if the difference has been encountered before, returning the current index and stored index from previously seen value&lt;/li&gt;
-              &lt;li&gt;If the difference has not been seen before, store the index and value in a hashmap&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Week 1 #2, &lt;a href=&quot;https://leetcode.com/problems/valid-parentheses&quot;&gt;Leetcode 20. Valid Parentheses&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Utilize a stack (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n)&lt;/code&gt;)
-        &lt;ul&gt;
-          &lt;li&gt;Iterate through input string, storing the open parentheses&lt;/li&gt;
-          &lt;li&gt;If a closing parenthesis is encountered, pop the stack and see if they’re a matching pair; return false if not matching&lt;/li&gt;
-          &lt;li&gt;After iterating through the loop, check if the stack is empty incase there was no closing parenthesis to trigger the conditional check&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Week 1 #3, &lt;a href=&quot;https://leetcode.com/problems/merge-two-sorted-lists&quot;&gt;Leetcode 21. Merge Two Sorted Lists&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Iterate through the linkedLists (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n)&lt;/code&gt;)
-        &lt;ul&gt;
-          &lt;li&gt;Initialize an empty linkedlist with a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;new ListNode&lt;/code&gt; that represents merged list output, then declare a variable to manipulate as a node of the empty list&lt;/li&gt;
-          &lt;li&gt;Iterate through the two input lists as long as both lists still have values
-            &lt;ul&gt;
-              &lt;li&gt;Use conditionals to compare which node to add to the merged list&lt;/li&gt;
-              &lt;li&gt;Update lists and nodes being pointed at to properly represent next nodes to check&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;After finishing the loop, the lists may be of uneven length so need to add remaining nodes from longer list to merged list&lt;/li&gt;
-          &lt;li&gt;Need to return &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mergedList.next&lt;/code&gt; as regular &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mergedList&lt;/code&gt; represents the empty node we initialized&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Leetcode</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Error Handling Retrospective</summary></entry></feed>

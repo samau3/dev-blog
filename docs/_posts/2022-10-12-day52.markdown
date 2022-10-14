@@ -1,0 +1,39 @@
+---
+layout: post
+title:  "52/100 Days of Code"
+date:   2022-10-13 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Started making changes to my React side of things after the database integration.
+
+1. Small changes here and there needed to be made to adjust the JWT being a different structure.
+2. However the biggest change is trying to properly handle errors when accessing the Profile page.
+    1. At the moment there are two error situations:
+        1. There's a database communication error, and they need to try again later 
+            - User doesn't need to logout, just has to comeback later.
+        2. There's a server communication error, and they need to try again later 
+            - Need to clear user context, logout user, and need to redirect user to login page
+    2. With my current setup, I need to make more changes in my server to properly send an error instance that I can use to indicate the first error situation. For my second error situation, there isn't a way for the Profile component to update the React context, however I might be able to try to pass my logout function down to the component.
+
+### Learnings
+
+1. My VSCode kept formatting my files inconsistently, some varying between indentations that were 4 spaces and 2 spaces. 
+    - Turns out some of my files were using `Spaces: 2` and some were using `Tabs: 2` which look the same in VSCode but the raw file and on Github they appear very different.
+    - The solution was to change the files with `Tabs` to be `Spaces` and also choosing to `Convert Indentations To Spaces`
+
+2. After making this mass reformating, it overrides my `git blame` output on the affected files/lines.
+    - To resolve this, I had to use `git blame --ignore-rev <commit hash>` and create a file to store this so I don't have to constantly remember which commit hash to ignore.
+    - These blog posts were pretty helpful in explaining the steps and the purpose of having these changes:
+        1. [Ignoring Revisions with git blame](https://akrabat.com/ignoring-revisions-with-git-blame/)
+        2. [A better git blame](https://michaelheap.com/git-ignore-rev/)
+        3. The official [git blame documentation](https://git-scm.com/docs/git-blame)
+        4. Not a blog, but a [SO discussion on the topic](https://stackoverflow.com/questions/34957237/can-i-configure-git-blame-to-always-ignore-certain-commits-want-to-fix-git-blam)
+
+
+### Next Steps
+1. Continue restructuring my React client to handle the database implementation
+2. A retro on part one of database integration
