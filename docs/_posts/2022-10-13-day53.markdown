@@ -1,0 +1,41 @@
+---
+layout: post
+title:  "53/100 Days of Code"
+date:   2022-10-14 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+More or less finished making the small tweaks to my client to handle the changes in JWT and request return objects. However, while trying to figure out how to properly handle errors for my Profile page, I realized I can't quite do what I did for my Login page component.
+
+1. For my Profile page there are three error situations I'm aware of:
+    1. Backend server is down
+        - Quick solution is to just logout/clear the user session and redirect to login
+    2. Database is down
+        - Display an error, but don't need to log user out or redirect
+    3. Database can't find user (e.g. dropped database between user sessions)
+        - Display an error, logout/redirect the user
+
+2. The last error situations I can't use the same error handling as before as once I call the `logout` function, then the `Profile` component is unmounted.
+    - This causes an issue with trying to update state on an unmounted component, prompting a React warning about memory leaking
+    - Since logout leads to a redirect, there isn't an easy way to pass the error messages to the login component.
+
+3. This leads me to having to explore possibly implementing React Error Boundaries and changing how I've previously handled errors before too.
+    - Some options I saw were to create my own Error Boundary or utilize a [library](https://www.npmjs.com/package/react-error-boundary#useerrorhandlererror-error).
+
+### Learnings
+
+Strangely, my Firebase Github Action suddenly started to fail again.
+
+1. The error mentioned `Resource not accessible by integration`, but my previous Github Actions had that message before without breaking anything.
+    - To resolve this, I had to change the [workflow permissions](https://lightrun.com/answers/firebaseextended-action-hosting-deploy-bug-unhandledpromiserejectionwarning-httperror-resource-not-accessible-by-integration).
+2. Then all of a sudden I had an error saying that the action couldn't find my `firebase.json` and there was now a new check called `Deploy Preview`.
+    - This meant my previous actions were never able to deploy a preview link properly because it didn't have the correct permissions before. Oof.
+    - Moving on, to fix this new error I had to add an argument that specified the [entry point](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepswithentrypoint) where the `firebase.json` exists. 
+
+
+### Next Steps
+1. Start a PR for current database integration on the React side, then start experimenting with the error boundaries.
+2. A combined retro on the whole database process?

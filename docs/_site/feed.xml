@@ -1,4 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-13T23:58:07-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">52/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/13/day52.html" rel="alternate" type="text/html" title="52/100 Days of Code" /><published>2022-10-13T15:30:23-07:00</published><updated>2022-10-13T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/13/day52</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/13/day52.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-14T22:42:16-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">53/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/14/day53.html" rel="alternate" type="text/html" title="53/100 Days of Code" /><published>2022-10-14T15:30:23-07:00</published><updated>2022-10-14T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/14/day53</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/14/day53.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;More or less finished making the small tweaks to my client to handle the changes in JWT and request return objects. However, while trying to figure out how to properly handle errors for my Profile page, I realized I can’t quite do what I did for my Login page component.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;For my Profile page there are three error situations I’m aware of:
+    &lt;ol&gt;
+      &lt;li&gt;Backend server is down
+        &lt;ul&gt;
+          &lt;li&gt;Quick solution is to just logout/clear the user session and redirect to login&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Database is down
+        &lt;ul&gt;
+          &lt;li&gt;Display an error, but don’t need to log user out or redirect&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Database can’t find user (e.g. dropped database between user sessions)
+        &lt;ul&gt;
+          &lt;li&gt;Display an error, logout/redirect the user&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The last error situations I can’t use the same error handling as before as once I call the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;logout&lt;/code&gt; function, then the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Profile&lt;/code&gt; component is unmounted.
+    &lt;ul&gt;
+      &lt;li&gt;This causes an issue with trying to update state on an unmounted component, prompting a React warning about memory leaking&lt;/li&gt;
+      &lt;li&gt;Since logout leads to a redirect, there isn’t an easy way to pass the error messages to the login component.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;This leads me to having to explore possibly implementing React Error Boundaries and changing how I’ve previously handled errors before too.
+    &lt;ul&gt;
+      &lt;li&gt;Some options I saw were to create my own Error Boundary or utilize a &lt;a href=&quot;https://www.npmjs.com/package/react-error-boundary#useerrorhandlererror-error&quot;&gt;library&lt;/a&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+
+&lt;p&gt;Strangely, my Firebase Github Action suddenly started to fail again.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The error mentioned &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Resource not accessible by integration&lt;/code&gt;, but my previous Github Actions had that message before without breaking anything.
+    &lt;ul&gt;
+      &lt;li&gt;To resolve this, I had to change the &lt;a href=&quot;https://lightrun.com/answers/firebaseextended-action-hosting-deploy-bug-unhandledpromiserejectionwarning-httperror-resource-not-accessible-by-integration&quot;&gt;workflow permissions&lt;/a&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Then all of a sudden I had an error saying that the action couldn’t find my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;firebase.json&lt;/code&gt; and there was now a new check called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Preview&lt;/code&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;This meant my previous actions were never able to deploy a preview link properly because it didn’t have the correct permissions before. Oof.&lt;/li&gt;
+      &lt;li&gt;Moving on, to fix this new error I had to add an argument that specified the &lt;a href=&quot;https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepswithentrypoint&quot;&gt;entry point&lt;/a&gt; where the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;firebase.json&lt;/code&gt; exists.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Start a PR for current database integration on the React side, then start experimenting with the error boundaries.&lt;/li&gt;
+  &lt;li&gt;A combined retro on the whole database process?&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">52/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/13/day52.html" rel="alternate" type="text/html" title="52/100 Days of Code" /><published>2022-10-13T15:30:23-07:00</published><updated>2022-10-13T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/13/day52</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/13/day52.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Started making changes to my React side of things after the database integration.&lt;/p&gt;
 
@@ -449,39 +508,4 @@
       &lt;li&gt;This will likely start as building out the feature both in the frontend and backend, but if it gets too big I’ll split up the PR&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">43/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/03/day43.html" rel="alternate" type="text/html" title="43/100 Days of Code" /><published>2022-10-03T15:30:23-07:00</published><updated>2022-10-03T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/03/day43</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/03/day43.html">&lt;h3 id=&quot;paper-trader-error-handling-retrospective&quot;&gt;Paper Trader Error Handling Retrospective&lt;/h3&gt;
-
-&lt;p&gt;Overall there isn’t much to reflect on as the whole process was very iterative, where the more the features became fleshed out, the more obvious some pieces code be broken up or refactored.&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;For my route errors, I had an idea that some functions could be separated out or refactored to be more clean, such as not having a nested try catch or having to directly modify the error objects based on which request generated it. However, as I was working through it, I couldn’t quite get it to work on the first time, so I pushed forward with what worked. As things progressed, it became clearer where things can be split and what code chunks can be simplified.&lt;/li&gt;
-  &lt;li&gt;For my React error handling, the biggest take away was just cleaning up where my errors are being thrown. Previously they were being thrown in my API request methods, but that was too low of a location which made the errors inaccessible in my components. Once again, as my components were more clearly defined, I was able to properly display errors in the right location by catching them where needed. However, there was a learning moment where I had to await a promise that threw my error. Without awaiting, my catch blocks never triggerred which made debugging where my errors are being processed confusing at the time.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Worked on refactoring my Express API Routes!&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Nothing crazy, just separating out my two routes, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/login&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/profile&lt;/code&gt;, into their own files out of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;index.ts&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;However, a change that probably would have saved me headache in having a cleaner URL parameter object was adding a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;!&lt;/code&gt; to my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;process.env&lt;/code&gt; variables.
-    &lt;ul&gt;
-      &lt;li&gt;When trying to reuse my object structure for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;new URLSearchParams({URL_QUERY_PARAMS_OBJECT})&lt;/code&gt;, I encountered the same error I had the first time I tried working with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; and the Discord OAuth &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/token&lt;/code&gt; route. Specifically, the entire object was causing a type error.&lt;/li&gt;
-      &lt;li&gt;Looking into it, I was able to narrow down the two properties causing the type errors, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;clientId&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;clientSecret&lt;/code&gt;, which are my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;process.env&lt;/code&gt; variables. My linter shows that their type was &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string | undefined&lt;/code&gt; which is understandable as maybe the environmental variables aren’t set. However, I know they will be set as they’re necessary to have the app communicate with the Discord API.&lt;/li&gt;
-      &lt;li&gt;This led me to find this &lt;a href=&quot;https://stackoverflow.com/a/66040743&quot;&gt;SO discussion&lt;/a&gt;, and by adding a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;!&lt;/code&gt; to the end of my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;process.env&lt;/code&gt; values I resolved the type error.
-        &lt;ul&gt;
-          &lt;li&gt;Interestingly, I just tried again without the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;!&lt;/code&gt; and the type error still isn’t appearing so this change may not be entirely necessary.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Also, I finally found a free real-time stock price API!&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Looking forward to implement &lt;a href=&quot;https://finnhub.io/docs/api/quote&quot;&gt;Finnhub&lt;/a&gt; for my buy/sell routes.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Continue refactoring, most likely moving my axios requests to a separate file and breaking it up into class methods again.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader Error Handling Retrospective</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
