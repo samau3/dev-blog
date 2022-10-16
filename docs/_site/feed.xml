@@ -1,4 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-14T22:42:16-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">53/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/14/day53.html" rel="alternate" type="text/html" title="53/100 Days of Code" /><published>2022-10-14T15:30:23-07:00</published><updated>2022-10-14T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/14/day53</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/14/day53.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-15T23:55:37-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">54/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/15/day54.html" rel="alternate" type="text/html" title="54/100 Days of Code" /><published>2022-10-15T15:30:23-07:00</published><updated>2022-10-15T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/15/day54</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/15/day54.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Explored trying to implement React Error Boundaries.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;For the most part, React Error Boundaries are exactly what I wanted.
+    &lt;ul&gt;
+      &lt;li&gt;I’m able to unmount my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Profile&lt;/code&gt; component via calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;logout&lt;/code&gt; and display a new component to the user so they won’t stay on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Profile&lt;/code&gt; page anymore.&lt;/li&gt;
+      &lt;li&gt;Plus there was a &lt;a href=&quot;https://www.npmjs.com/package/react-error-boundary?activeTab=dependencies&quot;&gt;library&lt;/a&gt; that I could use so I didn’t have to write my own class components to make the Error Boundary.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;However, the situations that trigger the Error Boundary are not rendering errors with the component, but an asynchronous server request.
+    &lt;ul&gt;
+      &lt;li&gt;This is important as the React documentation specifically say this won’t work for the following situations:
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  Error boundaries do not catch errors for:
+
+  - Event handlers (learn more)
+  - Asynchronous code (e.g. setTimeout or requestAnimationFrame callbacks)
+  - Server side rendering
+  - Errors thrown in the error boundary itself (rather than its children)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Which is why I didn’t use them before for my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; component&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;There was a blog post that mentioned a possible way to overcome this issue by using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useErrorHandler&lt;/code&gt; hook from the library, which led to my Error Boundary implementation to work.
+    &lt;ul&gt;
+      &lt;li&gt;But it’s still not the perfect solution as it’s built on the React’s Error Boundary, so this means the errors caused by the above issues are not caught (which is my case).&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;However, this was not all wasted efforts as ideally I’ll be using a mix of both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try/catch&lt;/code&gt; and Error Boundaries. Just that for this situation, I’ll probably have to stick to using try/catch.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;The next option I’ll try to explore will be passing an error message to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Login&lt;/code&gt; component after being redirected from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Profile&lt;/code&gt; component.
+    &lt;ul&gt;
+      &lt;li&gt;I started to play around with it already, but haven’t been able to successfully pass an error message yet.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">53/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/14/day53.html" rel="alternate" type="text/html" title="53/100 Days of Code" /><published>2022-10-14T15:30:23-07:00</published><updated>2022-10-14T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/14/day53</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/14/day53.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;More or less finished making the small tweaks to my client to handle the changes in JWT and request return objects. However, while trying to figure out how to properly handle errors for my Profile page, I realized I can’t quite do what I did for my Login page component.&lt;/p&gt;
 
@@ -449,63 +491,6 @@
   &lt;li&gt;Continue building out the stock API features
     &lt;ul&gt;
       &lt;li&gt;Looks like I may have to take a detour and start working on the database to make meaningful progress though&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">44/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/04/day44.html" rel="alternate" type="text/html" title="44/100 Days of Code" /><published>2022-10-04T15:30:23-07:00</published><updated>2022-10-04T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/04/day44</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/04/day44.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Continued refactoring my Express API Routes!&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I moved my axios requests into a separate file outside of my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/login&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/profile&lt;/code&gt; routes
-    &lt;ul&gt;
-      &lt;li&gt;Once again a pretty straightforward process, until it wasn’t&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;In my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request builder, I orginally had this set up:
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; static async request(endpoint: string, headers: any, data = {}, method = &quot;GET&quot;) {
-     const url = `${BASE_DISCORD_API_URL}/${endpoint}`;
-
-     const response = (await axios({ method, url, data, headers })).data;
-     return response;
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;ul&gt;
-      &lt;li&gt;I thought by having the default value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; be an empty object, whenever I have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request there would be an empty object for that property in the request. Note, in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;POST&lt;/code&gt; request, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; is provided as an input argument&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;When I went to test my login flow again, I kept getting this error &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Your client has issued a malformed or illegal request&lt;/code&gt;. Luckily with my separate catch blocks indicating which request is generating the error, I found that my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request to the Discord &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/users&lt;/code&gt; route was not the correct request format.
-    &lt;ul&gt;
-      &lt;li&gt;The issue was that my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request was sending an empty object in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; property, when it should be sending &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; for the data property.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;To resolve this, my generic &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request method needed to set the data property as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; when a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request is made:
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; static async request(endpoint: string, headers: any, body = {}, method = &quot;GET&quot;) {
-     const url = `${BASE_DISCORD_API_URL}/${endpoint}`;
-     const data = (method === &quot;GET&quot;)
-     ? undefined
-     : body;
-
-     const response = (await axios({ method, url, data, headers })).data;
-     return response;
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Originally I was planning to just do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return await&lt;/code&gt; in my new class making axios requests. However, when I double checked if that was a good idea, I found this documentation from &lt;a href=&quot;https://eslint.org/docs/latest/rules/no-return-await&quot;&gt;ESLint&lt;/a&gt;.
-    &lt;ul&gt;
-      &lt;li&gt;The gist is that doing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return await&lt;/code&gt; is bad practice as it leads to performance issues related to call stack Promise resolving. However, it’s allowed inside a try catch block.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Start on implementing the stock API!
-    &lt;ul&gt;
-      &lt;li&gt;This will likely start as building out the feature both in the frontend and backend, but if it gets too big I’ll split up the PR&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>

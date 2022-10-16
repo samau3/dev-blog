@@ -1,0 +1,33 @@
+---
+layout: post
+title:  "54/100 Days of Code"
+date:   2022-10-15 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Explored trying to implement React Error Boundaries.
+
+1. For the most part, React Error Boundaries are exactly what I wanted. 
+    - I'm able to unmount my `Profile` component via calling `logout` and display a new component to the user so they won't stay on the `Profile` page anymore.
+    - Plus there was a [library](https://www.npmjs.com/package/react-error-boundary?activeTab=dependencies) that I could use so I didn't have to write my own class components to make the Error Boundary.
+2. However, the situations that trigger the Error Boundary are not rendering errors with the component, but an asynchronous server request.
+    - This is important as the React documentation specifically say this won't work for the following situations: 
+        ~~~
+        Error boundaries do not catch errors for:
+
+        - Event handlers (learn more)
+        - Asynchronous code (e.g. setTimeout or requestAnimationFrame callbacks)
+        - Server side rendering
+        - Errors thrown in the error boundary itself (rather than its children)
+        ~~~
+        - Which is why I didn't use them before for my `Login` component
+3. There was a blog post that mentioned a possible way to overcome this issue by using the `useErrorHandler` hook from the library, which led to my Error Boundary implementation to work.
+    - But it's still not the perfect solution as it's built on the React's Error Boundary, so this means the errors caused by the above issues are not caught (which is my case).
+4. However, this was not all wasted efforts as ideally I'll be using a mix of both `try/catch` and Error Boundaries. Just that for this situation, I'll probably have to stick to using try/catch.
+
+### Next Steps
+1. The next option I'll try to explore will be passing an error message to the `Login` component after being redirected from the `Profile` component. 
+    - I started to play around with it already, but haven't been able to successfully pass an error message yet.
