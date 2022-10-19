@@ -1,4 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-15T23:55:37-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">54/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/15/day54.html" rel="alternate" type="text/html" title="54/100 Days of Code" /><published>2022-10-15T15:30:23-07:00</published><updated>2022-10-15T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/15/day54</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/15/day54.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-18T22:09:28-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">55/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/18/day55.html" rel="alternate" type="text/html" title="55/100 Days of Code" /><published>2022-10-18T15:30:23-07:00</published><updated>2022-10-18T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/18/day55</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/18/day55.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Managed to debug my error messaging on redirect!&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;How I previously handled redirecting was using React Router’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; component.
+    &lt;ul&gt;
+      &lt;li&gt;This component has four props, with the one needed to send data across redirects being &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt;, which is can be accessed from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useLocation&lt;/code&gt; at the redirected location.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;However, when I tried passing an error message string in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; prop for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt;, my redirected destination had &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt; for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useLocation&lt;/code&gt; hook object.&lt;/li&gt;
+  &lt;li&gt;Looking into why this isn’t working, I ran into a &lt;a href=&quot;https://stackoverflow.com/a/70010073&quot;&gt;SO discussion&lt;/a&gt; that uses the function returned from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useNavigate&lt;/code&gt; hook.
+    &lt;ul&gt;
+      &lt;li&gt;I tried replicating the arguments being used for the function, but the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; component still didn’t pass any values for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;state&lt;/code&gt; parameter.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;At the moment, it looks like I’ll have to utilize the function from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useNavigate&lt;/code&gt; for what I need, but while looking into the &lt;a href=&quot;https://reactrouter.com/en/main/fetch/redirect&quot;&gt;React Router documentation&lt;/a&gt; further, I found the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect&lt;/code&gt; fetch utility, which may be more appropriate for what I’m doing.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Types vs Interfaces
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;In my application, I was using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;interface&lt;/code&gt; for a majority of my typing for functions and parameters, but found that using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;type&lt;/code&gt; also worked. Given how interchangeable they were, I wondered when one should be used over the other. While most discussions I saw online about this topic seemed to boil down to preference, the official &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces&quot;&gt;Typescript documentation&lt;/a&gt; mention:&lt;/p&gt;
+
+        &lt;blockquote&gt;
+          &lt;p&gt;If you would like a heuristic, use interface until you need to use features from type.&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;For my use case, there aren’t any features specific to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;type&lt;/code&gt; so I’ll probably stick to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;interface&lt;/code&gt; for everything to be consistent.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Try using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect&lt;/code&gt; utility from the React Router documentation, then clean up my components and start a new PR.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">54/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/15/day54.html" rel="alternate" type="text/html" title="54/100 Days of Code" /><published>2022-10-15T15:30:23-07:00</published><updated>2022-10-15T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/15/day54</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/15/day54.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Explored trying to implement React Error Boundaries.&lt;/p&gt;
 
@@ -423,74 +464,4 @@
 &lt;ol&gt;
   &lt;li&gt;Wrap up the PR on my starter buy/sell feature.&lt;/li&gt;
   &lt;li&gt;Start moving my files and folders into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; and try to see if that fixes my fly.io deployment problems.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">45/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/05/day45.html" rel="alternate" type="text/html" title="45/100 Days of Code" /><published>2022-10-05T15:30:23-07:00</published><updated>2022-10-05T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/05/day45</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/05/day45.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;Merged my refactoring of Express API Routes so far to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; with some minor changes had to be made to yesterday:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I changed the generic &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; request to have a default &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; rather than an empty object, which removes the need for the conditional I had before.
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; static async request(endpoint: string, headers: any, data: URLSearchParams = undefined, method = &quot;GET&quot;) {
-     const url = `${BASE_DISCORD_API_URL}/${endpoint}`;
-
-     const response = (await axios({ method, url, data, headers })).data;
-     return response;
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Moved my Discord OAuth API interfaces to be the return type for the Discord API requests in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;discord.ts&lt;/code&gt; file
-    &lt;ul&gt;
-      &lt;li&gt;Promotes separation of concerns as the interfaces really only pertain to the response object from the Discord API, not directly the requests in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/login&lt;/code&gt; route.&lt;/li&gt;
-      &lt;li&gt;This also enables not having to redefine the interface if any other routes need to use the Discord API requests - unlikely but just another example of good separation of concerns&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;However, after merging the above PR, I noticed my Firebase deploy Github action failed.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;This was unusual as it ran successfully yesterday and today there were no changes to the files that would be deployed to Firebase.
-    &lt;ul&gt;
-      &lt;li&gt;Comparing the Github action logs, I saw that Firebase had updated, with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;11.13&lt;/code&gt; being used yesterday, but &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;11.14&lt;/code&gt; being used today&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;After spending sometime looking into the error message &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error: Failed to list functions for paper-trader-182a4&lt;/code&gt; and going nowhere, I dug through the error logs and found a clue to my issue.&lt;/li&gt;
-  &lt;li&gt;By adding the –debug flag to my deploy command in my CLI, I found this message:
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; //...
- HTTP Error: 403, Cloud Functions API has not been used in [PROJECT] before 
- or it is disabled. Enable it by visiting [URL for Cloud Functions API] then retry.
- //...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;After following the link and enabling this API, I was able to deploy locally! But trying to deploy by running my Github action presented a different type of error:
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; //...
-  &quot;message&quot;: &quot;Permission &apos;cloudfunctions.functions.list&apos; denied on &apos;[PROJECT]&apos;&quot;,
- //...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Looking up this issue, I found the Github repository issues that discuessed this problem. Luckily the users there were able to &lt;a href=&quot;https://github.com/FirebaseExtended/action-hosting-deploy/issues/203#issuecomment-1127732956&quot;&gt;provide a solution&lt;/a&gt; that I was able to implement and fix my CI/CD issue.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Once I resolved my CI/CD issues, I went back to implementing the Finnhub API and created the beginning of my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/stock&lt;/code&gt; routes.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Nothing too different in the structure from my previous routes and setup (classic CRUD setup).
-    &lt;ul&gt;
-      &lt;li&gt;Separate file for stock routes, separate file for Finnhub api requests.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;However, one change I had to spend some time debugging was how to properly send data in a request body
-    &lt;ul&gt;
-      &lt;li&gt;Current set up for my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/buy&lt;/code&gt; route is that it accepts a ticker and quantity in the request body and then the route outputs the total cost if purchase successful (basic setup to get started).&lt;/li&gt;
-      &lt;li&gt;Since I originally lacked the middleware &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;express.json()&lt;/code&gt;, there was no body property in my request object so I kept having trouble accessing the ticker and quantity properties I was sending to the route. A quick change once I noticed there was no body property after console logging the request object.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Continue building out the stock API features
-    &lt;ul&gt;
-      &lt;li&gt;Looks like I may have to take a detour and start working on the database to make meaningful progress though&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>

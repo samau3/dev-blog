@@ -1,0 +1,30 @@
+---
+layout: post
+title:  "55/100 Days of Code"
+date:   2022-10-18 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Managed to debug my error messaging on redirect!
+
+1. How I previously handled redirecting was using React Router's `Navigate` component.
+    - This component has four props, with the one needed to send data across redirects being `state`, which is can be accessed from `useLocation` at the redirected location.
+2. However, when I tried passing an error message string in the `state` prop for `Navigate`, my redirected destination had `null` for `state` in my `useLocation` hook object.
+3. Looking into why this isn't working, I ran into a [SO discussion](https://stackoverflow.com/a/70010073) that uses the function returned from the `useNavigate` hook.
+    - I tried replicating the arguments being used for the function, but the `Navigate` component still didn't pass any values for the `state` parameter.
+4. At the moment, it looks like I'll have to utilize the function from `useNavigate` for what I need, but while looking into the [React Router documentation](https://reactrouter.com/en/main/fetch/redirect) further, I found the `redirect` fetch utility, which may be more appropriate for what I'm doing. 
+
+### Learnings
+
+1. Types vs Interfaces
+    - In my application, I was using `interface` for a majority of my typing for functions and parameters, but found that using `type` also worked. Given how interchangeable they were, I wondered when one should be used over the other. While most discussions I saw online about this topic seemed to boil down to preference, the official [Typescript documentation](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces) mention:
+
+        > If you would like a heuristic, use interface until you need to use features from type.
+
+    - For my use case, there aren't any features specific to `type` so I'll probably stick to `interface` for everything to be consistent.
+
+### Next Steps
+1. Try using the `redirect` utility from the React Router documentation, then clean up my components and start a new PR.
