@@ -1,0 +1,41 @@
+---
+layout: post
+title:  "56/100 Days of Code"
+date:   2022-10-21 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+Looked into using `redirect`, but that didn't quite work out.
+1. `Navigate` and `useNavigate` is new to [react router v6](https://reactrouter.com/en/main/components/navigate) and is meant to be [another way to handle redirects](https://reactrouter.com/en/main/upgrading/v5).
+  - Oddly, I wasn't able to import `redirect` from my installed `react-router-dom` package. So I stuck with using `Navigate`.
+2. Another odd behavior while working with `Navigate` was that I couldn't do return the function from the `useNavigate` hook.
+    ~~~~
+    const navigate = useNavigate();
+    //...
+    return navigate(...)
+    ~~~~
+    - The error this generated was that the return type is `void | element` but JSX can only be `Element | null`.
+    - So in my component, I'm using both a `Navigate` component and a `navigate` function.
+      - The `Navigate` component is returned unwrapped in the component, but the `navigate` function is returned in my `catch` block without any issues.
+
+Moving onto wrapping up my error handling, I wanted to see how my current deployed application handles errors with database querying. However, I immediately ran into unexpected errors.
+1. The console was displaying a CORS issue, and a 502 error for the API server route.
+  - CORS error shouldn't be happening as my API server does not block cross origin access.
+  - When I removed the npm package that allowed CORS, the API route returned a 200 status code instead of 502.
+2. Then, I took a look at the fly.io logs and it showed an error while trying to access the error response object.
+  - That's weird since I know the expected response structure from `axios` errors, so encountering an `undefined` was off.
+3. That's when I realized it's not a CORS issue, but a database issue as my login process also makes a request to the database.
+  - The way it was set up, the samy `try/catch` block wraps the final Discord OAuth request and the database request.
+  - So if the database request fails, the error object is being modified based on how Discord OAuth's error reponse object should.
+4. From there, I separated out the database request into a separate `try/catch` block.
+5. Then to resolve my deployed application issue, I had to manually go into my fly.io postgres database and add the tables needed for my application.
+  - I'll need to explore a way to update the database by running/seeding from a file. 
+
+### Next Steps
+1. Start on building out the transactions feature
+  - For building this out in the frontend, I'll have to add quite a few more components, but I can use dummy data to make sure things are displayed properly.
+  - For building this out in the backend, I'll have to add methods that make queries to the database that are coupled with buy and sell requests.
+  - Likely to start on building out the backend first as there'll be less moving parts to handle. 

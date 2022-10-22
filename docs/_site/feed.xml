@@ -1,4 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-18T22:09:28-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">55/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/18/day55.html" rel="alternate" type="text/html" title="55/100 Days of Code" /><published>2022-10-18T15:30:23-07:00</published><updated>2022-10-18T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/18/day55</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/18/day55.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-22T00:09:45-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">56/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/21/day56.html" rel="alternate" type="text/html" title="56/100 Days of Code" /><published>2022-10-21T15:30:23-07:00</published><updated>2022-10-21T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/21/day56</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/21/day56.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Looked into using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect&lt;/code&gt;, but that didn’t quite work out.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useNavigate&lt;/code&gt; is new to &lt;a href=&quot;https://reactrouter.com/en/main/components/navigate&quot;&gt;react router v6&lt;/a&gt; and is meant to be &lt;a href=&quot;https://reactrouter.com/en/main/upgrading/v5&quot;&gt;another way to handle redirects&lt;/a&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;Oddly, I wasn’t able to import &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect&lt;/code&gt; from my installed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;react-router-dom&lt;/code&gt; package. So I stuck with using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Another odd behavior while working with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; was that I couldn’t do return the function from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useNavigate&lt;/code&gt; hook.
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; const navigate = useNavigate();
+ //...
+ return navigate(...)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;The error this generated was that the return type is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void | element&lt;/code&gt; but JSX can only be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Element | null&lt;/code&gt;.&lt;/li&gt;
+      &lt;li&gt;So in my component, I’m using both a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; component and a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;navigate&lt;/code&gt; function.
+        &lt;ul&gt;
+          &lt;li&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; component is returned unwrapped in the component, but the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;navigate&lt;/code&gt; function is returned in my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;catch&lt;/code&gt; block without any issues.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Moving onto wrapping up my error handling, I wanted to see how my current deployed application handles errors with database querying. However, I immediately ran into unexpected errors.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;The console was displaying a CORS issue, and a 502 error for the API server route.
+    &lt;ul&gt;
+      &lt;li&gt;CORS error shouldn’t be happening as my API server does not block cross origin access.&lt;/li&gt;
+      &lt;li&gt;When I removed the npm package that allowed CORS, the API route returned a 200 status code instead of 502.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Then, I took a look at the fly.io logs and it showed an error while trying to access the error response object.
+    &lt;ul&gt;
+      &lt;li&gt;That’s weird since I know the expected response structure from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;axios&lt;/code&gt; errors, so encountering an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; was off.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;That’s when I realized it’s not a CORS issue, but a database issue as my login process also makes a request to the database.
+    &lt;ul&gt;
+      &lt;li&gt;The way it was set up, the samy &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try/catch&lt;/code&gt; block wraps the final Discord OAuth request and the database request.&lt;/li&gt;
+      &lt;li&gt;So if the database request fails, the error object is being modified based on how Discord OAuth’s error reponse object should.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;From there, I separated out the database request into a separate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;try/catch&lt;/code&gt; block.&lt;/li&gt;
+  &lt;li&gt;Then to resolve my deployed application issue, I had to manually go into my fly.io postgres database and add the tables needed for my application.
+    &lt;ul&gt;
+      &lt;li&gt;I’ll need to explore a way to update the database by running/seeding from a file.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Start on building out the transactions feature
+    &lt;ul&gt;
+      &lt;li&gt;For building this out in the frontend, I’ll have to add quite a few more components, but I can use dummy data to make sure things are displayed properly.&lt;/li&gt;
+      &lt;li&gt;For building this out in the backend, I’ll have to add methods that make queries to the database that are coupled with buy and sell requests.&lt;/li&gt;
+      &lt;li&gt;Likely to start on building out the backend first as there’ll be less moving parts to handle.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">55/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/18/day55.html" rel="alternate" type="text/html" title="55/100 Days of Code" /><published>2022-10-18T15:30:23-07:00</published><updated>2022-10-18T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/18/day55</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/18/day55.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Managed to debug my error messaging on redirect!&lt;/p&gt;
 
@@ -410,58 +471,4 @@
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Continue working on getting a database setup.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">46/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/06/day46.html" rel="alternate" type="text/html" title="46/100 Days of Code" /><published>2022-10-06T15:30:23-07:00</published><updated>2022-10-06T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/06/day46</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/06/day46.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Started delving deeper into how my database should be set up.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I have two tables for sure, users and transactions. However, I wanted to have a third table that would essentially be a user’s holdings, calcuated from an aggregate of the transactions table.
-    &lt;ul&gt;
-      &lt;li&gt;However, I encountered an issue of creating an aggregate table or creating a view for this data. After the discussions I found online, looks like I’ll have tothe best option is using a materialized view.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;However, the biggest revelation today is realizing I’ve been saving my new files and directories outside of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; in my server directory…&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;I decided to deploy my backend on fly.io once again, in doing so I decided to check if my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm build&lt;/code&gt; output was actually being changed in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dist&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;There, I realized the files in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dist&lt;/code&gt; weren’t being updated whenever I ran &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm run build&lt;/code&gt; and my fly.io deployment kept failing because the local deployment would be utilizing my local outdated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dist&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Digging around my configuration files and changing various settings, I noticed my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tsconfig.json&lt;/code&gt; has the property &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;include&quot;: [ &quot;src/**/*&quot; ]&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;After checking the directory structure… none of my files and folders since a few weeks ago have been saved inside &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; which meant they weren’t being included in the build process
-    &lt;ul&gt;
-      &lt;li&gt;Not sure why this didn’t trigger any other errors and just built successfully, but nonetheless I have found the issue.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;By moving my files to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; and redeploying, my application worked!
-    &lt;ul&gt;
-      &lt;li&gt;What a time sink it was to debug this a few weeks ago and how long it took to fix…&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;learnings&quot;&gt;Learnings&lt;/h3&gt;
-
-&lt;p&gt;Some quick resources I used when determining between an aggregate data table or having a view. These articles I’ll need to comeback to later once I start working on my database more.&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Aggregate Table or Views
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/45382930/store-aggregate-data-in-a-table-or-a-view&quot;&gt;SO Discussion&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Probably can’t utilize views for real time
-    &lt;ul&gt;
-      &lt;li&gt;One resource I saw was talking about the exact use case I wanted regarding stock information. Unfortunately, the service is not free but it would solve my issue of continuously updating an aggregate of data.
-        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;https://www.timescale.com/blog/how-postgresql-views-and-materialized-views-work-and-how-they-influenced-timescaledb-continuous-aggregates/&quot;&gt;Continuous Aggregation&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Might be able to utilize &lt;a href=&quot;https://dba.stackexchange.com/questions/55945/postgres-optimizing-an-view-dependent-on-an-aggregate-function&quot;&gt;distinct on&lt;/a&gt;?&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Wrap up the PR on my starter buy/sell feature.&lt;/li&gt;
-  &lt;li&gt;Start moving my files and folders into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; and try to see if that fixes my fly.io deployment problems.&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
