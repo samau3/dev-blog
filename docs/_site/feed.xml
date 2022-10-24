@@ -1,4 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-22T00:09:45-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">56/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/21/day56.html" rel="alternate" type="text/html" title="56/100 Days of Code" /><published>2022-10-21T15:30:23-07:00</published><updated>2022-10-21T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/21/day56</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/21/day56.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-23T23:00:56-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">57/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/22/day57.html" rel="alternate" type="text/html" title="57/100 Days of Code" /><published>2022-10-22T15:30:23-07:00</published><updated>2022-10-22T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/22/day57</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/22/day57.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;First day of building out buying stocks feature.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Started off building the Trading page component
+    &lt;ul&gt;
+      &lt;li&gt;At the moment, pretty bare bones except for a text input field and two buttons.&lt;/li&gt;
+      &lt;li&gt;In terms of additional parts to add to this page visually, it’ll probably just be the user’s balance information.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Originally I wanted it to be a form, but there wasn’t an easy way to differentiate between buying and selling upon form submission. So I opted to just have two buttons that call separate buy and sell functions.
+    &lt;ul&gt;
+      &lt;li&gt;There will need to be a way to disable the buttons when a transaction request is in process.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;From there, it was a straightforward process of creating functions that communicate to my API server and database.&lt;/li&gt;
+  &lt;li&gt;Some possible directions to go from here (besides improving current condition of the implementation):
+    &lt;ul&gt;
+      &lt;li&gt;Redirect user so a successful transaction page.&lt;/li&gt;
+      &lt;li&gt;Redirect user to profile page with a message about recent transaction.&lt;/li&gt;
+      &lt;li&gt;I’m leaning towards the first option at the moment, but I’ll see as I progress if that’s still makes sense.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Besides adding this new feature, I encountered some minor bugs that needed to be changed during this process:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;After being able to make insertions to the transaction table, I noticed the transaction time column wasn’t being automatically filled out.
+    &lt;ul&gt;
+      &lt;li&gt;Luckily, it was a quick fix by following this &lt;a href=&quot;https://stackoverflow.com/a/9556581&quot;&gt;SO discussion&lt;/a&gt;, which was adding a default value of the current time during the row insertion.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Since I made a change to my table schema, rather than making an alter query, I opted to just drop my database and recreate my tables again.
+    &lt;ul&gt;
+      &lt;li&gt;Checking to see if my login process still worked, I noticed that I immediately ran into an error during my first login after recreating my database.&lt;/li&gt;
+      &lt;li&gt;When I try logging in again, the process went through without any problems. This showed that it was an issue with my register portion of my login process.&lt;/li&gt;
+      &lt;li&gt;In the error message, there was an issue while calling my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;createToken&lt;/code&gt; method, where it had an accessing property of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined&lt;/code&gt; error.&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Since this method accesses the id property being passed in, and since I already confirmed my regular &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;login&lt;/code&gt; requests work, I checked if the return object of my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;login&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;register&lt;/code&gt; database queries were the same.&lt;/li&gt;
+      &lt;li&gt;Confirming they both returned the same structure, I thought maybe I needed to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt; my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;register&lt;/code&gt; query.
+      - That’s when I realized, I’m not returning the result of my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;register&lt;/code&gt; method, so &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;createToken&lt;/code&gt; isn’t able to access the id value returned from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;register&lt;/code&gt; database query.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Continue expanding out the buy feature
+    &lt;ul&gt;
+      &lt;li&gt;Mainly focusing on how I want the process to behave from start to end.&lt;/li&gt;
+      &lt;li&gt;Then start including a way to check if the user can afford the entire transaction.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">56/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/21/day56.html" rel="alternate" type="text/html" title="56/100 Days of Code" /><published>2022-10-21T15:30:23-07:00</published><updated>2022-10-21T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/21/day56</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/21/day56.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Looked into using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect&lt;/code&gt;, but that didn’t quite work out.&lt;/p&gt;
 &lt;ol&gt;
@@ -431,44 +487,4 @@
 &lt;ol&gt;
   &lt;li&gt;Wrap up Grind 75 week 2.&lt;/li&gt;
   &lt;li&gt;Continue with database integration for Paper Trader.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">47/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/07/day47.html" rel="alternate" type="text/html" title="47/100 Days of Code" /><published>2022-10-07T15:30:23-07:00</published><updated>2022-10-07T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/07/day47</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/07/day47.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Wrapped up my PR on buy/sell.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;However, one thing I’m not sure about is not having to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt; for one of my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;async&lt;/code&gt; methods.
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     async method() {
-         ...
-         const response = await(axios_request);
-     }
-
-     async method2() {
-         // before:
-         // const res = await this.method();
-         // return res;
-            
-         // after:
-         return this.method();
-     }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Previously, I &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt;ed the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;method&lt;/code&gt; before returning it, but just returning &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this.method()&lt;/code&gt; also works without any issues. Tried to look into why that may be the case and which way was best practice, but didn’t find anything. Will need to reach out to my friend about what’s the best option.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Moved all my server files into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src&lt;/code&gt; based on my revelation yesterday and started a new PR.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Immediately, my previous Github action that built and deployed a temporary app on Fly.io worked on the first run.
-    &lt;ul&gt;
-      &lt;li&gt;Before, the first run would fail but subsequent runs would succeed.&lt;/li&gt;
-      &lt;li&gt;Given this change, sounds like my previous issues with the Github action for Fly.io deployment was due to the improper file structuring…&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Continue working on getting a database setup.&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>

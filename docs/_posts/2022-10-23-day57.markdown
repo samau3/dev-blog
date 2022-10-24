@@ -1,0 +1,40 @@
+---
+layout: post
+title:  "57/100 Days of Code"
+date:   2022-10-22 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+First day of building out buying stocks feature.
+
+1. Started off building the Trading page component
+  - At the moment, pretty bare bones except for a text input field and two buttons.
+  - In terms of additional parts to add to this page visually, it'll probably just be the user's balance information.
+2. Originally I wanted it to be a form, but there wasn't an easy way to differentiate between buying and selling upon form submission. So I opted to just have two buttons that call separate buy and sell functions.
+  - There will need to be a way to disable the buttons when a transaction request is in process.
+3. From there, it was a straightforward process of creating functions that communicate to my API server and database.
+4. Some possible directions to go from here (besides improving current condition of the implementation):
+  - Redirect user so a successful transaction page.
+  - Redirect user to profile page with a message about recent transaction.
+  - I'm leaning towards the first option at the moment, but I'll see as I progress if that's still makes sense.
+
+Besides adding this new feature, I encountered some minor bugs that needed to be changed during this process:
+
+1. After being able to make insertions to the transaction table, I noticed the transaction time column wasn't being automatically filled out.
+  - Luckily, it was a quick fix by following this [SO discussion](https://stackoverflow.com/a/9556581), which was adding a default value of the current time during the row insertion.
+2. Since I made a change to my table schema, rather than making an alter query, I opted to just drop my database and recreate my tables again. 
+  - Checking to see if my login process still worked, I noticed that I immediately ran into an error during my first login after recreating my database. 
+  - When I try logging in again, the process went through without any problems. This showed that it was an issue with my register portion of my login process.
+  - In the error message, there was an issue while calling my `createToken` method, where it had an accessing property of `undefined` error.
+    - Since this method accesses the id property being passed in, and since I already confirmed my regular `login` requests work, I checked if the return object of my `login` and `register` database queries were the same.
+    - Confirming they both returned the same structure, I thought maybe I needed to `await` my `register` query.
+  - That's when I realized, I'm not returning the result of my `register` method, so `createToken` isn't able to access the id value returned from the `register` database query. 
+
+
+### Next Steps
+1. Continue expanding out the buy feature
+  - Mainly focusing on how I want the process to behave from start to end. 
+  - Then start including a way to check if the user can afford the entire transaction.
