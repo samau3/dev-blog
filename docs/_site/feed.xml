@@ -1,4 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-23T23:00:56-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">57/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/22/day57.html" rel="alternate" type="text/html" title="57/100 Days of Code" /><published>2022-10-22T15:30:23-07:00</published><updated>2022-10-22T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/22/day57</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/22/day57.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-24T23:18:26-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">58/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/23/day58.html" rel="alternate" type="text/html" title="58/100 Days of Code" /><published>2022-10-23T15:30:23-07:00</published><updated>2022-10-23T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/23/day58</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/23/day58.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;p&gt;Continued working on figuring how I wanted my Transaction page to look like.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;After trying different structures and presentations, I ultimately decided to make the inputs a form.
+    &lt;ul&gt;
+      &lt;li&gt;Before when I had two buttons with on click functions, this could lead to a user to click one of the buttons accidentally once all the inputs were filled out.&lt;/li&gt;
+      &lt;li&gt;In addition, by making the inputs as a form, it helps all the pieces feel connected together more logically.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;At the moment, my form submission involves several conditional statements to determine which function to call.
+    &lt;ul&gt;
+      &lt;li&gt;An improvement that I can forsee is to have the functions be class methods and have the form input values be the different method names. This would enable the form submission function to be more dynamic.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Add a success/redirect page once a buy/sell transaction is made
+    &lt;ul&gt;
+      &lt;li&gt;I’ll likely have to have the buy/sell transaction pass a state message to this new page&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Flesh out the transaction functions, but I’ll leave error handling to the next PR if things get too big.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">57/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/22/day57.html" rel="alternate" type="text/html" title="57/100 Days of Code" /><published>2022-10-22T15:30:23-07:00</published><updated>2022-10-22T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/22/day57</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/22/day57.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;First day of building out buying stocks feature.&lt;/p&gt;
 
@@ -422,69 +448,4 @@
 &lt;ol&gt;
   &lt;li&gt;Wrap up Grind 75 week 3.&lt;/li&gt;
   &lt;li&gt;May need to open up a PR for review soon before the feature gets too big, already sitting at 9 file changes with over 100 lines of new code.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">48/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/08/day48.html" rel="alternate" type="text/html" title="48/100 Days of Code" /><published>2022-10-08T15:30:23-07:00</published><updated>2022-10-08T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/08/day48</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/08/day48.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Had my friend help me clarify why I may have been using too many &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;awaits&lt;/code&gt;.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Here’s the previous setup:
-    &lt;ol&gt;
-      &lt;li&gt;The base method (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;request&lt;/code&gt;) I’m calling returns a response that is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt;ed.&lt;/li&gt;
-      &lt;li&gt;The next method (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getStockQuote&lt;/code&gt;) calls the previous method with an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt; and returns the response from that.
-        &lt;ul&gt;
-          &lt;li&gt;This method only passes in inputs to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;request&lt;/code&gt;.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Finally, my route calls the method (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Finnhub.getStockQuote&lt;/code&gt;) with an await and uses the response to do other logic.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;In the process above, I’m essentially doing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await (await (return await())&lt;/code&gt;, while the outermost and innermost &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt;s are the most important.
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;request&lt;/code&gt; interacts with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;finnhub&lt;/code&gt; API directly.&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Finnhub.getStockQuote&lt;/code&gt; calls the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getStockQuote&lt;/code&gt; method to start making requests to the finnhub API.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;This means the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt; inside &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getStockQuote&lt;/code&gt; is not needed as it’s functionally the same with or without the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;await&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Finally got to try out my CI/CD once again for Fly.io.&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;It was promising at first as local deployment worked and my PR Github action ran with no problems.
-    &lt;ul&gt;
-      &lt;li&gt;Also, since I’m no longer using Heroku, I removed my Heroku &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Procfile&lt;/code&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Unfortunately this broke my deployment, as deployment failed with an error related to not being able to find my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tslint.json&lt;/code&gt;.
-    &lt;ul&gt;
-      &lt;li&gt;Searching up this issue directly did not yield any relevant results, but given the error was tied to removing my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Procfile&lt;/code&gt;, I looked up Fly.io’s documentation about it.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;After trying the &lt;a href=&quot;https://community.fly.io/t/procfile-documentation/1169&quot;&gt;suggested changes&lt;/a&gt; to my &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fly.toml&lt;/code&gt; to make up for not having a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Procfile&lt;/code&gt; anymore, my deployment still failed.
-    &lt;ul&gt;
-      &lt;li&gt;Based on the &lt;a href=&quot;https://community.fly.io/t/procfile-confusion/4225/6&quot;&gt;discussion I saw&lt;/a&gt;, I’m not the only one with this issue and the solution was to just use a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Procfile&lt;/code&gt; again.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Finally done! Except attempting the login process for the deployed app led to an error again…
-    &lt;ul&gt;
-      &lt;li&gt;Taking a quick look at the logs, and given the fact that his app has been deleted and relaunched several times, I needed to update the secrets so it can actually communicate with the APIs I’m using.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
-
-&lt;p&gt;Continued on with the Grind 75 problems I left off on.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Getting better at solving the Leetcode easy problems I’ve encountered before, but still not as smooth on Binary trees problems
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://twitter.com/mxcl/status/608682016205344768?s=20&amp;amp;t=h1VhzcnR0MuMWhmimWGRSQ&quot;&gt;Invert Binary Tree&lt;/a&gt;, LCA of Binary Tree, and Balanced Binary Tree were about 90% there but got stuck on some node logic&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Wrap up Grind 75 week 2.&lt;/li&gt;
-  &lt;li&gt;Continue with database integration for Paper Trader.&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
