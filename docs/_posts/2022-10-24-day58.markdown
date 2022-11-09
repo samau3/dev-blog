@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "58/100 Days of Code"
-date:   2022-10-23 15:30:23 -0700
+title: "58/100 Days of Code"
+date: 2022-10-23 15:30:23 -0700
 categories: 100Days
 comments: true
 ---
@@ -11,12 +11,18 @@ comments: true
 Continued working on figuring how I wanted my Transaction page to look like.
 
 1. After trying different structures and presentations, I ultimately decided to make the inputs a form.
-  - Before when I had two buttons with on click functions, this could lead to a user to click one of the buttons accidentally once all the inputs were filled out.
-  - In addition, by making the inputs as a form, it helps all the pieces feel connected together more logically.
+
+   - Before when I had two buttons with on click functions, this could lead to a user to click one of the buttons accidentally once all the inputs were filled out.
+   - In addition, by making the inputs as a form, it helps all the pieces feel connected together more logically.
+
 2. At the moment, my form submission involves several conditional statements to determine which function to call.
-  - An improvement that I can forsee is to have the functions be class methods and have the form input values be the different method names. This would enable the form submission function to be more dynamic.
+
+   - An improvement that I can forsee is to have the functions be class methods and have the form input values be the different method names. This would enable the form submission function to be more dynamic.
 
 ### Next Steps
+
 1. Add a success/redirect page once a buy/sell transaction is made
-  - I'll likely have to have the buy/sell transaction pass a state message to this new page
+
+   - I'll likely have to have the buy/sell transaction pass a state message to this new page
+
 2. Flesh out the transaction functions, but I'll leave error handling to the next PR if things get too big.

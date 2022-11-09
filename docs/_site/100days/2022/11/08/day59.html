@@ -3,21 +3,21 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>58/100 Days of Code | 100 Days of Code</title>
+<title>59/100 Days of Code | 100 Days of Code</title>
 <meta name="generator" content="Jekyll v3.9.2" />
-<meta property="og:title" content="58/100 Days of Code" />
+<meta property="og:title" content="59/100 Days of Code" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Paper Trader" />
 <meta property="og:description" content="Paper Trader" />
-<link rel="canonical" href="http://localhost:4000/dev-blog/100days/2022/10/23/day58.html" />
-<meta property="og:url" content="http://localhost:4000/dev-blog/100days/2022/10/23/day58.html" />
+<link rel="canonical" href="http://localhost:4000/dev-blog/100days/2022/11/08/day59.html" />
+<meta property="og:url" content="http://localhost:4000/dev-blog/100days/2022/11/08/day59.html" />
 <meta property="og:site_name" content="100 Days of Code" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2022-10-23T15:30:23-07:00" />
+<meta property="article:published_time" content="2022-11-08T14:30:23-08:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="58/100 Days of Code" />
+<meta property="twitter:title" content="59/100 Days of Code" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-10-23T15:30:23-07:00","datePublished":"2022-10-23T15:30:23-07:00","description":"Paper Trader","headline":"58/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/dev-blog/100days/2022/10/23/day58.html"},"url":"http://localhost:4000/dev-blog/100days/2022/10/23/day58.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-11-08T14:30:23-08:00","datePublished":"2022-11-08T14:30:23-08:00","description":"Paper Trader","headline":"59/100 Days of Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/dev-blog/100days/2022/11/08/day59.html"},"url":"http://localhost:4000/dev-blog/100days/2022/11/08/day59.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/dev-blog/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/dev-blog/feed.xml" title="100 Days of Code" /></head>
 <body><header class="site-header" role="banner">
@@ -40,31 +40,34 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">58/100 Days of Code</h1>
+    <h1 class="post-title p-name" itemprop="name headline">59/100 Days of Code</h1>
     <p class="post-meta">
-      <time class="dt-published" datetime="2022-10-23T15:30:23-07:00" itemprop="datePublished">Oct 23, 2022
+      <time class="dt-published" datetime="2022-11-08T14:30:23-08:00" itemprop="datePublished">Nov 8, 2022
       </time></p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
     <h3 id="paper-trader">Paper Trader</h3>
 
-<p>Continued working on figuring how I wanted my Transaction page to look like.</p>
-
 <ol>
   <li>
-    <p>After trying different structures and presentations, I ultimately decided to make the inputs a form.</p>
-
-    <ul>
-      <li>Before when I had two buttons with on click functions, this could lead to a user to click one of the buttons accidentally once all the inputs were filled out.</li>
-      <li>In addition, by making the inputs as a form, it helps all the pieces feel connected together more logically.</li>
-    </ul>
+    <p>Added Prettier VSCode extension to enforce style</p>
   </li>
   <li>
-    <p>At the moment, my form submission involves several conditional statements to determine which function to call.</p>
+    <p>Started working on the Success page component after a successful buy transaction</p>
 
     <ul>
-      <li>An improvement that I can forsee is to have the functions be class methods and have the form input values be the different method names. This would enable the form submission function to be more dynamic.</li>
+      <li>Reused what I learned from previous components on how to redirect and passing information to the new location so that was easy to set up</li>
+      <li>However, I noticed that if there’s a trailing zero in my stock price or total cost, it gets removed when entered in the database and when passed to the client
+        <ul>
+          <li>Originally I tried manipulating the values before adding them to the database via <code class="language-plaintext highlighter-rouge">Number.toFixed(2)</code>, but that would convert the data type from <code class="language-plaintext highlighter-rouge">number</code> into <code class="language-plaintext highlighter-rouge">string</code></li>
+          <li>So rather than changing the data types, I opted to use <code class="language-plaintext highlighter-rouge">toFixed(2)</code> when I’m displaying them on the <code class="language-plaintext highlighter-rouge">Success</code> page.
+            <ul>
+              <li>This works because they are <code class="language-plaintext highlighter-rouge">number</code> types already so I don’t need to do <code class="language-plaintext highlighter-rouge">Number(price).toFixed(2)</code></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
     </ul>
   </li>
 </ol>
@@ -72,21 +75,12 @@
 <h3 id="next-steps">Next Steps</h3>
 
 <ol>
-  <li>
-    <p>Add a success/redirect page once a buy/sell transaction is made</p>
-
-    <ul>
-      <li>I’ll likely have to have the buy/sell transaction pass a state message to this new page</li>
-    </ul>
-  </li>
-  <li>
-    <p>Flesh out the transaction functions, but I’ll leave error handling to the next PR if things get too big.</p>
-  </li>
+  <li>Finish up the sell function</li>
 </ol>
 
   </div>
 
-  <a class="u-url" href="/dev-blog/100days/2022/10/23/day58.html" hidden></a>
+  <a class="u-url" href="/dev-blog/100days/2022/11/08/day59.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">

@@ -1,0 +1,23 @@
+---
+layout: post
+title: "59/100 Days of Code"
+date: 2022-11-8 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+1. Added Prettier VSCode extension to enforce style
+
+2. Started working on the Success page component after a successful buy transaction
+
+   - Reused what I learned from previous components on how to redirect and passing information to the new location so that was easy to set up
+   - However, I noticed that if there's a trailing zero in my stock price or total cost, it gets removed when entered in the database and when passed to the client
+     - Originally I tried manipulating the values before adding them to the database via `Number.toFixed(2)`, but that would convert the data type from `number` into `string`
+     - So rather than changing the data types, I opted to use `toFixed(2)` when I'm displaying them on the `Success` page.
+       - This works because they are `number` types already so I don't need to do `Number(price).toFixed(2)`
+
+### Next Steps
+
+1. Finish up the sell function

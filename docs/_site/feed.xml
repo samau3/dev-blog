@@ -1,15 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-10-24T23:18:26-07:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">58/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/23/day58.html" rel="alternate" type="text/html" title="58/100 Days of Code" /><published>2022-10-23T15:30:23-07:00</published><updated>2022-10-23T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/23/day58</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/23/day58.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/dev-blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/dev-blog/" rel="alternate" type="text/html" /><updated>2022-11-09T00:27:12-08:00</updated><id>http://localhost:4000/dev-blog/feed.xml</id><title type="html">100 Days of Code</title><subtitle>Sammy Au&apos;s 100 Days of Code</subtitle><entry><title type="html">59/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/11/08/day59.html" rel="alternate" type="text/html" title="59/100 Days of Code" /><published>2022-11-08T14:30:23-08:00</published><updated>2022-11-08T14:30:23-08:00</updated><id>http://localhost:4000/dev-blog/100days/2022/11/08/day59</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/11/08/day59.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Added Prettier VSCode extension to enforce style&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Started working on the Success page component after a successful buy transaction&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Reused what I learned from previous components on how to redirect and passing information to the new location so that was easy to set up&lt;/li&gt;
+      &lt;li&gt;However, I noticed that if there’s a trailing zero in my stock price or total cost, it gets removed when entered in the database and when passed to the client
+        &lt;ul&gt;
+          &lt;li&gt;Originally I tried manipulating the values before adding them to the database via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Number.toFixed(2)&lt;/code&gt;, but that would convert the data type from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;number&lt;/code&gt; into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;string&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;So rather than changing the data types, I opted to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;toFixed(2)&lt;/code&gt; when I’m displaying them on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Success&lt;/code&gt; page.
+            &lt;ul&gt;
+              &lt;li&gt;This works because they are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;number&lt;/code&gt; types already so I don’t need to do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Number(price).toFixed(2)&lt;/code&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Finish up the sell function&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">58/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/23/day58.html" rel="alternate" type="text/html" title="58/100 Days of Code" /><published>2022-10-23T15:30:23-07:00</published><updated>2022-10-23T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/23/day58</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/23/day58.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;Continued working on figuring how I wanted my Transaction page to look like.&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;After trying different structures and presentations, I ultimately decided to make the inputs a form.
+  &lt;li&gt;
+    &lt;p&gt;After trying different structures and presentations, I ultimately decided to make the inputs a form.&lt;/p&gt;
+
     &lt;ul&gt;
       &lt;li&gt;Before when I had two buttons with on click functions, this could lead to a user to click one of the buttons accidentally once all the inputs were filled out.&lt;/li&gt;
       &lt;li&gt;In addition, by making the inputs as a form, it helps all the pieces feel connected together more logically.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;At the moment, my form submission involves several conditional statements to determine which function to call.
+  &lt;li&gt;
+    &lt;p&gt;At the moment, my form submission involves several conditional statements to determine which function to call.&lt;/p&gt;
+
     &lt;ul&gt;
       &lt;li&gt;An improvement that I can forsee is to have the functions be class methods and have the form input values be the different method names. This would enable the form submission function to be more dynamic.&lt;/li&gt;
     &lt;/ul&gt;
@@ -17,13 +50,18 @@
 &lt;/ol&gt;
 
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
+
 &lt;ol&gt;
-  &lt;li&gt;Add a success/redirect page once a buy/sell transaction is made
+  &lt;li&gt;
+    &lt;p&gt;Add a success/redirect page once a buy/sell transaction is made&lt;/p&gt;
+
     &lt;ul&gt;
       &lt;li&gt;I’ll likely have to have the buy/sell transaction pass a state message to this new page&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;Flesh out the transaction functions, but I’ll leave error handling to the next PR if things get too big.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Flesh out the transaction functions, but I’ll leave error handling to the next PR if things get too big.&lt;/p&gt;
+  &lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">57/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/22/day57.html" rel="alternate" type="text/html" title="57/100 Days of Code" /><published>2022-10-22T15:30:23-07:00</published><updated>2022-10-22T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/22/day57</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/22/day57.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
 
 &lt;p&gt;First day of building out buying stocks feature.&lt;/p&gt;
@@ -410,42 +448,4 @@
 &lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;Need to explore the different ways to handle user session now that my routes and return values all have to be adjusted for the addition of the database and finding a new unique identifier.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry><entry><title type="html">49/100 Days of Code</title><link href="http://localhost:4000/dev-blog/100days/2022/10/09/day49.html" rel="alternate" type="text/html" title="49/100 Days of Code" /><published>2022-10-09T15:30:23-07:00</published><updated>2022-10-09T15:30:23-07:00</updated><id>http://localhost:4000/dev-blog/100days/2022/10/09/day49</id><content type="html" xml:base="http://localhost:4000/dev-blog/100days/2022/10/09/day49.html">&lt;h3 id=&quot;paper-trader&quot;&gt;Paper Trader&lt;/h3&gt;
-
-&lt;p&gt;Started implementing the database queries to my routes!&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;My backend is now connected to a PostgreSQL database!
-    &lt;ul&gt;
-      &lt;li&gt;Basic functionality as I figure out the structure of how queries should be made to the database&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;At the moment, when a user logs in their username is stored in the database so it can joined with their transactions later&lt;/li&gt;
-  &lt;li&gt;Current issues that need to be resolved are:
-    &lt;ul&gt;
-      &lt;li&gt;A registration process
-        &lt;ul&gt;
-          &lt;li&gt;Previously to get things working I just had a conditional that would query the database or insert the user’s info to the database. This will need to be changed such that they’re two distinct queries and requests.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;There needs to be some restructuring to the React client for how the user context is obtained. Previously the route that provided the user context only returned the username, but now it can return the user’s information from the database.
-        &lt;ul&gt;
-          &lt;li&gt;This greatly affects how the Profile component will work as it will need to make separate requests to obtain the user’s other information like their holdings in the future.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;leetcode&quot;&gt;Leetcode&lt;/h3&gt;
-
-&lt;p&gt;Wrapped up another set of Grind 75 problems. Also went back to work on the problems I had trouble with yesterday and solved them much faster without any issues.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Besides new topics (dynamic programming, binary), getting better at working with linked lists and the idea of references. As I’m approaching the medium level problems, will need to get more comfortable with the problems I had issues with before.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Wrap up Grind 75 week 3.&lt;/li&gt;
-  &lt;li&gt;May need to open up a PR for review soon before the feature gets too big, already sitting at 9 file changes with over 100 lines of new code.&lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><category term="100Days" /><summary type="html">Paper Trader</summary></entry></feed>
