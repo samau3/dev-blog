@@ -1,0 +1,16 @@
+---
+layout: post
+title: "60/100 Days of Code"
+date: 2022-11-9 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+1. Tried to add commas in my currency values on the Success page component
+   - The way I have it set up would require converting the string from `.toFixed(2)` back into a `number` and then use `.toLocaleString()`
+     - However, this was both inefficient (converting a `number` to a `string` then a `number` again) but also it didn't properly add a comma with just using `.toLocaleString()`.
+     - Looking into [alternative ways](https://www.google.com/search?q=javascript+format+number+with+commas+and+decimal+places&sxsrf=ALiCzsY_UoePhDrBBiI7frtFkQy4jcEXeQ%3A1668150260359&ei=9PNtY9fFFf6QwbkPhaaHuAI&oq=add+comma+to+number+string+js&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQARgCMgoIABBHENYEELADMgoIABBHENYEELADMgoIABBHENYEELADMgoIABBHENYEELADMgoIABBHENYEELADMgoIABBHENYEELADMgoIABBHENYEELADMgoIABBHENYEELADMg0IABDkAhDWBBCwAxgBMg0IABDkAhDWBBCwAxgBMg0IABDkAhDWBBCwAxgBMg0IABDkAhDWBBCwAxgBMg0IABDkAhDWBBCwAxgBSgQITRgBSgQIQRgASgQIRhgBUABYAGCcJWgDcAF4AIABAIgBAJIBAJgBAMgBDcABAdoBBggBEAEYCQ&sclient=gws-wiz-serp) to properly format a `number` to have commas and decimal, I found an example of using `.toLocaleString()` with [extra arguments](https://tutorial.eyehunts.com/js/javascript-format-number-with-commas-and-decimal-places-example/).
+   - This lead me to check [MDN's article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) about the method, which references looking into [`Intl.NumberFormat()` to learn more](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) about the `options` argument for `.toLocaleString()`.
+   - Ultimately, this enabled me to have the `number` values from my stock transactions be displayed as currency values directly without much manual formatting.
