@@ -1,0 +1,42 @@
+---
+layout: post
+title: "61/100 Days of Code"
+date: 2022-12-20 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+1. Finished implementing the buy feature on the client side
+
+   - Once a buy request is made, the user's balance is reduced by the total cost of the transaction.
+   - Then the information about the transaction and updated balance is displayed on the successful request page.
+   - Additionally, I updated the error messages sent from the server so they can be reused as error alerts on the client on the trading page.
+
+2. Started working on the getQuote feature on the client side
+
+   - Simply makes a request to the server to obtain stock information, which is then displayed below the Trading page form.
+   - Still need to implement error handling for this
+   - There was a weird issue I noticed while working on this, where my changes wouldn't be applied
+     - The issue was my function didn't send the necessary `ticker` query parameter at first but after making the change, the error still kept happening
+     - To fix this, I had to refresh my React client, which was surprising as I thought saving the file would have allowed for a hot reload with `npm start`
+       - A potential explanation for this is that my function wasn't inside a `.jsx` file so `npm start` wouldn't apply those changes as it would for changes to `.jsx` files.
+
+### Learnings
+
+1. How to rename destructured variables from objects.
+   ```
+      const obj = { a : blue }
+      const {a: favColor} = obj
+      console.log(favColor) // blue
+   ```
+2. When I was trying to multiply two values in a SQL query, they were of type `varchar` instead of `numeric`, giving an error of `unknown * unknown`. To fix that, I had to use `CAST(value as numeric)`.
+
+### Next Steps
+
+1. Will need to figure out if the current implementation of the user's balance information is the best approach
+   - Since the user's balance is only updated once a buy request is made on the client, there could be inaccurate balances if transactions were made directly to the database
+     - This may not be a concern that needs to be addressed for this project, but it is a concern that may be worth exploring to implement.
+2. Finish up the sell feature on the client side
+3. May need to refactor the way errors are handled on my Trading page form to utilize form validation
