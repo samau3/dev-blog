@@ -1,0 +1,42 @@
+---
+layout: post
+title: "62/100 Days of Code"
+date: 2022-12-22 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+1. Added form validation to my Trading page component
+
+   - Utilizing Evergreen UI's form input properties to have more stylized error feedback regarding form input issues.
+
+2. Added error alerts on the Trading page component
+
+   - Similar to the login page, added an error state that will display the error messages provided from the server.
+     - Since the server was set up to provide a useful error message when there is an invalid ticker or a transaction that's too expensive, I decided to reuse that message rather than hardcoding a repeated message.
+
+3. Refactored the stock routes for how it checks if a ticker is valid
+   - I noticed the three routes had a repeated chunk of code that checks if the provided ticker is valid.
+   - To DRY up my code, I moved this chunk into a middleware function, `validateTicker`, but that required a few modifications to have it work properly.
+     - I have one route that checked `req.query` and two other routes checking `req.body`, so I needed to check both in the middleware (utilizing the `??` nullish operator).
+     - In my routes, I had to access the `quote` object from `res.locals` instead of my `Finnhub.getStockQoute` function (which is now in the middleware).
+
+### Learnings
+
+1. How to rename destructured variables from objects.
+   ```
+      const obj = { a : blue }
+      const {a: favColor} = obj
+      console.log(favColor) // blue
+   ```
+2. When I was trying to multiply two values in a SQL query, they were of type `varchar` instead of `numeric`, giving an error of `unknown * unknown`. To fix that, I had to use `CAST(value as numeric)`.
+
+### Next Steps
+
+1. Will need to figure out if the current implementation of the user's balance information is the best approach
+   - Since the user's balance is only updated once a buy request is made on the client, there could be inaccurate balances if transactions were made directly to the database
+     - This may not be a concern that needs to be addressed for this project, but it is a concern that may be worth exploring to implement.
+2. Finish up the sell feature on the client side
+3. May need to refactor the way errors are handled on my Trading page form to utilize form validation
