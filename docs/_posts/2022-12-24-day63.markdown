@@ -1,0 +1,47 @@
+---
+layout: post
+title: "63/100 Days of Code"
+date: 2022-12-24 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+1. Added sell request functionality
+
+   - Now, sell requests can be made on the client that will update the database regarding the user's balance and shares owned.
+   - Similar to the buy request function, but had to make sure quantity and balance values were properly updated (i.e. increase balance and decrease quantity).
+     - Also added a separate function that checks the transaction table for total quantity of shares owned of a particulate stock for a user.
+       - This function is a method in the transaction model file as it checks the transaction table.
+
+2. Also changed my database query functions to run parallel rather than sequentially.
+
+   - Since my functions to update the user's balance and the transaction table don't depend on each other, rather than having them run in sequence with an await at function declaration, I moved them to an array.
+
+     ```
+     // Before
+      const balance = await db.query() // query balance table
+      const transaction = await db.query() // query transaction table
+
+      const result = balance.rows[0]
+      return result
+
+      // After
+
+      const balance = db.query()
+      const transaction = db.query()
+
+      const result = [await balance, await transaction]
+      return result[0].rows[0]
+
+     ```
+
+### Learnings/Clarifications
+
+1. Originally I used a `RETURNING` clause in one of my database `SELECT` queries.
+   - This caused an error as `RETURNING` is only necessary for `INSERT/UPDATE/DELETE` clauses as they normally don't return anything.
+
+### Next Steps
+
+1. Clean up docstrings, variable naming, and other minor language refactoring before submitting a PR for code review.
