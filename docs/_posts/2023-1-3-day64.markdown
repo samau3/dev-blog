@@ -1,0 +1,38 @@
+---
+layout: post
+title: "64/100 Days of Code"
+date: 2023-1-3 15:30:23 -0700
+categories: 100Days
+comments: true
+---
+
+### Paper Trader
+
+1.  Added a `useEffect` to clean up my state updates
+
+    - In my form submission, I would redirect the user after a successful transaction (e.g. a buy transaction).
+    - However, I added a state the representated a request being processed so the user is aware that their form submission is registered, with the state being reset at the very end of the `handleSubmit` function for the form submission.
+    - This caused an error where the state would be set on an unmounted component, with an error message suggesting "cancel all subscriptions and asynchronous tasks in a useEffect cleanup function". Which was the exact solution I needed, based on this [article](https://dev.to/elijahtrillionz/cleaning-up-async-functions-in-reacts-useeffect-hook-unsubscribing-3dkk)
+
+    ```
+    useEffect(() => {
+       // actions performed when component mounts
+
+       return () => {
+     // actions to be performed when component unmounts
+       }
+    }, [])
+    ```
+
+    - The component didn't actually have anything in the `useEffect` besides the return statement that cleared the state since that's all I need the hook for:
+      ```
+         useEffect(() => {
+            return () => {
+               setIsProcessingRequest(false);
+            };
+         }, []);
+      ```
+
+2.  I noticed that my form submissions would not clear up my error messages even when they were no longer applicable.
+    - For example, if I requested a quote with an invalid ticker and then a quote for a valid ticker, the error message for an invalid ticker would still be displayed.
+    - To fix this, I simply added the corresponding setState functions to be `undefined` to clear those error states of their values.
